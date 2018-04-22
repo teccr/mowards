@@ -9,5 +9,23 @@ namespace Mowards.ViewModels
 
         protected abstract void InitClass();
         #endregion
+
+        #region Common Properties
+
+        private bool _isBusy = false;
+        public bool IsBusy
+        {
+            get
+            {
+                return _isBusy;
+            }
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged("IsBusy");
+            }
+        }
+
+        #endregion
     }
 }
