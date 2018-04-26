@@ -1,6 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Mowards.App">
+<?xml version="1.0" encoding="utf-8"?>
+<Application 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:clr="clr-namespace:System;assembly=mscorlib"
+    x:Class="Mowards.App">
     <Application.Resources>
         <!-- Application resource dictionary -->
+        <ResourceDictionary>
+            <clr:String x:Key="LabelText">My string</clr:String>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
