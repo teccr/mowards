@@ -2,9 +2,34 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="Mowards.Views.CategoriesFilterView">
-    <StackLayout>
-        <ListView ItemsSource="{Binding Categories}">
-            
-        </ListView>
-    </StackLayout>
+    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <StackLayout>
+            <Label Text="Academy Winners  / Nominees" />
+            <Label Text="{Binding SelectedYear, StringFormat='Year: {0}'}" />
+            <Slider Maximum="{Binding MaxYear}" 
+                    Minimum="{Binding MinYear}" 
+                    Value="{Binding SelectedYear, Mode=TwoWay}"
+                    ValueChanged="YearSlider_ValueChanged"
+                    />
+            <ListView ItemsSource="{Binding Categories}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding Category}" />
+                                <Switch IsToggled="{Binding Selected}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+
+        <ContentView IsVisible="{Binding IsBusy}" HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand">
+            <ActivityIndicator IsVisible="true" IsRunning="{Binding IsBusy}" Color="Green"
+                               WidthRequest="120" HeightRequest="120" VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+        </ContentView>
+    </Grid>
 </ContentPage>

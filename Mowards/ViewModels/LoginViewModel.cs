@@ -10,36 +10,11 @@ namespace Mowards.ViewModels
     public class LoginViewModel :
         ViewModelBase
     {
-        #region Singleton Definition
-
-        private static LoginViewModel instance = null;
-
-        public static LoginViewModel GetInstance()
-        {
-            if (instance == null)
-            {
-
-                instance = new LoginViewModel();
-            }
-
-            return instance;
-        }
-
-        public static void DeleteInstance()
-        {
-            if (instance != null)
-            {
-                instance = null;
-            }
-        }
-
         public LoginViewModel()
         {
             InitClass();
             InitCommands();
         }
-
-        #endregion
 
         #region Initialization section
 
@@ -97,12 +72,10 @@ namespace Mowards.ViewModels
 
         private async void Login()
         {
-            if (IsBusy)
-                return;
-            try
+            Func<Task> loginOperation = async () =>
             {
-                LoginInfo userCredentials = new LoginInfo() 
-                { 
+                LoginInfo userCredentials = new LoginInfo()
+                {
                     Username = Username,
                     Password = Password
                 };
@@ -111,24 +84,18 @@ namespace Mowards.ViewModels
                     await HttpClient.PostDetails<TokenInformation, LoginInfo>(
                     Utils.AUTH_CONTROLLER, userCredentials, true);
 
-                if(App.Current.Properties.ContainsKey(Utils.TOKEN_KEY))
+                if (App.Current.Properties.ContainsKey(Utils.TOKEN_KEY))
                 {
                     App.Current.Properties[Utils.TOKEN_KEY] = tokenInformation.Token;
                 }
                 else
                 {
-                    App.Current.Properties.Add( Utils.TOKEN_KEY, tokenInformation.Token );
+                    App.Current.Properties.Add(Utils.TOKEN_KEY, tokenInformation.Token);
                 }
                 App.Current.MainPage = new CategoriesFilterView();
-            }
-            catch(Exception excep)
-            {
-                HandleException(excep);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            };
+
+            await ExecuteSafeOperation(loginOperation);
         }
 
         #endregion

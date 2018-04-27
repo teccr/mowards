@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Mowards.Services;
 using Mowards.ViewModels;
 using Xamarin.Forms;
 
@@ -10,7 +11,7 @@ namespace Mowards.Views
         public LoginView()
         {
             InitializeComponent();
-            BindingContext = LoginViewModel.GetInstance();
+            BindingContext = ViewModelFactory.GetInstance<LoginViewModel>();
         }
 	}
 }
