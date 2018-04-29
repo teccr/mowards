@@ -8,11 +8,11 @@
             <Label Text="New User Registration" />
             <Image />
             <Label Text="Select Profile Picture" />
-            <Label Text="Email" />
+            <Label Text="Email*" />
             <Entry Text="{Binding NewUserEmail}" Placeholder="Example: john@email.com"/>
-            <Label Text="Name" />
+            <Label Text="Name*" />
             <Entry Text="{Binding NewUserName}" Placeholder="Example: John Smith L."/>
-            <Label Text="Password" />
+            <Label Text="Password*" />
             <Entry Text="{Binding NewUserPassword}" 
                    IsPassword="True" Placeholder="Password"/>
             <Entry Text="{Binding NewUserPasswordConfirm}" 
@@ -21,8 +21,10 @@
             <DatePicker Date="{Binding NewUserBirthday}" />
             <Label Text="Country" />
             <Picker SelectedItem="{Binding NewUserCountry}" ItemsSource="{Binding ListOfCountries}"/>
-            <Button Text="Register" Command="{Binding RegisterNewUserCommand}" />
-            <Button Text="Cancel"  Command="{Binding CancelRegisterUserCommand}" />
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Register" Command="{Binding RegisterNewUserCommand}" />
+                <Button Text="Cancel"  Command="{Binding CancelRegisterUserCommand}" />
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

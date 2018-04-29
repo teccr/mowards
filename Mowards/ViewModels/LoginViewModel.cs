@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Mowards.Models;
@@ -202,6 +203,66 @@ namespace Mowards.ViewModels
         }
         private async void Login()
         {
+            await ExecuteSafeOperation(await ExecuteLogin(Username, Password));
+        }
+
+        private async void RegisterNewUserView()
+        {
+            if (ListOfCountries == null || ListOfCountries.Count==0) {
+                
+                await SetListCountries();
+            }
+
+            //(App.Current.MainPage).Navigation.PushAsync(new RegisterNewUserView());
+            App.Current.MainPage = new Mowards.Views.RegisterNewUserView();
+        }
+
+        private async void RegisterNewUserAction() {
+
+            if (NewUserEmail==null || NewUserName == null || NewUserPassword==null || NewUserPasswordConfirm==null ) {
+                App.Current.MainPage.DisplayAlert("Error", "Email and Password are not optional", "OK");
+                return;
+            }
+            if (NewUserPassword != NewUserPasswordConfirm) {
+                App.Current.MainPage.DisplayAlert("Error", "Passwords must match", "OK");
+                return;
+            }
+            if (NewUserEmail != "" && NewUserPassword != "") { 
+               
+
+                Func<Task> registerNewUser = async () =>
+                {
+                    MowardsUser NewUser =
+                    new MowardsUser()
+                    {
+                        Email = NewUserEmail,
+                        Password = NewUserPassword,
+                        BirthDate = NewUserBirthDate,
+                        Country = NewUserCountry,
+                        Picture = NewUserPicture
+                    };
+
+                   
+                        var response =
+                        await HttpClient.PostDetails<string, MowardsUser>(
+                        Utils.USER_URL, NewUser, true);
+
+                        if (response=="User was created.") {
+                            await ExecuteLogin(NewUserEmail, NewUserPassword);
+                        }
+                };
+
+                await ExecuteSafeOperation(registerNewUser);
+
+            }
+
+            
+
+            
+        }
+
+        private async Task<Func<Task>> ExecuteLogin(string username, string password) {
+
             Func<Task> loginOperation = async () =>
             {
                 LoginInfo userCredentials = new LoginInfo()
@@ -224,23 +285,7 @@ namespace Mowards.ViewModels
                 }
                 App.Current.MainPage = new CategoriesFilterView();
             };
-
-            await ExecuteSafeOperation(loginOperation);
-        }
-
-        private async void RegisterNewUserView()
-        {
-            if (ListOfCountries == null || ListOfCountries.Count==0) {
-                
-                await SetListCountries();
-            }
-
-            //(App.Current.MainPage).Navigation.PushAsync(new RegisterNewUserView());
-            App.Current.MainPage = new Mowards.Views.RegisterNewUserView();
-        }
-
-        private async void RegisterNewUserAction() {
-
+            return loginOperation;
         }
         private async void CancelRegister()
         {
