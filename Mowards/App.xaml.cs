@@ -25,6 +25,7 @@ namespace Mowards
         {
             InitializeComponent();
 
+            
             MainPage = new Views.LoginView();
         }
 

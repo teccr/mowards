@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Mowards.Views"
+             Title="Mowards"
+             x:Class="Mowards.Views.MasterDetailMaster">
+    <MasterDetailPage.Master>
+        <pages:MasterDetailMenu x:Name="MasterDetailMenu" Title="MasterDetailMenu" />
+        <!--El master aqui siempre debe llevar nombre x:Name=MenuPage por ejemplo-->
+    </MasterDetailPage.Master>
+    <MasterDetailPage.Detail>
+        <NavigationPage>
+            <x:Arguments>
+                <pages:MasterDetailContent />
+            </x:Arguments>
+        </NavigationPage>
+    </MasterDetailPage.Detail>
+</MasterDetailPage>

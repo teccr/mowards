@@ -9,7 +9,7 @@
             Orientation="Vertical">
             <!--<Label Text="Mowards" XAlign="Center" Font="24" />-->
             
-            <Image Source="MovieLogoTitle.png" HeightRequest="350" WidthRequest="300" />
+            <Image Source="MovieLogoT.png" HeightRequest="350" WidthRequest="300" />
             
             <Entry Placeholder="Username" Text="{Binding Username}" />
             <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="true" />

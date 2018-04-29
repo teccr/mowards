@@ -220,13 +220,14 @@ namespace Mowards.ViewModels
         private async void RegisterNewUserAction() {
 
             if (NewUserEmail==null || NewUserName == null || NewUserPassword==null || NewUserPasswordConfirm==null ) {
-                App.Current.MainPage.DisplayAlert("Error", "Email and Password are not optional", "OK");
+                App.Current.MainPage.DisplayAlert("Error", "Email, Name and Password are not optional", "OK");
                 return;
             }
             if (NewUserPassword != NewUserPasswordConfirm) {
                 App.Current.MainPage.DisplayAlert("Error", "Passwords must match", "OK");
                 return;
             }
+
             if (NewUserEmail != "" && NewUserPassword != "") { 
                
 
@@ -249,6 +250,7 @@ namespace Mowards.ViewModels
 
                         if (response=="User was created.") {
                             await ExecuteLogin(NewUserEmail, NewUserPassword);
+
                         }
                 };
 
@@ -283,13 +285,21 @@ namespace Mowards.ViewModels
                 {
                     App.Current.Properties.Add(Utils.TOKEN_KEY, tokenInformation.Token);
                 }
-                App.Current.MainPage = new CategoriesFilterView();
+
+                NavigationPage navigation = new NavigationPage(new MasterDetailContent());
+
+                App.Current.MainPage = new MasterDetailMaster
+                {
+                    Master = new MasterDetailMenu(),
+                    Detail = navigation
+                };
+                //App.Current.MainPage = new CategoriesFilterView();
             };
             return loginOperation;
         }
         private async void CancelRegister()
         {
-
+            App.Current.MainPage = new LoginView();
         }
 
         private async Task SetListCountries() {

@@ -47,6 +47,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\MenuItem.cs" />
     <Compile Include="MowardsPage.xaml.cs">
       <DependentUpon>MowardsPage.xaml</DependentUpon>
     </Compile>
@@ -63,6 +64,18 @@
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="MowardsService\MowardsHttp.cs" />
     <Compile Include="Models\WebAPIException.cs" />
+    <Compile Include="Views\AboutAppView.xaml.cs">
+      <DependentUpon>AboutAppView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AcademyAwardsTriviaView.xaml.cs">
+      <DependentUpon>AcademyAwardsTriviaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AwardsPollsView.xaml.cs">
+      <DependentUpon>AwardsPollsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditProfileView.xaml.cs">
+      <DependentUpon>EditProfileView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -79,8 +92,29 @@
       <DependentUpon>CategoriesFilterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\ViewModelFactory.cs" />
+    <Compile Include="Views\MasterDetailContent.xaml.cs">
+      <DependentUpon>MasterDetailContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MasterDetailMaster.xaml.cs">
+      <DependentUpon>MasterDetailMaster.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MasterDetailMenu.xaml.cs">
+      <DependentUpon>MasterDetailMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyFavoritesPage.xaml.cs">
+      <DependentUpon>MyFavoritesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyReviewsView.xaml.cs">
+      <DependentUpon>MyReviewsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RegisterNewUserView.xaml.cs">
       <DependentUpon>RegisterNewUserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SignOutView.xaml.cs">
+      <DependentUpon>SignOutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TakePictureOscarView.xaml.cs">
+      <DependentUpon>TakePictureOscarView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -100,9 +134,74 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Views\MasterDetailContent.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\RegisterNewUserView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\MasterDetailMenu.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\MasterDetailMaster.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\MyFavoritesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\AwardsPollsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\MyReviewsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\AcademyAwardsTriviaView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\TakePictureOscarView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\EditProfileView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SignOutView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\AboutAppView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
