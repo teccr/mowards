@@ -10,10 +10,15 @@
 
             <Entry Placeholder="Username" Text="{Binding Username}" />
             <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="true" />
-            
-            <Button x:Name="loginButton" 
+            <StackLayout Orientation="Horizontal">
+                <Button x:Name="loginButton" 
                 Command="{Binding LoginCommand}"
                 Text="Sign-in" MinimumHeightRequest="30" />
+
+                <Button x:Name="RegisterNewUserViewButton" 
+                Command="{Binding RegisterNewUserViewCommand}"
+                Text="Create New Account" MinimumHeightRequest="30" />
+            </StackLayout>
         </StackLayout>    
 
         <ContentView IsVisible="{Binding IsBusy}" HorizontalOptions="FillAndExpand"

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mowards.Views.RegisterNewUserView">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <Label Text="MoWards" />
+            <Label Text="New User Registration" />
+            <Image />
+            <Label Text="Select Profile Picture" />
+            <Label Text="Email" />
+            <Entry Text="{Binding NewUserEmail}" Placeholder="Example: john@email.com"/>
+            <Label Text="Name" />
+            <Entry Text="{Binding NewUserName}" Placeholder="Example: John Smith L."/>
+            <Label Text="Password" />
+            <Entry Text="{Binding NewUserPassword}" 
+                   IsPassword="True" Placeholder="Password"/>
+            <Entry Text="{Binding NewUserPasswordConfirm}" 
+                   IsPassword="True" Placeholder="Confirm Password"/>
+            <Label Text="Birthday" />
+            <DatePicker Date="{Binding NewUserBirthday}" />
+            <Label Text="Country" />
+            <Picker SelectedItem="{Binding NewUserCountry}" ItemsSource="{Binding ListOfCountries}"/>
+            <Button Text="Register" Command="{Binding RegisterNewUserCommand}" />
+            <Button Text="Cancel"  Command="{Binding CancelRegisterUserCommand}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
