@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Mowards.Models;
+using Mowards.Services;
 using Mowards.Views;
 using Xamarin.Forms;
 
@@ -287,10 +288,14 @@ namespace Mowards.ViewModels
                 }
 
                 NavigationPage navigation = new NavigationPage(new MasterDetailContent());
+                ContentPage menu = new MasterDetailMenu();
+
+                //Next Line to be discussed as how to set current user information.
+                ViewModelFactory.GetInstance<AwardsViewModel>().CurrentUser = new MowardsUser() { Email= Username };
 
                 App.Current.MainPage = new MasterDetailMaster
                 {
-                    Master = new MasterDetailMenu(),
+                    Master = menu,
                     Detail = navigation
                 };
                 //App.Current.MainPage = new CategoriesFilterView();

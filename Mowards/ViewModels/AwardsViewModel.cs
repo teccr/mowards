@@ -57,6 +57,22 @@ namespace Mowards.ViewModels
 
             }
         }
+        private MowardsUser _CurrentUser = new MowardsUser();
+        public MowardsUser CurrentUser
+        {
+            get
+            {
+                return _CurrentUser;
+            }
+
+            set
+            {
+                _CurrentUser = value;
+                OnPropertyChanged("CurrentUser");
+
+            }
+        }
+
         private void InitMenu()
         {
             InitialMenu = new ObservableCollection<Models.MenuItem>() { new Models.MenuItem() {ID=1, Logo="Home_48px.png", Text="Main Page", Description=""},
