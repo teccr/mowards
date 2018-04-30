@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mowards.Views.MasterDetailMenu"
+             x:Name="MasterDetailMenu"
+             Title="MasterDetailMenu">
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand">
+            <StackLayout Padding="15,20" BackgroundColor="Gray">
+                <!--<Image Source="{Binding CurrentUser.Picture}" HeightRequest="80" WidthRequest="80" Margin="5,5,5,5" HorizontalOptions="EndAndExpand" />-->
+                <Image Source="User_104px.png" HeightRequest="90" WidthRequest="90" Margin="20,5,5,5" HorizontalOptions="Start" />
+                <Label Text="{Binding CurrentUser.Email}" TextColor="White" HorizontalOptions="StartAndExpand" VerticalOptions="Center" Margin="15,0" />
+            </StackLayout>
+            <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" BackgroundColor="WhiteSmoke">
+                <ListView ItemsSource="{Binding InitialMenu}" HasUnevenRows="True" VerticalOptions="FillAndExpand" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <!--<ImageCell ImageSource="{Binding Logo}" Text="{Binding Text}"  />-->
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand" Margin="5,0,5,5" Padding="10">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer  Command="{Binding Path=BindingContext.MenuItemClickedCommand, Source={x:Reference MasterDetailMenu}}" CommandParameter="{Binding ID}"/>
+                                    </StackLayout.GestureRecognizers>
+                                    <Image Source="{Binding Logo}" HeightRequest="24" WidthRequest="24" Margin="30,0,5,5" HorizontalOptions="Start"></Image>
+                                    <Label Text="{Binding Text}" FontAttributes="Bold" TextColor="Black" 
+                                           Font="16" YAlign="Center" Margin="10,0,0,0" 
+                                           HorizontalOptions="StartAndExpand"  VerticalOptions="Center"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

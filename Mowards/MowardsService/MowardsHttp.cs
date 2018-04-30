@@ -57,6 +57,7 @@ namespace Mowards.MowardsService
 
             HttpResponseMessage response =
                 await httpClient.PostAsync(url, content);
+
             response.EnsureSuccessStatusCode();
             if (!response.IsSuccessStatusCode)
             {
@@ -126,6 +127,12 @@ namespace Mowards.MowardsService
             {
                 throw new SecurityException("User was not authorize to use the web API.");
             }
+            if (response.StatusCode
+              == HttpStatusCode.Forbidden)
+            {
+                throw new SecurityException("Email already registered, request Reset password or use different email.");
+            }
+
             var responseJson = await response.Content.ReadAsStringAsync();
             WebAPIException logData = 
                 JsonConvert.DeserializeObject<WebAPIException>(responseJson, settings);
