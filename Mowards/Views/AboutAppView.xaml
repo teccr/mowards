@@ -4,9 +4,26 @@
              x:Class="Mowards.Views.AboutAppView">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Image VerticalOptions="Start" HorizontalOptions="Center" Source="LogoTopTitle.png" HeightRequest="200" WidthRequest="180" />
+            <StackLayout Padding="10" Margin="5,10">
+                <Label XAlign="Start" Text="Cenfotec University - Xamarin course final project"
+                HorizontalOptions="StartAndExpand" />
+            <Label XAlign="Start" Text="Professor:"
+                HorizontalOptions="StartAndExpand" />
+            <Label XAlign="Start" Text="Carlos Mendez - carlos_mendez_10@live.com"
+                HorizontalOptions="StartAndExpand" />
+            <Label XAlign="Start" Text="Students:"
+                HorizontalOptions="StartAndExpand" />
+            <Label XAlign="Start" Text="Diego Gutierrez - diegolotr99@gmail.com"
+                HorizontalOptions="StartAndExpand" />
+            <Label XAlign="Start" Text="Francisco Marin - fgmarinh@gmail.com"
+                HorizontalOptions="StartAndExpand" />
+            <Label XAlign="Start" Text="Academy Award(s)®, Oscar Night®, and Oscar Statuette design mark are registered
+                   trademarks and service mark of the Academy of Motion Picture Arts and Sciences."
+                HorizontalOptions="StartAndExpand" />
+            <Label XAlign="Start" Text="All other trademarks are the property of their respective owners."
+                HorizontalOptions="StartAndExpand" />
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

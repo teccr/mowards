@@ -6,7 +6,7 @@
              Title="Main Page">
     <ContentPage.Content>
         <StackLayout>
-            <Image Source="LogoT.png" HeightRequest="250" WidthRequest="200" />
+            <Image Source="Logo.png" HeightRequest="250" WidthRequest="200" />
             <Label Text="Welcome to MoWards!" Font="24" FontAttributes="Bold"
                 HorizontalOptions="CenterAndExpand" />
             <Label XAlign="Center" Text="-You can look all the information related to the Oscar's Academy Awards Winners and Nominees"
