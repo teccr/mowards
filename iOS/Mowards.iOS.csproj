@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Xamarin.Forms.2.5.0.121934\build\netstandard1.0\Xamarin.Forms.props" Condition="Exists('..\packages\Xamarin.Forms.2.5.0.121934\build\netstandard1.0\Xamarin.Forms.props')" />
   <PropertyGroup>
@@ -112,9 +112,7 @@
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
   </ItemGroup>
@@ -126,6 +124,42 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Account_50px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\BarChart_52px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Edit_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Home_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\List_50px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Rocket_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\SignOut_50px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\StarFilled_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Unsplash_48px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\LogoBottomTitle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\LogoTopTitle.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.5.0.121934\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.5.0.121934\build\netstandard1.0\Xamarin.Forms.targets')" />
