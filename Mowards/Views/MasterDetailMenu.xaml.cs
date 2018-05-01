@@ -17,7 +17,7 @@ namespace Mowards.Views
 		public MasterDetailMenu ()
 		{
 			InitializeComponent ();
-            BindingContext = ViewModelFactory.GetInstance<AwardsViewModel>();
+            BindingContext = ViewModelFactory.GetInstance<MainMenuViewModel>();
         }
 	}
 }

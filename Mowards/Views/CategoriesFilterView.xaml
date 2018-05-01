@@ -23,6 +23,9 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Button Text="Filter" 
+                HeightRequest="40" WidthRequest="250" 
+                BackgroundColor="Teal" Command="{Binding GetAwardsByFiltersCommand}" />
         </StackLayout>
 
         <ContentView IsVisible="{Binding IsBusy}" HorizontalOptions="FillAndExpand"

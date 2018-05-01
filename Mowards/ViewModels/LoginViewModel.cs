@@ -291,7 +291,7 @@ namespace Mowards.ViewModels
                 ContentPage menu = new MasterDetailMenu();
 
                 //Next Line to be discussed as how to set current user information.
-                ViewModelFactory.GetInstance<AwardsViewModel>().CurrentUser = new MowardsUser() { Email= Username };
+                ViewModelFactory.GetInstance<MainMenuViewModel>().CurrentUser = new MowardsUser() { Email= Username };
 
                 App.Current.MainPage = new MasterDetailMaster
                 {
@@ -302,6 +302,7 @@ namespace Mowards.ViewModels
             };
             return loginOperation;
         }
+
         private async void CancelRegister()
         {
             App.Current.MainPage = new LoginView();
