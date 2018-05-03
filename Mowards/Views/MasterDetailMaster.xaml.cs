@@ -17,16 +17,16 @@ namespace Mowards.Views
 		public MasterDetailMaster ()
 		{
 			InitializeComponent ();
-            BindingContext = ViewModelFactory.GetInstance<AwardsViewModel>();
+            //BindingContext = ViewModelFactory.GetInstance<AwardsViewModel>();
         }
 
-        async void YearSlider_ValueChanged(object sender, Xamarin.Forms.ValueChangedEventArgs e)
+        /*async void YearSlider_ValueChanged(object sender, Xamarin.Forms.ValueChangedEventArgs e)
         {
             if (BindingContext != null)
             {
                 AwardsViewModel viewModel = (AwardsViewModel)BindingContext;
                 await viewModel.LoadCategories();
             }
-        }
+        }*/
     }
 }

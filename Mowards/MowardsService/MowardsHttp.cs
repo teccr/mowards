@@ -33,10 +33,10 @@ namespace Mowards.MowardsService
                 ContractResolver = new LowercaseContractResolver()
             };
             HttpResponseMessage response = await httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
             if(!response.IsSuccessStatusCode)
             {
-                HandleError(response);
+                await HandleError(response);
             }
             var rawJson = await response.Content.ReadAsStringAsync();
             T result = JsonConvert.DeserializeObject<T>(rawJson, settings);
@@ -58,10 +58,10 @@ namespace Mowards.MowardsService
             HttpResponseMessage response =
                 await httpClient.PostAsync(url, content);
 
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
             if (!response.IsSuccessStatusCode)
             {
-                HandleError(response);
+                await HandleError(response);
             }
 
             var responseJson = await response.Content.ReadAsStringAsync();
@@ -81,10 +81,10 @@ namespace Mowards.MowardsService
 
             HttpResponseMessage response = 
                 await httpClient.PostAsync(url, content);
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
             if (!response.IsSuccessStatusCode)
             {
-                HandleError(response);
+                await HandleError(response);
             }
 
             var responseJson = await response.Content.ReadAsStringAsync();
@@ -104,10 +104,10 @@ namespace Mowards.MowardsService
 
             HttpResponseMessage response =
                 await httpClient.PutAsync(url, content);
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
             if (!response.IsSuccessStatusCode)
             {
-                HandleError(response);
+                await HandleError(response);
             }
 
             var responseJson = await response.Content.ReadAsStringAsync();
@@ -115,9 +115,8 @@ namespace Mowards.MowardsService
             return result;
         }
 
-        private async void HandleError(HttpResponseMessage response)
+        private async Task HandleError(HttpResponseMessage response)
         {
-            SetHeaders(false);
             JsonSerializerSettings settings = new JsonSerializerSettings()
             {
                 ContractResolver = new LowercaseContractResolver()
