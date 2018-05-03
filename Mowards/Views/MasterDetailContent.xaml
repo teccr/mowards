@@ -4,7 +4,15 @@
              x:Class="Mowards.Views.MasterDetailContent"
              x:Name="MasterDetailContent"
              Title="Main Page">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="AboutThisAppItem" 
+                         Order="Secondary" Icon="icon.png" 
+                         Text="About this App" Priority="1"
+                         Command="{Binding ToolbarItemCommand}" />
+
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
+       
         <StackLayout>
             <Image Source="Logo.png" HeightRequest="250" WidthRequest="200" />
             <Label Text="Welcome to MoWards!" Font="24" FontAttributes="Bold"

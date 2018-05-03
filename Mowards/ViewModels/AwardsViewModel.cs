@@ -40,6 +40,7 @@ namespace Mowards.ViewModels
             MenuItemClickedCommand = new Command<int>(MenuItemClicked);
             SaveEditUserCommand = new Command(SaveEditUser);
             CancelEditUserCommand = new Command(CancelCurrentView);
+            ToolbarItemCommand = new Command(ToolbarAboutView);
         }
 
         #region Instances
@@ -168,6 +169,8 @@ namespace Mowards.ViewModels
         { get; set; }
         public ICommand CancelEditUserCommand
         { get; set; }
+        public ICommand ToolbarItemCommand
+        { get; set; }
 
         public async Task LoadCategories()
         {
@@ -239,6 +242,10 @@ namespace Mowards.ViewModels
         }
         private void CancelCurrentView() {
             ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PopAsync();
+        }
+        private void ToolbarAboutView() {
+            ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new AboutAppView());
+            ((MasterDetailPage)App.Current.MainPage).IsPresented = false;
         }
         #region Data properties
 

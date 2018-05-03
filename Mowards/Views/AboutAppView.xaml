@@ -5,7 +5,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Image VerticalOptions="Start" HorizontalOptions="Center" Source="LogoTopTitle.png" HeightRequest="200" WidthRequest="180" />
-            <StackLayout Padding="10" Margin="5,10">
+            <StackLayout Padding="10" Margin="5,10" >
                 <Label XAlign="Start" Text="Cenfotec University - Xamarin course final project"
                 HorizontalOptions="StartAndExpand" />
             <Label XAlign="Start" Text="Professor:"
@@ -18,8 +18,7 @@
                 HorizontalOptions="StartAndExpand" />
             <Label XAlign="Start" Text="Francisco Marin - fgmarinh@gmail.com"
                 HorizontalOptions="StartAndExpand" />
-            <Label XAlign="Start" Text="Academy Award(s)®, Oscar Night®, and Oscar Statuette design mark are registered
-                   trademarks and service mark of the Academy of Motion Picture Arts and Sciences."
+            <Label XAlign="Start" Text="Academy Award(s)®, Oscar Night®, and Oscar Statuette design mark are registered trademarks and service mark of the Academy of Motion Picture Arts and Sciences."
                 HorizontalOptions="StartAndExpand" />
             <Label XAlign="Start" Text="All other trademarks are the property of their respective owners."
                 HorizontalOptions="StartAndExpand" />
