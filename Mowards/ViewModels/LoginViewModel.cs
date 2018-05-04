@@ -284,12 +284,10 @@ namespace Mowards.ViewModels
                 NavigationPage navigation = new NavigationPage(new MasterDetailContent());
                 navigation.BarTextColor = Color.White;
                 navigation.BarBackgroundColor = Color.DimGray;
-
-                //MainNavigationPage navigation = new MainNavigationPage();
-                //navigation. = new MasterDetailContent();
+     
                 ContentPage menu = new MasterDetailMenu();
 
-                //Next Line to be discussed as how to set current user information.
+                ViewModelFactory.GetInstance<MainMenuViewModel>().CurrentUser = new MowardsUser()
                 ViewModelFactory.GetInstance<AwardsViewModel>().CurrentUser = new MowardsUser()
                 { Email= Username,Fullname="Diego Gutierrez", Country ="Costa Rica", BirthDate=DateTime.Parse("06-27-1992") };
 
