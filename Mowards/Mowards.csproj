@@ -47,6 +47,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Favorite.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="MowardsPage.xaml.cs">
       <DependentUpon>MowardsPage.xaml</DependentUpon>
@@ -100,6 +101,9 @@
     </Compile>
     <Compile Include="Views\MasterDetailMenu.xaml.cs">
       <DependentUpon>MasterDetailMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MovieDetailsView.xaml.cs">
+      <DependentUpon>MovieDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MyFavoritesPage.xaml.cs">
       <DependentUpon>MyFavoritesPage.xaml</DependentUpon>
@@ -202,6 +206,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\AboutAppView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\MovieDetailsView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

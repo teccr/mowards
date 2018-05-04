@@ -217,7 +217,8 @@ namespace Mowards.ViewModels
             }
             if (menuID == 7)
             {
-                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new TakePictureOscarView());
+                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new MovieDetailsView());
+                //await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new TakePictureOscarView());
                 ((MasterDetailPage)App.Current.MainPage).IsPresented = false;
             }
             if (menuID == 8)

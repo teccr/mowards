@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mowards.Views.MovieDetailsView">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="FavoriteMovie" 
+                         Order="Primary" Icon="StarW_48px.png" 
+                         Text="" Priority="1"
+                         Command="{Binding AddRemoveFavoriteToolbar}" />
+        
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <StackLayout Orientation="Horizontal">
+            <StackLayout>
+                <Image Source="{Binding CurrentMovie.Picture}"/>
+            </StackLayout>
+            <StackLayout>
+                <Image Source="{Binding CurrentMovie.Description}"/>
+            </StackLayout>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" BackgroundColor="Gainsboro" HorizontalOptions="FillAndExpand">
+                <Button Text="Cast and Crew" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" />
+                <Button Text="Reviews" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" />
+        </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+    
+</ContentPage>

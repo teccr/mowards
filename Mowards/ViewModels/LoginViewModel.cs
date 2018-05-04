@@ -282,6 +282,11 @@ namespace Mowards.ViewModels
                 }
 
                 NavigationPage navigation = new NavigationPage(new MasterDetailContent());
+                navigation.BarTextColor = Color.White;
+                navigation.BarBackgroundColor = Color.DimGray;
+
+                //MainNavigationPage navigation = new MainNavigationPage();
+                //navigation. = new MasterDetailContent();
                 ContentPage menu = new MasterDetailMenu();
 
                 //Next Line to be discussed as how to set current user information.
