@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Mowards.Models;
+using Mowards.Services;
 using Mowards.Views;
 using Xamarin.Forms;
 
@@ -20,12 +21,15 @@ namespace Mowards.ViewModels
 
         protected override void InitClass()
         {
+            UserEmail= ViewModelFactory.GetInstance<UserViewModel>().CurrentUser.Email;
+            UserPicture=ViewModelFactory.GetInstance<UserViewModel>().CurrentUser.Picture;
 
         }
 
         protected override void InitCommands()
         {
             MenuItemClickedCommand = new Command<int>(MenuItemClicked);
+            ToolbarItemCommand = new Command(ToolbarAboutView);
         }
 
         #endregion
@@ -46,22 +50,16 @@ namespace Mowards.ViewModels
 
             }
         }
-        private MowardsUser _CurrentUser = new MowardsUser();
-        public MowardsUser CurrentUser
+
+        private string _UserEmail { get; set; }
+        public string UserEmail {
+            get { return _UserEmail; } set { _UserEmail = value; OnPropertyChanged("UserEmail"); } }
+        private string _UserPicture { get; set; }
+        public string UserPicture
         {
-            get
-            {
-                return _CurrentUser;
-            }
-
-            set
-            {
-                _CurrentUser = value;
-                OnPropertyChanged("CurrentUser");
-
-            }
+            get { return _UserPicture; }
+            set { _UserPicture = value; OnPropertyChanged("UserPicture"); }
         }
-
         private void InitMenu()
         {
             InitialMenu = new ObservableCollection<Models.MenuItem>() { new Models.MenuItem() {ID=1, Logo="Home_48px.png", Text="Main Page", Description=""},
@@ -81,52 +79,56 @@ namespace Mowards.ViewModels
 
         #region Commands
 
-        private void MenuItemClicked(int menuID)
+        private async void MenuItemClicked(int menuID)
         {
             if (menuID == 1)
             {
-                ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new MasterDetailContent());
+                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new MasterDetailContent());
                 ((MasterDetailPage)App.Current.MainPage).IsPresented = false;
             }
-            else if (menuID == 2)
+            if (menuID == 2)
             {
-                ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new CategoriesFilterView());
+                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new CategoriesFilterView());
                 ((MasterDetailPage)App.Current.MainPage).IsPresented = false;
 
             }
-            else if (menuID == 3)
+            if (menuID == 3)
             {
-                ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new MyFavoritesPage());
+                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new MyFavoritesPage());
                 ((MasterDetailPage)App.Current.MainPage).IsPresented = false;
             }
-            else if (menuID == 4)
+            if (menuID == 4)
             {
-                ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new AwardsPollsView());
+                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new AwardsPollsView());
                 ((MasterDetailPage)App.Current.MainPage).IsPresented = false;
             }
-            else if (menuID == 5)
+            if (menuID == 5)
             {
-                ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new MyReviewsView());
+                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new MyReviewsView());
                 ((MasterDetailPage)App.Current.MainPage).IsPresented = false;
             }
-            else if (menuID == 6)
+            if (menuID == 6)
             {
-                ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new AcademyAwardsTriviaView());
+                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new AcademyAwardsTriviaView());
                 ((MasterDetailPage)App.Current.MainPage).IsPresented = false;
             }
-            else if (menuID == 7)
+            if (menuID == 7)
             {
-                ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new TakePictureOscarView());
+                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new MovieDetailsView());
+                //await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new TakePictureOscarView());
                 ((MasterDetailPage)App.Current.MainPage).IsPresented = false;
             }
-            else if (menuID == 8)
+            if (menuID == 8)
             {
-                ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new EditProfileView());
+
+                ViewModelFactory.GetInstance<UserViewModel>().SetEditValuesCurrentUser();
+
+                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new EditProfileView());
                 ((MasterDetailPage)App.Current.MainPage).IsPresented = false;
             }
-            else if (menuID == 9)
+            if (menuID == 9)
             {
-                ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new SignOutView());
+                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new SignOutView());
                 ((MasterDetailPage)App.Current.MainPage).IsPresented = false;
             }
         }
@@ -136,6 +138,14 @@ namespace Mowards.ViewModels
             get;
             set;
         }
+        public ICommand ToolbarItemCommand
+        { get; set; }
+        private void ToolbarAboutView()
+        {
+            ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new AboutAppView());
+            ((MasterDetailPage)App.Current.MainPage).IsPresented = false;
+        }
+
         #endregion
     }
 }

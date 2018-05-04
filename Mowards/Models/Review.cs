@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Mowards.ViewModels;
+using System;
 namespace Mowards.Models
 {
-    public class Review
+    public class Review : MutableDataObject
     {
         public string Id
         {

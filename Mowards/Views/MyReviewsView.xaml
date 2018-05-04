@@ -1,12 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mowards.Views.MyReviewsView">
+             x:Class="Mowards.Views.MyReviewsView"
+             Title="My Reviews"
+             x:Name="MyReviewsView">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
+            <Label Text="My Reviews"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+            <ListView ItemsSource="{Binding CurrentUser.UserReviews}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" Padding="10" VerticalOptions="FillAndExpand">
+                                <Image Source="Bind Movie Image" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" HeightRequest="60" WidthRequest="60" >
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.SeeMovieDetails, 
+                                                            Source={x:Reference MyFavoritesPage}}" CommandParameter="{Binding MovieId}" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                                <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                                    <Label Text="{Binding MovieId}" Font="16" TextColor="Black"  />
+                                </StackLayout>
+                                <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                                    <Label Text="Bind Movie Name" Font="16" TextColor="Black" />
+                                </StackLayout> 
+                                <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                                    <Label Text="{Binding Comment}" Font="16" TextColor="Black" />
+                                </StackLayout>
+                                <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="End">
+                                    <Image Source="Edit_24px"  >
+                                        <Image.GestureRecognizers >
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.EditReviewCommand, 
+                                                            Source={x:Reference MyReviewsView}}" CommandParameter="{Binding Id}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <Image Source="Reduce_24px"  >
+                                        <Image.GestureRecognizers >
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.RemoveReviewCommand, 
+                                                            Source={x:Reference MyReviewsView}}" CommandParameter="{Binding Id}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </StackLayout>
+
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

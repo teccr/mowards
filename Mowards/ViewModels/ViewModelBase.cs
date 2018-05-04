@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Mowards.Models;
 using Mowards.MowardsService;
+using Xamarin.Forms;
 
 namespace Mowards.ViewModels
 {
@@ -81,6 +82,11 @@ namespace Mowards.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        protected void CancelCurrentView()
+        {
+            ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PopAsync();
         }
     }
 }

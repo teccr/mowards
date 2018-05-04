@@ -8,8 +8,8 @@
         <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand">
             <StackLayout Padding="15,20" BackgroundColor="Gray">
                 <!--<Image Source="{Binding CurrentUser.Picture}" HeightRequest="80" WidthRequest="80" Margin="5,5,5,5" HorizontalOptions="EndAndExpand" />-->
-                <Image Source="User_104px.png" HeightRequest="90" WidthRequest="90" Margin="20,5,5,5" HorizontalOptions="Start" />
-                <Label Text="{Binding CurrentUser.Email}" TextColor="White" HorizontalOptions="StartAndExpand" VerticalOptions="Center" Margin="15,0" />
+                <Image Source="{Binding UserPicture}" HeightRequest="90" WidthRequest="90" Margin="20,5,5,5" HorizontalOptions="Start" />
+                <Label Text="{Binding UserEmail}" TextColor="White" HorizontalOptions="StartAndExpand" VerticalOptions="Center" Margin="15,0" />
             </StackLayout>
             <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" BackgroundColor="WhiteSmoke">
                 <ListView ItemsSource="{Binding InitialMenu}" HasUnevenRows="True" VerticalOptions="FillAndExpand" >

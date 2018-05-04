@@ -1,12 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mowards.Views.MyFavoritesPage">
+             x:Class="Mowards.Views.MyFavoritesPage"
+             Title="My Favorites"
+             x:Name="MyFavoritesPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
+            <Label Text="My Favorites"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+            <ListView ItemsSource="{Binding CurrentUser.UserFavorites}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" Padding="10" VerticalOptions="FillAndExpand">
+                              
+                                <StackLayout Orientation="Horizontal">
+                                    <!--<StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.SeeMovieDetails, 
+                                                            Source={x:Reference MyFavoritesPage}}" CommandParameter="{Binding MovieId}" />
+                                    </StackLayout.GestureRecognizers>-->
+                                    <Image Source="Bind Movie Image" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" HeightRequest="60" WidthRequest="60" >
+                                </Image>
+                                
+                                <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                                    <Label Text="{Binding MovieId}" Font="16" TextColor="Black"  />
+                                </StackLayout>
+                                <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                                    <Label Text="Bind Movie Name" Font="16" TextColor="Black" />
+                                </StackLayout>
+                                </StackLayout>
+                                <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="End">
+                                    <Image Source="Reduce_24px"  >
+                                        <Image.GestureRecognizers >
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.RemoveFavorite, 
+                                                            Source={x:Reference MyFavoritesPage}}" CommandParameter="{Binding MovieId}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </StackLayout>
+
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

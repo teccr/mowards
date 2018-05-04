@@ -66,6 +66,7 @@
     <Compile Include="Models\PoolOption.cs" />
     <Compile Include="Models\PoolAnswer.cs" />
     <Compile Include="ViewModels\MutableDataObject.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="MowardsService\MowardsHttp.cs" />
     <Compile Include="Models\WebAPIException.cs" />

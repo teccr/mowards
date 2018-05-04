@@ -8,7 +8,7 @@
         <StackLayout VerticalOptions="FillAndExpand">
             <StackLayout Padding="0" Margin="20,10" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                 <StackLayout Orientation="Horizontal" >
-                    <Image Source="Contacts_64px.png" HeightRequest="120" WidthRequest="120"  HorizontalOptions="Center" />
+                    <Image Source="{Binding CurrentUser.Picture}" BackgroundColor="DimGray" HeightRequest="120" WidthRequest="120"  HorizontalOptions="Center" />
                     <StackLayout Padding="5" VerticalOptions="FillAndExpand">
                         <Label TextColor="Black" FontAttributes="Bold" Text="Your Email (Username):" />
                         <Label Text="{Binding CurrentUser.Email}" />

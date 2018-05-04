@@ -17,7 +17,7 @@ namespace Mowards.Views
 		public MasterDetailMaster ()
 		{
 			InitializeComponent ();
-            //BindingContext = ViewModelFactory.GetInstance<AwardsViewModel>();
+            BindingContext = ViewModelFactory.GetInstance<MainMenuViewModel>();
         }
 
         /*async void YearSlider_ValueChanged(object sender, Xamarin.Forms.ValueChangedEventArgs e)

@@ -17,7 +17,7 @@ namespace Mowards.Views
 		public EditProfileView ()
 		{
 			InitializeComponent ();
-            BindingContext = ViewModelFactory.GetInstance<AwardsViewModel>();
+            BindingContext = ViewModelFactory.GetInstance<UserViewModel>();
         }
 	}
 }

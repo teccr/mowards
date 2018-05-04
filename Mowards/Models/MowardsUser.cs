@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Mowards.Models
 {
-    public class MowardsUser
+    public class MowardsUser 
     {
         public string Id
         {

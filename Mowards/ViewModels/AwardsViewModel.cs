@@ -38,17 +38,15 @@ namespace Mowards.ViewModels
 
         protected override void InitCommands()
         {
-           
-            SaveEditUserCommand = new Command(SaveEditUser);
-            CancelEditUserCommand = new Command(CancelCurrentView);
-            ToolbarItemCommand = new Command(ToolbarAboutView);
+
+            
             GetAwardsByFiltersCommand = new Command(GetAwardsByFilters);
         }
 
         #endregion
 
         #region Commands
-
+        
         public ICommand GetAwardsByFiltersCommand
         {
             get;
@@ -75,7 +73,7 @@ namespace Mowards.ViewModels
             };
             await ExecuteSafeOperation(operation);
         }
-
+       
         #endregion
 
         #region Data properties
@@ -149,8 +147,7 @@ namespace Mowards.ViewModels
                 OnPropertyChanged("MaxYear");
             }
         }
-        private void SetListCountries()
-        {
+       
 
         private ObservableCollection<Award> _filteredAwards;
         public ObservableCollection<Award> FilteredAwards

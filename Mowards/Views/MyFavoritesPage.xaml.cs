@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Mowards.Services;
+using Mowards.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +17,7 @@ namespace Mowards.Views
 		public MyFavoritesPage ()
 		{
 			InitializeComponent ();
-		}
+            BindingContext = ViewModelFactory.GetInstance<UserViewModel>();
+        }
 	}
 }

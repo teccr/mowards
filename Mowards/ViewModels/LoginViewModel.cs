@@ -280,17 +280,19 @@ namespace Mowards.ViewModels
                 {
                     App.Current.Properties.Add(Utils.TOKEN_KEY, tokenInformation.Token);
                 }
+               
+                ViewModelFactory.GetInstance<UserViewModel>().CurrentUser = new MowardsUser()
+                { Email= Username,Fullname="Diego Gutierrez", Country ="Costa Rica",
+                  BirthDate =DateTime.Parse("06-27-1992"), Picture= "User_104px.png"
+                };
 
-                NavigationPage navigation = new NavigationPage(new MasterDetailContent());
-                navigation.BarTextColor = Color.White;
-                navigation.BarBackgroundColor = Color.DimGray;
-     
+                NavigationPage navigation = new NavigationPage(new MasterDetailContent())
+                {
+                    BarTextColor = Color.White,
+                    BarBackgroundColor = Color.DimGray
+                };
+
                 ContentPage menu = new MasterDetailMenu();
-
-                ViewModelFactory.GetInstance<MainMenuViewModel>().CurrentUser = new MowardsUser()
-                ViewModelFactory.GetInstance<AwardsViewModel>().CurrentUser = new MowardsUser()
-                { Email= Username,Fullname="Diego Gutierrez", Country ="Costa Rica", BirthDate=DateTime.Parse("06-27-1992") };
-
                 App.Current.MainPage = new MasterDetailMaster
                 {
                     Master = menu,
