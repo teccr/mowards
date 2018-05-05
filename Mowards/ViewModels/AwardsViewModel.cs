@@ -69,8 +69,6 @@ namespace Mowards.ViewModels
             foreach (var item in sortedAwards)
                 oldAwards.Add(item);
             Awards = oldAwards;
-            /*FilteredAwards = await Award.GetAwardsByFilters(
-                SelectedYear, selectedCategories);*/
             await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new FilteredAwardsView());
         }
 

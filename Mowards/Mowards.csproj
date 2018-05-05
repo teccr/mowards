@@ -125,6 +125,7 @@
       <DependentUpon>FilteredAwardsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\AwardsGroup.cs" />
+    <Compile Include="ViewModels\TriviaViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
