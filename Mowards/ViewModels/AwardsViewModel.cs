@@ -27,12 +27,14 @@ namespace Mowards.ViewModels
             MaxYear = Years.Max();
             MinYear = Years.Min();
             SelectedYear = MaxYear;
+            await LoadCategories();
         }
 
         protected override async void InitClass()
         {
             
             Categories = new ObservableCollection<AwardCategory>();
+            Awards = new ObservableCollection<AwardsGroup<string, Award>>();
             await ExecuteSafeOperation(InitYearData);
         }
 
@@ -56,8 +58,19 @@ namespace Mowards.ViewModels
             string[] selectedCategories = (
                 _categories.Where(category => category.Selected).Select(
                     category => category.Category)).ToArray();
-            FilteredAwards = await Award.GetAwardsByFilters(
+            var unsortedAwards = await Award.GetAwardsByFilters(
                 SelectedYear, selectedCategories);
+            var sortedAwards = from award in unsortedAwards
+                               orderby award.Category
+                               group award by award.Category into awardsGroup
+                               select new AwardsGroup<string, Award>(
+                                                awardsGroup.Key, awardsGroup);
+            var oldAwards = new ObservableCollection<AwardsGroup<string, Award>>();
+            foreach (var item in sortedAwards)
+                oldAwards.Add(item);
+            Awards = oldAwards;
+            /*FilteredAwards = await Award.GetAwardsByFilters(
+                SelectedYear, selectedCategories);*/
             await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new FilteredAwardsView());
         }
 
@@ -146,17 +159,17 @@ namespace Mowards.ViewModels
             }
         }
 
-        private ObservableCollection<Award> _filteredAwards;
-        public ObservableCollection<Award> FilteredAwards
+        private ObservableCollection<AwardsGroup<string, Award>> _awards;
+        public ObservableCollection<AwardsGroup<string, Award>> Awards
         {
-            get 
+            get
             {
-                return _filteredAwards;
+                return _awards;
             }
             set
             {
-                _filteredAwards = value;
-                OnPropertyChanged("FilteredAwards");
+                _awards = value;
+                OnPropertyChanged("Awards");
             }
         }
 

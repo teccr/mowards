@@ -21,17 +21,27 @@ namespace Mowards.Models
         public string Additional_Info { get; set; }
         public int Won { get; set; }
 
-        public static async Task<ObservableCollection<Award>> GetAwardsByFilters(
+        public static async Task<List<Award>> GetAwardsByFilters(
             int year, string[] categories)
         {
             string url = $"?year={year.ToString()}";
             foreach(var category in categories)
             {
-                url = url + $"&categories[]={category}";
+                url = url + $"&categories[]={System.Net.WebUtility.UrlEncode(category)}";
             }
             url = Utils.AWARDS_CONTROLLER + url;
             MowardsHttp client = new MowardsHttp();
-            return await client.Get<ObservableCollection<Award>>(url);
+            return await client.Get<List<Award>>(url);
+        }
+
+        public string NameSort
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Category) || Category.Length == 0)
+                    return "?";
+                return NameSort.ToUpper();
+            }
         }
     }
 }
