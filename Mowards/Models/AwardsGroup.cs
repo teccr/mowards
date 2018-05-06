@@ -1,19 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Mowards.Models
 {
-    public class AwardsGroup : ObservableCollection<Award>
+    public class AwardsGroup<K,T> : ObservableCollection<T>
     {
-        public string Name 
+        public K Key
         {
             get;
-            private set;
+            set;
         }
-        public string ShortName
+
+        public AwardsGroup(K key, IEnumerable<T> items)
         {
-            get; 
-            private set;
+            Key = key;
+            foreach (var item in items)
+            {
+                this.Items.Add(item);
+            }
         }
     }
 }

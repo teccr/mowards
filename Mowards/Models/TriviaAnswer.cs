@@ -13,5 +13,7 @@ namespace Mowards.Models
         public Award Award { get; set; }
         public Award UserAnswer { get; set; }
         public DateTime DoneWhen { get; set; } 
+
+
     }
 }
