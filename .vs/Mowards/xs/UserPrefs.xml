@@ -1,5 +1,9 @@
 ﻿<Properties StartupConfiguration="{DEFC1D5E-A3E7-4777-8C30-5C5F1CE41332}|Default">
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Mowards/ViewModels/TriviaViewModel.cs">
+    <Files>
+      <File FileName="Mowards/ViewModels/TriviaViewModel.cs" Line="29" Column="9" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

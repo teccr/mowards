@@ -16,16 +16,8 @@ namespace Mowards.ViewModels
 
         protected override void InitClass()
         {
-            var levels = new Dictionary<string, int[]>()
-            {
-                { "Level 1", new int[] { 2018, 2017, 2016, 2015, 2014 }},
-                { "Level 2",  new int[] { 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006 } },
-                { "Level 3",  new int[] { 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997  } },
-                { "Level 4",  new int[] { 1996, 1995, 1994, 1993, 1992, 1991, 
-                        1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980  } },
-                { "Level 5",  new int[] { 1979, 1978, 1977, 1976, 1975, 1974,
-                        1973, 1972, 1971, 1970, 1969, 1968, 1967, 1966, 1965, 1964, 1963,
-                        1962, 1961, 1960, 1959, 1958 } }
+            var levels = new int[] {
+                1, 2, 3, 4, 5
             };
             Levels = levels;
         }
@@ -34,6 +26,7 @@ namespace Mowards.ViewModels
         {
             
         }
+
         #endregion
 
         #region Commands
@@ -42,8 +35,22 @@ namespace Mowards.ViewModels
 
         #region Properties
 
-        private string _selectedLevel;
-        public string SelectedLevel
+        private ObservableCollection<TriviaChallengeResults> _challengeResults;
+        public ObservableCollection<TriviaChallengeResults> ChallengeResults
+        {
+            get 
+            {
+                return _challengeResults;
+            }
+            set
+            {
+                _challengeResults = value;
+                OnPropertyChanged("ChallengeResults");
+            }
+        }
+
+        private int _selectedLevel;
+        public int SelectedLevel
         {
             get
             {
@@ -56,8 +63,8 @@ namespace Mowards.ViewModels
             }
         }
 
-        private Dictionary<string, int[]> _levels;
-        public Dictionary<string, int[]> Levels
+        private int[] _levels;
+        public int[] Levels
         {
             get
             {

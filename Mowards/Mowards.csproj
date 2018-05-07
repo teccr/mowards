@@ -127,6 +127,7 @@
     <Compile Include="Models\AwardsGroup.cs" />
     <Compile Include="ViewModels\TriviaViewModel.cs" />
     <Compile Include="Services\MowardsAuthenticationService.cs" />
+    <Compile Include="Models\TriviaChallengeResults.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
