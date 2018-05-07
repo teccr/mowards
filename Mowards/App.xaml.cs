@@ -1,5 +1,7 @@
 ﻿using Xamarin.Forms;
 using System.Threading.Tasks;
+using Mowards.Services;
+using Mowards.ViewModels;
 
 namespace Mowards
 {
@@ -25,7 +27,6 @@ namespace Mowards
         {
             InitializeComponent();
 
-            
             MainPage = new Views.LoginView();
         }
 

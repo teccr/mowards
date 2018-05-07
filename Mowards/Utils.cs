@@ -12,5 +12,6 @@ namespace Mowards
         public const string USER_URL = BASE_URL + "/api/user";
 
         public const string TOKEN_KEY = "AppToken";
+        //public const string REALM_DB_NAME = "mowardsData";
     }
 }
