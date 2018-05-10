@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Net.Http;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Mowards.Models;
 using Mowards.Services;
 using Mowards.Views;
+using Realms;
 using Xamarin.Forms;
 
 namespace Mowards.ViewModels
@@ -17,6 +18,7 @@ namespace Mowards.ViewModels
         {
             InitClass();
             InitCommands();
+            AutomaticLoginAttempt();
         }
 
         #region Initialization section
@@ -202,16 +204,20 @@ namespace Mowards.ViewModels
             get;
             set;
         }
+
         private async void Login()
         {
-            await ExecuteSafeOperation(await ExecuteLogin(Username, Password));
+            Func<Task> executeLogin = async () => {
+                await ExecuteLogin();
+            };
+            await ExecuteSafeOperation(executeLogin);
         }
 
-        private async void RegisterNewUserView()
+        private void RegisterNewUserView()
         {
             if (ListOfCountries == null || ListOfCountries.Count==0) {
                 
-                await SetListCountries();
+                SetListCountries();
             }
 
             //(App.Current.MainPage).Navigation.PushAsync(new RegisterNewUserView());
@@ -221,11 +227,11 @@ namespace Mowards.ViewModels
         private async void RegisterNewUserAction() {
 
             if (NewUserEmail==null || NewUserName == null || NewUserPassword==null || NewUserPasswordConfirm==null ) {
-                App.Current.MainPage.DisplayAlert("Error", "Email, Name and Password are not optional", "OK");
+                await App.Current.MainPage.DisplayAlert("Error", "Email, Name and Password are not optional", "OK");
                 return;
             }
             if (NewUserPassword != NewUserPasswordConfirm) {
-                App.Current.MainPage.DisplayAlert("Error", "Passwords must match", "OK");
+                await App.Current.MainPage.DisplayAlert("Error", "Passwords must match", "OK");
                 return;
             }
 
@@ -244,77 +250,146 @@ namespace Mowards.ViewModels
                         Picture = NewUserPicture
                     };
 
-                   
-                        var response =
-                        await HttpClient.PostDetails<string, MowardsUser>(
-                        Utils.USER_URL, NewUser, true);
+                    var response =
+                    await HttpClient.PostDetails<string, MowardsUser>(
+                    Utils.USER_URL, NewUser, true);
 
-                        if (response=="User was created.") {
-                            await ExecuteLogin(NewUserEmail, NewUserPassword);
-
-                        }
+                    if (response=="User was created.") {
+                        Func<Task> executeLogin = async () => {
+                            Username = NewUserEmail;
+                            Password = NewUserPassword;
+                            await ExecuteLogin();
+                            };
+                        await ExecuteSafeOperation(executeLogin);
+                    }
                 };
 
                 await ExecuteSafeOperation(registerNewUser);
 
             }
-
-            
-
-            
         }
 
-        private async Task<Func<Task>> ExecuteLogin(string username, string password) {
+        private async Task ExecuteLogin() {
 
-            Func<Task> loginOperation = async () =>
+            LoginInfo userCredentials = new LoginInfo()
             {
-                LoginInfo userCredentials = new LoginInfo()
-                {
-                    Username = Username,
-                    Password = Password
-                };
-
-                var tokenInformation =
-                    await HttpClient.PostDetails<TokenInformation, LoginInfo>(
-                    Utils.AUTH_CONTROLLER, userCredentials, true);
-
-                if (App.Current.Properties.ContainsKey(Utils.TOKEN_KEY))
-                {
-                    App.Current.Properties[Utils.TOKEN_KEY] = tokenInformation.Token;
-                }
-                else
-                {
-                    App.Current.Properties.Add(Utils.TOKEN_KEY, tokenInformation.Token);
-                }
-
-                NavigationPage navigation = new NavigationPage(new MasterDetailContent());
-                ContentPage menu = new MasterDetailMenu();
-
-                //Next Line to be discussed as how to set current user information.
-                ViewModelFactory.GetInstance<MainMenuViewModel>().CurrentUser = new MowardsUser() { Email= Username };
-
-                App.Current.MainPage = new MasterDetailMaster
-                {
-                    Master = menu,
-                    Detail = navigation
-                };
-                //App.Current.MainPage = new CategoriesFilterView();
+                Username = Username,
+                Password = Password
             };
-            return loginOperation;
+
+            var tokenInformation =
+                await HttpClient.PostDetails<TokenInformation, LoginInfo>(
+                Utils.AUTH_CONTROLLER, userCredentials, true);
+
+            if (App.Current.Properties.ContainsKey(Utils.TOKEN_KEY))
+            {
+                App.Current.Properties[Utils.TOKEN_KEY] = tokenInformation.Token;
+            }
+            else
+            {
+                App.Current.Properties.Add(Utils.TOKEN_KEY, tokenInformation.Token);
+            }
+
+            NavigationPage navigation = new NavigationPage(new MasterDetailContent());
+            ContentPage menu = new MasterDetailMenu();
+
+            //Next Line to be discussed as how to set current user information.
+            ViewModelFactory.GetInstance<MainMenuViewModel>().CurrentUser = new MowardsUser() { Email = Username };
+
+            var realmInstance = Realm.GetInstance();
+            var localUserData = realmInstance.All<LoginInfo>().Where( 
+                user => user.Username == Username );
+            if (localUserData.Count() == 0)
+            {
+                realmInstance.Write(() => {
+                    realmInstance.Add( userCredentials );
+                });
+            }
+            else
+            {
+                var userInstance = localUserData.FirstOrDefault();
+                if(userInstance.Password != userCredentials.Password)
+                    realmInstance.Write( () => userInstance.Password = userCredentials.Password );
+            }
+            localUserData.Count();
+
+            App.Current.MainPage = new MasterDetailMaster
+            {
+                Master = menu,
+                Detail = navigation
+            };
+            //App.Current.MainPage = new CategoriesFilterView();
         }
 
-        private async void CancelRegister()
+        public async void AutomaticLoginAttempt()
+        {
+            var realmInstance = Realm.GetInstance();
+            var localUserData = realmInstance.All<LoginInfo>();
+            if(localUserData.Count() > 0)
+            {
+                var firstUser = localUserData.FirstOrDefault();
+                if (!string.IsNullOrEmpty(firstUser.Username) &&
+                   !string.IsNullOrEmpty(firstUser.Password))
+                {
+                    Username = firstUser.Username;
+                    Password = firstUser.Password;
+                    await ExecuteLogin();
+                }
+            }
+        }
+
+        private void CancelRegister()
         {
             App.Current.MainPage = new LoginView();
         }
 
-        private async Task SetListCountries() {
+        private void SetListCountries() {
 
             ListOfCountries = new ObservableCollection<string>() {
-                "AFGHANISTAN","ÅLAND ISLANDS","ALBANIA","ALGERIA","AMERICAN SAMOA","ANDORRA","ANGOLA","ANGUILLA","ANTARCTICA","ANTIGUA AND BARBUDA","ARGENTINA","ARMENIA","ARUBA","AUSTRALIA","AUSTRIA","AZERBAIJAN","BAHAMAS","BAHRAIN","BANGLADESH","BARBADOS","BELARUS","BELGIUM","BELIZE","BENIN","BERMUDA","BHUTAN","BOLIVIA","BOSNIA AND HERZEGOVINA","BOTSWANA","BOUVET ISLAND","BRAZIL","BRITISH INDIAN OCEAN TERRITORY","BRITISH VIRGIN ISLANDS","BRUNEI","BULGARIA","BURKINA FASO","BURUNDI","CAMBODIA","CAMEROON","CANADA","CAPE VERDE","CAYMAN ISLANDS","CENTRAL AFRICAN REPUBLIC","CHAD","CHILE","CHINA","CHRISTMAS ISLAND","COCOS ISLANDS","COLOMBIA","COMOROS","CONGO","COOK ISLANDS","COSTA RICA","CÔTE D’IVOIRE","CROATIA","CUBA","CURAÇAO","CYPRUS","CZECH REPUBLIC","DENMARK","DJIBOUTI","DOMINICA","DOMINICAN REPUBLIC","ECUADOR","EGYPT","EL SALVADOR","EQUATORIAL GUINEA","ERITREA","ESTONIA","ETHIOPIA","FALKLAND ISLANDS","FAROE ISLANDS","FIJI","FINLAND","FRANCE","FRENCH GUIANA","FRENCH POLYNESIA","FRENCH SOUTHERN TERRITORIES","GABON","GAMBIA","GEORGIA","GERMANY","GHANA","GIBRALTAR","GREECE","GREENLAND","GRENADA","GUADELOUPE","GUAM","GUATEMALA","GUERNSEY","GUINEA","GUINEA-BISSAU","GUYANA","HAITI","HEARD ISLAND AND MCDONALD ISLANDS","HONDURAS","HONG KONG","HUNGARY","ICELAND","INDIA","INDONESIA","IRAN","IRAQ","IRELAND","ISLE OF MAN","ISRAEL","ITALY","JAMAICA","JAPAN","JERSEY","JORDAN","KAZAKHSTAN","KENYA","KIRIBATI","KUWAIT","KYRGYZSTAN","LAOS","LATVIA","LEBANON","LESOTHO","LIBERIA","LIBYA","LIECHTENSTEIN","LITHUANIA","LUXEMBOURG","MACAO","MACEDONIA","MADAGASCAR","MALAWI","MALAYSIA","MALDIVES","MALI","MALTA","MARSHALL ISLANDS","MARTINIQUE","MAURITANIA","MAURITIUS","MAYOTTE","MEXICO","MICRONESIA","MOLDOVA","MONACO","MONGOLIA","MONTENEGRO","MONTSERRAT","MOROCCO","MOZAMBIQUE","MYANMAR","NAMIBIA","NAURU","NEPAL","NETHERLANDS","NETHERLANDS ANTILLES","NEW CALEDONIA","NEW ZEALAND","NICARAGUA","NIGER","NIGERIA","NIUE","NORFOLK ISLAND","NORTHERN MARIANA ISLANDS","NORTH KOREA","NORWAY","OMAN","PAKISTAN","PALAU","PALESTINE","PANAMA","PAPUA NEW GUINEA","PARAGUAY","PERU","PHILIPPINES","PITCAIRN","POLAND","PORTUGAL","PUERTO RICO","QATAR","REUNION","ROMANIA","RUSSIA","RWANDA","SAINT BARTHÉLEMY","SAINT HELENA","SAINT KITTS AND NEVIS","SAINT LUCIA","SAINT MARTIN","SAINT PIERRE AND MIQUELON","SAINT VINCENT AND THE GRENADINES","SAMOA","SAN MARINO","SAO TOME AND PRINCIPE","SAUDI ARABIA","SENEGAL","SERBIA","SEYCHELLES","SIERRA LEONE","SINGAPORE","SINT MAARTEN (DUTCH PART)","SLOVAKIA","SLOVENIA","SOLOMON ISLANDS","SOMALIA","SOUTH AFRICA","SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS","SOUTH KOREA","SOUTH SUDAN","SPAIN","SRI LANKA","SUDAN","SURINAME","SVALBARD AND JAN MAYEN","SWAZILAND","SWEDEN","SWITZERLAND","SYRIA","TAIWAN","TAJIKISTAN","TANZANIA","THAILAND","THE DEMOCRATIC REPUBLIC OF CONGO","TIMOR-LESTE","TOGO","TOKELAU","TONGA","TRINIDAD AND TOBAGO","TUNISIA","TURKEY","TURKMENISTAN","TURKS AND CAICOS ISLANDS","TUVALU","U.S. VIRGIN ISLANDS","UGANDA","UKRAINE","UNITED ARAB EMIRATES","UNITED KINGDOM","UNITED STATES","UNITED STATES MINOR OUTLYING ISLANDS","URUGUAY","UZBEKISTAN","VANUATU","VATICAN","VENEZUELA","VIETNAM","WALLIS AND FUTUNA","WESTERN SAHARA","YEMEN","ZAMBIA","ZIMBABWE"
+                "AFGHANISTAN","ÅLAND ISLANDS","ALBANIA","ALGERIA","AMERICAN SAMOA",
+                "ANDORRA","ANGOLA","ANGUILLA","ANTARCTICA","ANTIGUA AND BARBUDA",
+                "ARGENTINA","ARMENIA","ARUBA","AUSTRALIA","AUSTRIA","AZERBAIJAN",
+                "BAHAMAS","BAHRAIN","BANGLADESH","BARBADOS","BELARUS","BELGIUM","BELIZE",
+                "BENIN","BERMUDA","BHUTAN","BOLIVIA","BOSNIA AND HERZEGOVINA","BOTSWANA",
+                "BOUVET ISLAND","BRAZIL","BRITISH INDIAN OCEAN TERRITORY","BRITISH VIRGIN ISLANDS",
+                "BRUNEI","BULGARIA","BURKINA FASO","BURUNDI","CAMBODIA","CAMEROON","CANADA",
+                "CAPE VERDE","CAYMAN ISLANDS","CENTRAL AFRICAN REPUBLIC","CHAD","CHILE","CHINA",
+                "CHRISTMAS ISLAND","COCOS ISLANDS","COLOMBIA","COMOROS","CONGO","COOK ISLANDS",
+                "COSTA RICA","CÔTE D’IVOIRE","CROATIA","CUBA","CURAÇAO","CYPRUS","CZECH REPUBLIC",
+                "DENMARK","DJIBOUTI","DOMINICA","DOMINICAN REPUBLIC","ECUADOR","EGYPT",
+                "EL SALVADOR","EQUATORIAL GUINEA","ERITREA","ESTONIA","ETHIOPIA",
+                "FALKLAND ISLANDS","FAROE ISLANDS","FIJI","FINLAND","FRANCE",
+                "FRENCH GUIANA","FRENCH POLYNESIA","FRENCH SOUTHERN TERRITORIES",
+                "GABON","GAMBIA","GEORGIA","GERMANY","GHANA","GIBRALTAR","GREECE",
+                "GREENLAND","GRENADA","GUADELOUPE","GUAM","GUATEMALA","GUERNSEY",
+                "GUINEA","GUINEA-BISSAU","GUYANA","HAITI","HEARD ISLAND AND MCDONALD ISLANDS",
+                "HONDURAS","HONG KONG","HUNGARY","ICELAND","INDIA","INDONESIA","IRAN","IRAQ",
+                "IRELAND","ISLE OF MAN","ISRAEL","ITALY","JAMAICA","JAPAN","JERSEY","JORDAN",
+                "KAZAKHSTAN","KENYA","KIRIBATI","KUWAIT","KYRGYZSTAN","LAOS","LATVIA","LEBANON",
+                "LESOTHO","LIBERIA","LIBYA","LIECHTENSTEIN","LITHUANIA","LUXEMBOURG","MACAO",
+                "MACEDONIA","MADAGASCAR","MALAWI","MALAYSIA","MALDIVES","MALI","MALTA",
+                "MARSHALL ISLANDS","MARTINIQUE","MAURITANIA","MAURITIUS","MAYOTTE","MEXICO",
+                "MICRONESIA","MOLDOVA","MONACO","MONGOLIA","MONTENEGRO","MONTSERRAT",
+                "MOROCCO","MOZAMBIQUE","MYANMAR","NAMIBIA","NAURU","NEPAL","NETHERLANDS",
+                "NETHERLANDS ANTILLES","NEW CALEDONIA","NEW ZEALAND","NICARAGUA","NIGER",
+                "NIGERIA","NIUE","NORFOLK ISLAND","NORTHERN MARIANA ISLANDS","NORTH KOREA",
+                "NORWAY","OMAN","PAKISTAN","PALAU","PALESTINE","PANAMA","PAPUA NEW GUINEA",
+                "PARAGUAY","PERU","PHILIPPINES","PITCAIRN","POLAND","PORTUGAL","PUERTO RICO",
+                "QATAR","REUNION","ROMANIA","RUSSIA","RWANDA","SAINT BARTHÉLEMY","SAINT HELENA",
+                "SAINT KITTS AND NEVIS","SAINT LUCIA","SAINT MARTIN","SAINT PIERRE AND MIQUELON",
+                "SAINT VINCENT AND THE GRENADINES","SAMOA","SAN MARINO","SAO TOME AND PRINCIPE",
+                "SAUDI ARABIA","SENEGAL","SERBIA","SEYCHELLES","SIERRA LEONE","SINGAPORE",
+                "SINT MAARTEN (DUTCH PART)","SLOVAKIA","SLOVENIA","SOLOMON ISLANDS",
+                "SOMALIA","SOUTH AFRICA","SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS",
+                "SOUTH KOREA","SOUTH SUDAN","SPAIN","SRI LANKA","SUDAN","SURINAME",
+                "SVALBARD AND JAN MAYEN","SWAZILAND","SWEDEN","SWITZERLAND","SYRIA",
+                "TAIWAN","TAJIKISTAN","TANZANIA","THAILAND","THE DEMOCRATIC REPUBLIC OF CONGO",
+                "TIMOR-LESTE","TOGO","TOKELAU","TONGA","TRINIDAD AND TOBAGO","TUNISIA",
+                "TURKEY","TURKMENISTAN","TURKS AND CAICOS ISLANDS","TUVALU","U.S. VIRGIN ISLANDS",
+                "UGANDA","UKRAINE","UNITED ARAB EMIRATES","UNITED KINGDOM","UNITED STATES",
+                "UNITED STATES MINOR OUTLYING ISLANDS","URUGUAY","UZBEKISTAN","VANUATU",
+                "VATICAN","VENEZUELA","VIETNAM","WALLIS AND FUTUNA","WESTERN SAHARA","YEMEN","ZAMBIA","ZIMBABWE"
             };
-
-            
         }
         #endregion
     }

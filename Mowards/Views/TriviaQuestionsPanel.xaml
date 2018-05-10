@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CarouselPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="Mowards.Views.TriviaQuestionsPanel"
+    Title="Question"
+    ItemsSource="{Binding Trivias}"
+    x:Name="TriviaQuestionsWin"
+    >
+    <CarouselPage.ItemTemplate>
+        <DataTemplate>
+            <ContentPage>
+                <ContentPage.Padding>
+                  <OnPlatform x:TypeArguments="Thickness">
+                    <On Platform="iOS, Android" Value="0,40,0,0" />
+                  </OnPlatform>
+                </ContentPage.Padding>
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Label Text="{Binding Question.Level, StringFormat='Level {0}'}"
+                           HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
+                    <Label Text="{Binding Question.Award.Year, StringFormat='Year: {0}'}"
+                           HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
+                    <Label Text="{Binding Question.Award.Category, StringFormat='Winner for {0}'}" FontSize="Medium" HorizontalOptions="Center" />
+                    <ListView 
+                        HasUnevenRows="true"
+                        ItemsSource="{Binding Options}" 
+                        SelectedItem="{Binding BindingContext.SelectedAward, Source={x:Reference TriviaQuestionsWin}}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout>
+                                        <Label Text="{Binding Nominee}" HorizontalTextAlignment="Center" HorizontalOptions="Center" />
+                                        <Label Text="{Binding Additional_Info}" HorizontalTextAlignment="Center" HorizontalOptions="Center" />
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Button Margin="25" IsEnabled="{Binding BindingContext.IsSubmitEnable, Source={x:Reference TriviaQuestionsWin}}" 
+                            Command="{Binding BindingContext.SubmitAnswerCommand, Source={x:Reference TriviaQuestionsWin}}" 
+                            CommandParameter="{Binding Id}" Text="Submit" />
+                </StackLayout>
+            </ContentPage>
+        </DataTemplate>
+    </CarouselPage.ItemTemplate>
+</CarouselPage>

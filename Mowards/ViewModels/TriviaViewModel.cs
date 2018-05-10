@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Mowards.Models;
+using Xamarin.Forms;
+using System.Linq;
+using Mowards.Views;
 
 namespace Mowards.ViewModels
 {
@@ -16,71 +21,169 @@ namespace Mowards.ViewModels
 
         protected override void InitClass()
         {
-            var levels = new Dictionary<string, int[]>()
-            {
-                { "Level 1", new int[] { 2018, 2017, 2016, 2015, 2014 }},
-                { "Level 2",  new int[] { 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006 } },
-                { "Level 3",  new int[] { 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997  } },
-                { "Level 4",  new int[] { 1996, 1995, 1994, 1993, 1992, 1991, 
-                        1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980  } },
-                { "Level 5",  new int[] { 1979, 1978, 1977, 1976, 1975, 1974,
-                        1973, 1972, 1971, 1970, 1969, 1968, 1967, 1966, 1965, 1964, 1963,
-                        1962, 1961, 1960, 1959, 1958 } }
-            };
-            Levels = levels;
+            _triviaResults = new ObservableCollection<TriviaChallengeResults>();
+            Trivias = new ObservableCollection<TriviaProxy>();
+            LoadTriviaResults();
         }
 
         protected override void InitCommands()
         {
-            
+            LoadQuestionsCommand = new Command<int>(LoadQuestions);
+            SubmitAnswerCommand = new Command<string>(SubmitAnswer);
         }
+
         #endregion
 
         #region Commands
+
+        public ICommand SubmitAnswerCommand
+        {
+            get;
+            set;
+        }
+
+        public async void SubmitAnswer(string question)
+        {
+            Func<Task> submit = async () =>
+            {
+                if(question != null)
+                {
+                    await App.Current.MainPage.DisplayAlert("test", question, "Exit");
+                }
+            };
+            await ExecuteSafeOperation(submit);
+        }
+
+        public ICommand LoadQuestionsCommand
+        {
+            get;
+            set;
+        }
+
+        private async void LoadQuestions(int level)
+        {
+            Func<Task> questions = async () =>
+            {
+                CurrentLevel = level;
+                var unsortedItems = await TriviaAnswer.GetSavedQuestions(level);
+                var result = new ObservableCollection<TriviaProxy>();
+                foreach(var item in unsortedItems)
+                {
+                    TriviaProxy proxy = new TriviaProxy();
+                    proxy.Question = item;
+                    proxy.Options = new ObservableCollection<Award>();
+                    result.Add(proxy);
+                }
+                if(result.Count < Utils.TRIVIA_QUESTIONS_LIMIT)
+                {
+                    var missingTriviaItemsCount = Utils.TRIVIA_QUESTIONS_LIMIT - result.Count;
+                    var newQuestions = await TriviaAnswer.GetNewQuestions(level, missingTriviaItemsCount);
+                    var sortedAwards = from award in newQuestions
+                                       orderby award.Category
+                                       group award by new { award.Category, award.Year } into awardsGroup
+                                       select new AwardsGroup<string, Award>(
+                                       $"{awardsGroup.Key.Year}-{awardsGroup.Key.Category}", awardsGroup);
+                    foreach(var questionGroup in sortedAwards)
+                    {
+                        TriviaAnswer newTrivia = new TriviaAnswer();
+                        newTrivia.Award = questionGroup.Where(award => award.Won == 1).FirstOrDefault();
+                        newTrivia.Level = CurrentLevel;
+                        TriviaProxy proxy = new TriviaProxy();
+                        proxy.Question = newTrivia;
+                        proxy.Options = questionGroup;
+                        result.Add(proxy);
+                    }
+                }
+                Trivias = result;
+                ((MasterDetailPage)App.Current.MainPage).Detail = new TriviaQuestionsPanel();
+            };
+            await ExecuteSafeOperation(questions);
+        }
+
+        public async void LoadTriviaResults()
+        {
+            Func<Task> triviaFunction = async () =>
+            {
+                TriviaResults = await TriviaChallengeResults.GetTriviaChallengesResults();
+            };
+            await ExecuteSafeOperation(triviaFunction);
+        }
 
         #endregion
 
         #region Properties
 
-        private string _selectedLevel;
-        public string SelectedLevel
+        private Award _selectedAward;
+        public Award SelectedAward
         {
             get
             {
-                return _selectedLevel;
+                return _selectedAward;
             }
             set
             {
-                _selectedLevel = value;
-                OnPropertyChanged("SelectedLevel");
+                _selectedAward = value;
+                if(_selectedAward != null)
+                {
+                    IsSubmitEnable = true;
+                }
+                OnPropertyChanged("SelectedAward");
             }
         }
 
-        private Dictionary<string, int[]> _levels;
-        public Dictionary<string, int[]> Levels
+        private bool _isSubmitEnable = false;
+        public bool IsSubmitEnable
         {
             get
             {
-                return _levels;
+                return _isSubmitEnable;
             }
             set
             {
-                _levels = value;
-                OnPropertyChanged("Levels");
+                _isSubmitEnable = value;
+                OnPropertyChanged("IsSubmitEnable");
             }
         }
 
-        private ObservableCollection<TriviaAnswer> _selectedAnswers;
-        public ObservableCollection<TriviaAnswer> SelectedAnswers
+        private ObservableCollection<TriviaChallengeResults> _triviaResults;
+        public ObservableCollection<TriviaChallengeResults> TriviaResults
         {
             get
             {
-                return _selectedAnswers;
+                return _triviaResults;
             }
             set
             {
-                _selectedAnswers = value;
-                OnPropertyChanged("SelectedAnswers");
+                _triviaResults = value;
+                OnPropertyChanged("TriviaResults");
+            }
+        }
+
+        private int _currentLevel;
+        public int CurrentLevel
+        {
+            get
+            {
+                return _currentLevel;
+            }
+            set
+            {
+                _currentLevel = value;
+                OnPropertyChanged("CurrentLevel");
+            }
+        }
+
+        private ObservableCollection<TriviaProxy> _trivias;
+        public ObservableCollection<TriviaProxy> Trivias
+        {
+            get
+            {
+                return _trivias;
+            }
+            set
+            {
+                _trivias = value;
+                OnPropertyChanged("Trivias");
             }
         }
 

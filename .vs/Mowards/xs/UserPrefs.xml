@@ -1,11 +1,10 @@
 ﻿<Properties StartupConfiguration="{DEFC1D5E-A3E7-4777-8C30-5C5F1CE41332}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Mowards/Models/Award.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Mowards/ViewModels/TriviaViewModel.cs">
     <Files>
-      <File FileName="Mowards/ViewModels/TriviaViewModel.cs" Line="15" Column="10" />
-      <File FileName="Mowards/ViewModels/AwardsViewModel.cs" Line="8" Column="21" />
-      <File FileName="Mowards/Models/TriviaAnswer.cs" Line="17" Column="9" />
-      <File FileName="Mowards/Models/AwardsGroup.cs" Line="1" Column="1" />
-      <File FileName="Mowards/Models/Award.cs" Line="1" Column="1" />
+      <File FileName="Mowards/Views/TriviaQuestionsPanel.xaml" Line="36" Column="44" />
+      <File FileName="Mowards/ViewModels/TriviaViewModel.cs" Line="53" Column="15" />
+      <File FileName="Mowards/Models/TriviaProxy.cs" Line="35" Column="25" />
+      <File FileName="Mowards/Models/Award.cs" Line="21" Column="38" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
