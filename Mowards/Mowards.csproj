@@ -46,6 +46,10 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\TriviaQuestionsPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -128,6 +132,10 @@
     <Compile Include="ViewModels\TriviaViewModel.cs" />
     <Compile Include="Services\MowardsAuthenticationService.cs" />
     <Compile Include="Models\TriviaChallengeResults.cs" />
+    <Compile Include="Models\TriviaProxy.cs" />
+    <Compile Include="Views\TriviaQuestionsPanel.xaml.cs">
+      <DependentUpon>TriviaQuestionsPanel.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

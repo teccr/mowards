@@ -1,12 +1,33 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mowards.Views.AcademyAwardsTriviaView">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="Mowards.Views.AcademyAwardsTriviaView"
+             Title="Trivia Selection" 
+             x:Name="TriviaSelection"
+             >
+    <StackLayout>
+        <Label Text="Select your level" />
+        <ListView HasUnevenRows="true" 
+                  HorizontalOptions="FillAndExpand"
+                  ItemsSource="{Binding TriviaResults}"
+                  >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Orientation="Vertical" 
+                                     VerticalOptions="FillAndExpand" 
+                                     Margin="5,0,5,5" 
+                                     Padding="10">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.LoadQuestionsCommand, Source={x:Reference TriviaSelection}}" 
+                                                      CommandParameter="{Binding Level}"/>
+                            </StackLayout.GestureRecognizers>
+                            <Label Text="{Binding Level}" />
+                            <Label Text="{Binding CorrectAnswers}" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
 </ContentPage>
