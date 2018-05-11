@@ -213,11 +213,11 @@ namespace Mowards.ViewModels
             await ExecuteSafeOperation(executeLogin);
         }
 
-        private void RegisterNewUserView()
+        private async void RegisterNewUserView()
         {
             if (ListOfCountries == null || ListOfCountries.Count==0) {
-                
-                SetListCountries();
+
+                ListOfCountries= SetListCountries();
             }
 
             //(App.Current.MainPage).Navigation.PushAsync(new RegisterNewUserView());
@@ -231,7 +231,7 @@ namespace Mowards.ViewModels
                 return;
             }
             if (NewUserPassword != NewUserPasswordConfirm) {
-                await App.Current.MainPage.DisplayAlert("Error", "Passwords must match", "OK");
+                await App.Current.MainPage.DisplayAlert("Error", "Passwords must match, please make sure of that in order to reset the password", "OK");
                 return;
             }
 
@@ -288,12 +288,6 @@ namespace Mowards.ViewModels
                 App.Current.Properties.Add(Utils.TOKEN_KEY, tokenInformation.Token);
             }
 
-            NavigationPage navigation = new NavigationPage(new MasterDetailContent());
-            ContentPage menu = new MasterDetailMenu();
-
-            //Next Line to be discussed as how to set current user information.
-            ViewModelFactory.GetInstance<UserViewModel>().CurrentUser = new MowardsUser() { Email = Username };
-
             var realmInstance = Realm.GetInstance();
             var localUserData = realmInstance.All<LoginInfo>().Where( 
                 user => user.Username == Username );
@@ -310,6 +304,13 @@ namespace Mowards.ViewModels
                     realmInstance.Write( () => userInstance.Password = userCredentials.Password );
             }
             localUserData.Count();
+
+            //Next Line to be discussed as how to set current user information.
+            UserViewModel uvm = ViewModelFactory.GetInstance<UserViewModel>();
+            MowardsUser mu= await uvm.SetUserFullInformation(Username);
+
+            NavigationPage navigation = new NavigationPage(new MasterDetailContent());
+            ContentPage menu = new MasterDetailMenu();
 
             App.Current.MainPage = new MasterDetailMaster
             {
@@ -341,13 +342,17 @@ namespace Mowards.ViewModels
             App.Current.MainPage = new LoginView();
         }
 
-        private async Task SetListCountries() {
+        public ObservableCollection<string> SetListCountries()
+        {
 
-            ListOfCountries = new ObservableCollection<string>() {
+            ObservableCollection<string> lst = new ObservableCollection<string>() {
                 "AFGHANISTAN","ÅLAND ISLANDS","ALBANIA","ALGERIA","AMERICAN SAMOA","ANDORRA","ANGOLA","ANGUILLA","ANTARCTICA","ANTIGUA AND BARBUDA","ARGENTINA","ARMENIA","ARUBA","AUSTRALIA","AUSTRIA","AZERBAIJAN","BAHAMAS","BAHRAIN","BANGLADESH","BARBADOS","BELARUS","BELGIUM","BELIZE","BENIN","BERMUDA","BHUTAN","BOLIVIA","BOSNIA AND HERZEGOVINA","BOTSWANA","BOUVET ISLAND","BRAZIL","BRITISH INDIAN OCEAN TERRITORY","BRITISH VIRGIN ISLANDS","BRUNEI","BULGARIA","BURKINA FASO","BURUNDI","CAMBODIA","CAMEROON","CANADA","CAPE VERDE","CAYMAN ISLANDS","CENTRAL AFRICAN REPUBLIC","CHAD","CHILE","CHINA","CHRISTMAS ISLAND","COCOS ISLANDS","COLOMBIA","COMOROS","CONGO","COOK ISLANDS","COSTA RICA","CÔTE D’IVOIRE","CROATIA","CUBA","CURAÇAO","CYPRUS","CZECH REPUBLIC","DENMARK","DJIBOUTI","DOMINICA","DOMINICAN REPUBLIC","ECUADOR","EGYPT","EL SALVADOR","EQUATORIAL GUINEA","ERITREA","ESTONIA","ETHIOPIA","FALKLAND ISLANDS","FAROE ISLANDS","FIJI","FINLAND","FRANCE","FRENCH GUIANA","FRENCH POLYNESIA","FRENCH SOUTHERN TERRITORIES","GABON","GAMBIA","GEORGIA","GERMANY","GHANA","GIBRALTAR","GREECE","GREENLAND","GRENADA","GUADELOUPE","GUAM","GUATEMALA","GUERNSEY","GUINEA","GUINEA-BISSAU","GUYANA","HAITI","HEARD ISLAND AND MCDONALD ISLANDS","HONDURAS","HONG KONG","HUNGARY","ICELAND","INDIA","INDONESIA","IRAN","IRAQ","IRELAND","ISLE OF MAN","ISRAEL","ITALY","JAMAICA","JAPAN","JERSEY","JORDAN","KAZAKHSTAN","KENYA","KIRIBATI","KUWAIT","KYRGYZSTAN","LAOS","LATVIA","LEBANON","LESOTHO","LIBERIA","LIBYA","LIECHTENSTEIN","LITHUANIA","LUXEMBOURG","MACAO","MACEDONIA","MADAGASCAR","MALAWI","MALAYSIA","MALDIVES","MALI","MALTA","MARSHALL ISLANDS","MARTINIQUE","MAURITANIA","MAURITIUS","MAYOTTE","MEXICO","MICRONESIA","MOLDOVA","MONACO","MONGOLIA","MONTENEGRO","MONTSERRAT","MOROCCO","MOZAMBIQUE","MYANMAR","NAMIBIA","NAURU","NEPAL","NETHERLANDS","NETHERLANDS ANTILLES","NEW CALEDONIA","NEW ZEALAND","NICARAGUA","NIGER","NIGERIA","NIUE","NORFOLK ISLAND","NORTHERN MARIANA ISLANDS","NORTH KOREA","NORWAY","OMAN","PAKISTAN","PALAU","PALESTINE","PANAMA","PAPUA NEW GUINEA","PARAGUAY","PERU","PHILIPPINES","PITCAIRN","POLAND","PORTUGAL","PUERTO RICO","QATAR","REUNION","ROMANIA","RUSSIA","RWANDA","SAINT BARTHÉLEMY","SAINT HELENA","SAINT KITTS AND NEVIS","SAINT LUCIA","SAINT MARTIN","SAINT PIERRE AND MIQUELON","SAINT VINCENT AND THE GRENADINES","SAMOA","SAN MARINO","SAO TOME AND PRINCIPE","SAUDI ARABIA","SENEGAL","SERBIA","SEYCHELLES","SIERRA LEONE","SINGAPORE","SINT MAARTEN (DUTCH PART)","SLOVAKIA","SLOVENIA","SOLOMON ISLANDS","SOMALIA","SOUTH AFRICA","SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS","SOUTH KOREA","SOUTH SUDAN","SPAIN","SRI LANKA","SUDAN","SURINAME","SVALBARD AND JAN MAYEN","SWAZILAND","SWEDEN","SWITZERLAND","SYRIA","TAIWAN","TAJIKISTAN","TANZANIA","THAILAND","THE DEMOCRATIC REPUBLIC OF CONGO","TIMOR-LESTE","TOGO","TOKELAU","TONGA","TRINIDAD AND TOBAGO","TUNISIA","TURKEY","TURKMENISTAN","TURKS AND CAICOS ISLANDS","TUVALU","U.S. VIRGIN ISLANDS","UGANDA","UKRAINE","UNITED ARAB EMIRATES","UNITED KINGDOM","UNITED STATES","UNITED STATES MINOR OUTLYING ISLANDS","URUGUAY","UZBEKISTAN","VANUATU","VATICAN","VENEZUELA","VIETNAM","WALLIS AND FUTUNA","WESTERN SAHARA","YEMEN","ZAMBIA","ZIMBABWE"
-            };
+            }; ;
 
-            
+            return lst;
+
+
+
         }
         #endregion
     }

@@ -30,7 +30,7 @@
 
         <ContentView IsVisible="{Binding IsBusy}" HorizontalOptions="FillAndExpand"
                      VerticalOptions="FillAndExpand">
-            <ActivityIndicator IsVisible="true" IsRunning="{Binding IsBusy}" Color="Green"
+            <ActivityIndicator IsVisible="true" IsRunning="{Binding IsBusy}" Color="DarkGoldenrod"
                                WidthRequest="120" HeightRequest="120" VerticalOptions="Center"
                                HorizontalOptions="Center" />
         </ContentView>

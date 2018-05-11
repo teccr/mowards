@@ -10,30 +10,37 @@
                 <StackLayout Orientation="Horizontal" >
                     <Image Source="{Binding CurrentUser.Picture}" BackgroundColor="DimGray" HeightRequest="120" WidthRequest="120"  HorizontalOptions="Center" />
                     <StackLayout Padding="5" VerticalOptions="FillAndExpand">
-                        <Label TextColor="Black" FontAttributes="Bold" Text="Your Email (Username):" />
-                        <Label Text="{Binding CurrentUser.Email}" />
+                        <Label TextColor="Black"  Font="18" FontAttributes="Bold" Text="Your Email (Username):" />
+                        <Label TextColor="Black"  Font="16" Text="{Binding CurrentUser.Email}" />
                         <Button Margin="0,10,0,0" VerticalOptions="End" Text="Change Profile Picture" HorizontalOptions="Center" />
                     </StackLayout>
                 </StackLayout>
                 <StackLayout Padding="10" Margin="10,0">
-                    <Label TextColor="Black" FontAttributes="Bold" Text="Your Name:" />
+                    <Label TextColor="Black" Font="18" FontAttributes="Bold" Text="Your Name:" />
                     <Entry Text="{Binding EditUserNewFullName}" />
-                    <Label TextColor="Black" FontAttributes="Bold" Text="Change Password?" />
-                    <Entry Text="{Binding EditUserNewPassword}" 
-                      IsPassword="True" Placeholder="Type New Password"/>
-                    <Entry Text="{Binding EditUserNewPasswordConfirm}" 
-                      IsPassword="True" Placeholder="Confirm New Password"/>
-                    <Label TextColor="Black" FontAttributes="Bold" Text="Your Birthday" />
+                    <Label TextColor="Black" Font="18" FontAttributes="Bold" Text="Your Birthday" />
                     <DatePicker Date="{Binding EditUserNewBirthday}" />
                     <StackLayout Orientation="Horizontal" >
-                        <Label TextColor="Black" FontAttributes="Bold" Text="Your Country:" />
-                        <Label TextColor="Black" FontAttributes="Bold" Text="{Binding CurrentUser.Country}" />
+                        <Label TextColor="Black" Font="18" FontAttributes="Bold"  Text="Your Country:" YAlign="Center" />
+                        <Label TextColor="Black"  Font="16" FontAttributes="Bold" YAlign="Center" Text="{Binding CurrentUser.Country}" />
                     </StackLayout>
-                    <Picker Title="Select other Country..."  SelectedItem="{Binding EditUserNewCountry}" ItemsSource="{Binding ListOfCountries}"/>
+                    <Picker  Title="Select other Country..."  SelectedItem="{Binding EditUserNewCountry}" ItemsSource="{Binding ListOfCountries}"/>
                 </StackLayout>
                 <StackLayout Margin="0,10" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="End">
-                    <Button Text="Save Changes" Command="{Binding SaveEditUserCommand}" />
-                    <Button Text="Cancel"  Command="{Binding CancelEditUserCommand}" />
+                    <Button FontAttributes="Bold" TextColor="Black" Text="Save Profile Changes" Command="{Binding SaveEditUserCommand}" />
+                    <Button FontAttributes="Bold" TextColor="Black" Text="Cancel"  Command="{Binding CancelEditUserCommand}" />
+                </StackLayout>
+                <StackLayout Padding="10" Margin="10,0">
+                    <Label TextColor="Black" Font="18"  FontAttributes="Bold" Text="Change Password?" />
+                    <Entry TextColor="Black" Text="{Binding EditUserNewPassword}" 
+                      IsPassword="True" Placeholder="Type New Password"/>
+                    <Entry TextColor="Black" Text="{Binding EditUserNewPasswordConfirm}" 
+                      IsPassword="True" Placeholder="Confirm New Password"/>
+                    <StackLayout Margin="0,10" HorizontalOptions="CenterAndExpand" VerticalOptions="End">
+                        <Button FontAttributes="Bold" TextColor="Black" Text="Reset Password" Command="{Binding ResetPasswordCommand}" />
+
+                    </StackLayout>
+                      
                 </StackLayout>
             </StackLayout>
         </StackLayout>

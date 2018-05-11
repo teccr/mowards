@@ -114,6 +114,28 @@ namespace Mowards.MowardsService
             T result = JsonConvert.DeserializeObject<T>(responseJson, settings);
             return result;
         }
+        internal async Task<T> Put<T>(string url) where T : class
+        {
+            SetHeaders(false);
+            JsonSerializerSettings settings = new JsonSerializerSettings()
+            {
+                ContractResolver = new LowercaseContractResolver()
+            };
+            var rawJson = JsonConvert.SerializeObject("", settings);
+            var content = new StringContent(rawJson, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response =
+                await httpClient.PutAsync(url, content);
+            //response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                await HandleError(response);
+            }
+
+            var responseJson = await response.Content.ReadAsStringAsync();
+            T result = JsonConvert.DeserializeObject<T>(responseJson, settings);
+            return result;
+        }
 
         private async Task HandleError(HttpResponseMessage response)
         {

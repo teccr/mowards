@@ -1,4 +1,6 @@
 ﻿using Mowards.Models;
+using Mowards.MowardsService;
+using Mowards.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,18 +26,57 @@ namespace Mowards.ViewModels
 
         protected override void InitClass()
         {
-           
+            ListOfCountries= ViewModelFactory.GetInstance<LoginViewModel>().SetListCountries();
         }
 
         protected override void InitCommands()
         {
             SaveEditUserCommand = new Command(SaveEditUser);
             CancelEditUserCommand = new Command(CancelCurrentView);
-           
+            ResetPasswordCommand=new Command(ResetPassword);
         }
-        private void SaveEditUser()
-        {
 
+        private async void ResetPassword(object obj)
+        {
+            MowardsHttp client = new MowardsHttp();
+
+            string result = "";
+           
+            string url = $"?password={EditUserNewPassword}";
+            url = Utils.USER_URL + url;
+            if (EditUserNewPassword == "")
+            {
+                result = "Password cant be blank";
+            }
+            else { 
+                if (EditUserNewPassword == EditUserNewPasswordConfirm) {
+                    result = await client.Put<string>(
+                   url);
+                    EditUserNewPassword = "";
+                    EditUserNewPasswordConfirm = "";
+                }
+                else{
+                    result = "Password and Password Confirmation does not match";
+                }
+            }
+            await App.Current.MainPage.DisplayAlert("Result", result, "OK");
+            
+
+        }
+
+        private async void SaveEditUser()
+        {
+            MowardsHttp client = new MowardsHttp();
+
+          
+            string url = Utils.USER_URL;
+            MowardsUser usr = new MowardsUser() { Email = CurrentUser.Email, Fullname=EditUserNewFullName  , BirthDate=EditUserNewBirthday, Country=EditUserNewCountry };
+
+            CurrentUser = await client.Put<MowardsUser>(
+                url, usr);
+            CurrentUser.Picture = "User_104px.png";
+            await App.Current.MainPage.DisplayAlert("Result", CurrentUser.Email+ " has been edited!", "OK");
+            SetEditValuesCurrentUser();
         }
 
         #endregion
@@ -53,8 +94,37 @@ namespace Mowards.ViewModels
             {
                 _CurrentUser = value;
                 OnPropertyChanged("CurrentUser");
+                
 
             }
+        }
+        private ObservableCollection<String> _listOfCountries;
+        public ObservableCollection<String> ListOfCountries
+        {
+            get
+            {
+                return _listOfCountries;
+            }
+            set
+            {
+                _listOfCountries = value;
+                OnPropertyChanged("ListOfCountries");
+            }
+        }
+        public async Task<MowardsUser> SetUserFullInformation(string email) {
+            return await GetUserFullInformationAsync(email);
+            
+        }
+        private async Task<MowardsUser> GetUserFullInformationAsync(string email)
+        {
+            MowardsHttp client = new MowardsHttp();
+           
+            string url = $"?username={email}";
+            url = Utils.USER_URL + url;
+            CurrentUser =await client.Get<MowardsUser>(
+                url);
+            CurrentUser.Picture = "User_104px.png";
+            return CurrentUser;
         }
         #endregion
         #region Reviews and Favorites
@@ -162,6 +232,8 @@ namespace Mowards.ViewModels
         public ICommand SaveEditUserCommand
         { get; set; }
         public ICommand CancelEditUserCommand
+        { get; set; }
+        public ICommand ResetPasswordCommand
         { get; set; }
 
         public ICommand RemoveFavoriteCommand
