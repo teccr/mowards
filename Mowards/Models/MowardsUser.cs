@@ -1,8 +1,14 @@
-﻿using System;
+﻿using Mowards.ViewModels;
+using System;
+using Xamarin.Forms;
+
 namespace Mowards.Models
 {
-    public class MowardsUser 
+    public class MowardsUser : MutableDataObject
     {
+        public MowardsUser() {
+            Picture = "User_104px.png";
+        }
         public string Id
         {
             get;
@@ -14,7 +20,7 @@ namespace Mowards.Models
         public DateTime BirthDate { get; set; }
         public string Country { get; set; }
         public string Password { get; set; }
-
         public string Picture { get; set; }
+        
     }
 }

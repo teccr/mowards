@@ -22,10 +22,37 @@ namespace Mowards.ViewModels
         protected override void InitClass()
         {
             UserEmail= ViewModelFactory.GetInstance<UserViewModel>().CurrentUser.Email;
-            UserPicture=ViewModelFactory.GetInstance<UserViewModel>().CurrentUser.Picture;
+            UpdateCurrentUserImage();
+
 
         }
+        public void UpdateCurrentUserImage() {
+            try
+            {
+                UserPicture = ViewModelFactory.GetInstance<UserViewModel>().ImageLocation;
+                if (UserPicture== "" || UserPicture==null) {
+                    string img = "";
+                    img = "User_104px.png";
+                    UserPicture = img;
+                    ViewModelFactory.GetInstance<UserViewModel>().ImageLocation = img;
+                }
+                OnPropertyChanged("UserPicture");
 
+            }
+            catch (Exception ex)
+            {
+                string img ="";
+                img = "User_104px.png";
+                UserPicture = img;
+                ViewModelFactory.GetInstance<UserViewModel>().ImageLocation = img;
+            }
+        }
+        public void UpdateCurrentUserImage(string img)
+        {
+                UserPicture = img;
+                OnPropertyChanged("UserPicture");
+                      
+        }
         protected override void InitCommands()
         {
             MenuItemClickedCommand = new Command<int>(MenuItemClicked);

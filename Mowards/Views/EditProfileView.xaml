@@ -8,14 +8,14 @@
         <StackLayout VerticalOptions="FillAndExpand">
             <StackLayout Padding="0" Margin="20,10" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                 <StackLayout Orientation="Horizontal" >
-                    <Image Source="{Binding CurrentUser.Picture}" HeightRequest="120" WidthRequest="120"  HorizontalOptions="Center" />
+                    <Image BackgroundColor="DimGray" Source="{Binding CurrentUser.Picture}" HeightRequest="120" WidthRequest="120"  HorizontalOptions="Center" />
                     <StackLayout  VerticalOptions="FillAndExpand" >
                         <StackLayout VerticalOptions="FillAndExpand" Padding="5" >
                             <Label TextColor="Black"  Font="18" FontAttributes="Bold" Text="Your Email (Username):" />
                             <Label TextColor="Black"  Font="16" Text="{Binding CurrentUser.Email}" />
                         </StackLayout>
                         <StackLayout Margin="0,5,0,0" VerticalOptions="FillAndExpand" Padding="0">
-                            <Button  VerticalOptions="End" Text="Change Profile Picture" HorizontalOptions="Center" />
+                            <Button  VerticalOptions="End" Text="Change Profile Picture" HorizontalOptions="Center" Command="{Binding TakeSelectPictureViewCommand}" />
                         </StackLayout>                    
                     </StackLayout>
                 </StackLayout>
