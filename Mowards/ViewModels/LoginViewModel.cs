@@ -292,7 +292,7 @@ namespace Mowards.ViewModels
             ContentPage menu = new MasterDetailMenu();
 
             //Next Line to be discussed as how to set current user information.
-            ViewModelFactory.GetInstance<MainMenuViewModel>().CurrentUser = new MowardsUser() { Email = Username };
+            ViewModelFactory.GetInstance<UserViewModel>().CurrentUser = new MowardsUser() { Email = Username };
 
             var realmInstance = Realm.GetInstance();
             var localUserData = realmInstance.All<LoginInfo>().Where( 
