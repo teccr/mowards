@@ -67,11 +67,14 @@ namespace Mowards.ViewModels
         /// </summary>
         /// <returns>The safe operation.</returns>
         /// <param name="operation">Function to be executed.</param>
-        protected async Task ExecuteSafeOperation(Func<Task> operation)
+        /// <param name="setBusyProperty">Default true. If true, the IsBusy property will be setup to true during execution and false in the end.</param>
+        protected async Task ExecuteSafeOperation(Func<Task> operation, 
+                                                  bool setBusyProperty = true)
         {
             try
             {
-                IsBusy = true;
+                if(setBusyProperty) 
+                    IsBusy = true;
                 await operation();
             }
             catch (Exception excep)
@@ -80,7 +83,8 @@ namespace Mowards.ViewModels
             }
             finally
             {
-                IsBusy = false;
+                if(setBusyProperty)
+                    IsBusy = false;
             }
         }
 

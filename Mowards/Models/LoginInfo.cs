@@ -1,7 +1,9 @@
 ﻿using System;
+using Realms;
+
 namespace Mowards.Models
 {
-    public class LoginInfo
+    public class LoginInfo : RealmObject
     {
         public string Username
         {
@@ -10,6 +12,12 @@ namespace Mowards.Models
         }
 
         public string Password
+        {
+            get;
+            set;
+        }
+
+        public string Token
         {
             get;
             set;
