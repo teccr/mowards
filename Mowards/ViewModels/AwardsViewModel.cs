@@ -40,13 +40,15 @@ namespace Mowards.ViewModels
 
         protected override void InitCommands()
         {
+
+            
             GetAwardsByFiltersCommand = new Command(GetAwardsByFilters);
         }
 
         #endregion
 
         #region Commands
-
+        
         public ICommand GetAwardsByFiltersCommand
         {
             get;
@@ -82,7 +84,7 @@ namespace Mowards.ViewModels
             };
             await ExecuteSafeOperation(operation);
         }
-
+       
         #endregion
 
         #region Data properties
@@ -156,6 +158,7 @@ namespace Mowards.ViewModels
                 OnPropertyChanged("MaxYear");
             }
         }
+       
 
         private ObservableCollection<AwardsGroup<string, Award>> _awards;
         public ObservableCollection<AwardsGroup<string, Award>> Awards

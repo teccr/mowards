@@ -2356,6 +2356,8 @@ namespace Mowards.Droid
 			public const int design_snackbar_background = 2130837597;
 			
 			// aapt resource value: 0x7f02005e
+			public const int Down = 2130837598;
+			public const int Edit_24px = 2130837598;
 			public const int Edit_48px = 2130837598;
 			
 			// aapt resource value: 0x7f02005f
@@ -2806,6 +2808,8 @@ namespace Mowards.Droid
 			public const int Logo = 2130837747;
 			
 			// aapt resource value: 0x7f0200f4
+			public const int Logo = 2130837748;
+			public const int logo = 2130837748;
 			public const int LogoBottomTitle = 2130837748;
 			
 			// aapt resource value: 0x7f0200f5
@@ -2893,6 +2897,8 @@ namespace Mowards.Droid
 			public const int notification_bg_normal = 2130837776;
 			
 			// aapt resource value: 0x7f020111
+			public const int notification_bg_low_pressed = 2130837777;
+			public const int notification_bg_normal = 2130837777;
 			public const int notification_bg_normal_pressed = 2130837777;
 			
 			// aapt resource value: 0x7f020112
@@ -2905,25 +2911,58 @@ namespace Mowards.Droid
 			public const int notification_template_icon_low_bg = 2130837787;
 			
 			// aapt resource value: 0x7f020113
+			public const int notification_bg_normal_pressed = 2130837779;
+			// aapt resource value: 0x7f020120
+			public const int notification_template_icon_low_bg = 2130837792;
 			public const int notification_tile_bg = 2130837779;
 			
 			// aapt resource value: 0x7f020114
+			public const int notification_icon_background = 2130837780;
+			
+			// aapt resource value: 0x7f02011e
+			public const int notification_template_icon_bg = 2130837790;
+			
+			// aapt resource value: 0x7f02011f
+			public const int notification_template_icon_low_bg = 2130837791;
+			public const int notification_tile_bg = 2130837780;
 			public const int notify_panel_notification_icon_bg = 2130837780;
 			
 			// aapt resource value: 0x7f020115
+			public const int notification_tile_bg = 2130837781;
+			public const int notify_panel_notification_icon_bg = 2130837781;
 			public const int Rocket_48px = 2130837781;
 			
 			// aapt resource value: 0x7f020116
+			public const int notify_panel_notification_icon_bg = 2130837782;
+			public const int Reduce_24px = 2130837782;
 			public const int SignOut_50px = 2130837782;
 			
 			// aapt resource value: 0x7f020117
+			public const int Prev = 2130837783;
+			public const int Rocket_48px = 2130837783;
 			public const int StarFilled_48px = 2130837783;
 			
 			// aapt resource value: 0x7f020118
+			public const int SignOut_50px = 2130837784;
 			public const int Unsplash_48px = 2130837784;
 			
 			// aapt resource value: 0x7f020119
-			public const int User_104px = 2130837785;
+			public const int StarFilled_48px = 2130837785;
+			
+			// aapt resource value: 0x7f02011a
+			public const int StarW_24px = 2130837786;
+			
+			// aapt resource value: 0x7f02011b
+			public const int StarW_48px = 2130837787;
+			
+			// aapt resource value: 0x7f02011c
+			public const int StarWFilled_24px = 2130837788;
+			
+			// aapt resource value: 0x7f02011d
+			public const int Unsplash_48px = 2130837789;
+			
+			// aapt resource value: 0x7f02011e
+			public const int User_104px = 2130837790;
 			
 			static Drawable()
 			{
