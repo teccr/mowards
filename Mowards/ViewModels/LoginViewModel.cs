@@ -311,7 +311,8 @@ namespace Mowards.ViewModels
 
             NavigationPage navigation = new NavigationPage(new MasterDetailContent());
             ContentPage menu = new MasterDetailMenu();
-
+            navigation.BarBackgroundColor=Color.Black;
+            navigation.BarTextColor = Color.White;
             App.Current.MainPage = new MasterDetailMaster
             {
                 Master = menu,
