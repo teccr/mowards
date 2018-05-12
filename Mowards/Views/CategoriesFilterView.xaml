@@ -1,31 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             x:Class="Mowards.Views.CategoriesFilterView">
+             x:Class="Mowards.Views.CategoriesFilterView"
+             Title="Academy Winners / Nominees"
+             x:Name="Academy Winners / Nominees">
     <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-        <StackLayout>
-            <Label Text="Academy Winners  / Nominees" />
-            <Label Text="{Binding SelectedYear, StringFormat='Year: {0}'}" />
-            <Slider Maximum="{Binding MaxYear}" 
+        <StackLayout Margin="5" Padding="5">
+            <Image Source="LogoLeftTitle.png" HorizontalOptions="CenterAndExpand"/> 
+            <Label Text="{Binding SelectedYear, StringFormat='Year: {0}'}" FontSize="Large" TextColor="Black" FontAttributes="Bold" HorizontalOptions="Center"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Image Source="Reduce_52px.png"  Aspect="AspectFill"  HorizontalOptions="Start"  BackgroundColor="Transparent">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ReduceYearCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+                    <Slider HorizontalOptions="FillAndExpand" Maximum="{Binding MaxYear}" 
                     Minimum="{Binding MinYear}" 
                     Value="{Binding SelectedYear, Mode=TwoWay}"
                     ValueChanged="YearSlider_ValueChanged"
                     />
-            <ListView ItemsSource="{Binding Categories}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="{Binding Category}" />
-                                <Switch IsToggled="{Binding Selected}" />
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <Button Text="Filter" 
-                HeightRequest="40" WidthRequest="250" 
-                BackgroundColor="Teal" Command="{Binding GetAwardsByFiltersCommand}" />
+                <Image Source="AddNew_52px.png" Aspect="AspectFill" HorizontalOptions="End"  BackgroundColor="Transparent" >
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AddYearCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
+            <StackLayout Margin="5">
+                <Label Text="Categories" HorizontalOptions="Center" FontSize="Large" FontAttributes="Bold" TextColor="Black"/>
+                <StackLayout HorizontalOptions="End" Orientation="Horizontal">
+                    <Label Text="All Categories" FontSize="Small" FontAttributes="Bold" />
+                    <Switch IsToggled="False" HorizontalOptions="End" />
+                </StackLayout>
+                <ListView ItemsSource="{Binding Categories}" HasUnevenRows="True">
+                    <ListView.Header>
+                        <StackLayout HeightRequest="2" BackgroundColor="DarkGoldenrod" />
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal" Padding="0">
+                                    <StackLayout WidthRequest="2" Padding="0" VerticalOptions="FillAndExpand" BackgroundColor="DarkGoldenrod"/>
+                                    <Label Text="{Binding Category}" FontSize="Medium" XAlign="Center" HorizontalOptions="StartAndExpand" />
+                                    <Switch IsToggled="{Binding Selected}"  HorizontalOptions="End"/>
+                                    <StackLayout WidthRequest="2" Padding="0" VerticalOptions="FillAndExpand"  BackgroundColor="DarkGoldenrod"/>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.Footer>
+                        <StackLayout HeightRequest="2" BackgroundColor="DarkGoldenrod" />
+                    </ListView.Footer>
+                </ListView>
+            </StackLayout>
+            <Button Text="Ready!" FontSize="Large" HorizontalOptions="FillAndExpand"
+                HeightRequest="56" FontAttributes="Bold" TextColor="Black"
+                BackgroundColor="Silver" Command="{Binding GetAwardsByFiltersCommand}" />
         </StackLayout>
 
         <ContentView IsVisible="{Binding IsBusy}" HorizontalOptions="FillAndExpand"

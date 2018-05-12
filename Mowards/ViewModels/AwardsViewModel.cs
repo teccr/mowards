@@ -43,17 +43,40 @@ namespace Mowards.ViewModels
 
             
             GetAwardsByFiltersCommand = new Command(GetAwardsByFilters);
+            ReduceYearCommand = new Command(ReduceYear);
+            AddYearCommand = new Command(AddYear);
+        }
+
+        private void AddYear()
+        {
+            SelectedYear= SelectedYear+1;
+        }
+
+        private void ReduceYear()
+        {
+            SelectedYear = SelectedYear - 1;
         }
 
         #endregion
 
         #region Commands
-        
+
         public ICommand GetAwardsByFiltersCommand
         {
             get;
             set;
         }
+        public ICommand ReduceYearCommand
+        {
+            get;
+            set;
+        }
+        public ICommand AddYearCommand
+        {
+            get;
+            set;
+        }
+
 
         private async void GetAwardsByFilters()
         {
