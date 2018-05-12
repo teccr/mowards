@@ -205,10 +205,10 @@
     <BundleResource Include="Resources\LogoLeftTitle.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\AddNew_52px.png" />
+    <BundleResource Include="Resources\AddNewGold_52px.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\Reduce_52px.png" />
+    <BundleResource Include="Resources\ReduceGold_50px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.5.0.121934\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.5.0.121934\build\netstandard1.0\Xamarin.Forms.targets')" />

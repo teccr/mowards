@@ -9,7 +9,7 @@
             <Image Source="LogoLeftTitle.png" HorizontalOptions="CenterAndExpand"/> 
             <Label Text="{Binding SelectedYear, StringFormat='Year: {0}'}" FontSize="Large" TextColor="Black" FontAttributes="Bold" HorizontalOptions="Center"/>
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <Image Source="Reduce_52px.png"  Aspect="AspectFill"  HorizontalOptions="Start"  BackgroundColor="Transparent">
+                <Image Source="ReduceGold_50px.png"  Aspect="AspectFill"  HorizontalOptions="Start"  BackgroundColor="Transparent">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ReduceYearCommand}" />
                     </Image.GestureRecognizers>
@@ -19,7 +19,7 @@
                     Value="{Binding SelectedYear, Mode=TwoWay}"
                     ValueChanged="YearSlider_ValueChanged"
                     />
-                <Image Source="AddNew_52px.png" Aspect="AspectFill" HorizontalOptions="End"  BackgroundColor="Transparent" >
+                <Image Source="AddNewGold_52px.png" Aspect="AspectFill" HorizontalOptions="End"  BackgroundColor="Transparent" >
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding AddYearCommand}" />
                     </Image.GestureRecognizers>
@@ -41,7 +41,7 @@
                                 <StackLayout Orientation="Horizontal" Padding="0">
                                     <StackLayout WidthRequest="2" Padding="0" VerticalOptions="FillAndExpand" BackgroundColor="DarkGoldenrod"/>
                                     <Label Text="{Binding Category}" FontSize="Medium" XAlign="Center" HorizontalOptions="StartAndExpand" />
-                                    <Switch IsToggled="{Binding Selected}"  HorizontalOptions="End"/>
+                                    <Switch IsToggled="{Binding Selected}"  HorizontalOptions="End" Margin="0,5"/>
                                     <StackLayout WidthRequest="2" Padding="0" VerticalOptions="FillAndExpand"  BackgroundColor="DarkGoldenrod"/>
                                 </StackLayout>
                             </ViewCell>

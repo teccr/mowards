@@ -1,24 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             x:Class="Mowards.Views.FilteredAwardsView">
-    <ListView 
+             x:Class="Mowards.Views.FilteredAwardsView"
+             Title="Awards Information View"
+             x:Name="Awards Information View"
+             BackgroundColor="Black">
+    <StackLayout Padding="5">
+        <StackLayout Margin="10,5">
+             <Label Text="{Binding SelectedYear, StringFormat='Year: {0}'}" FontSize="Large" TextColor="White" FontAttributes="Bold" HorizontalOptions="StartAndExpand" />
+            <StackLayout Orientation="Horizontal">
+            <Label Text="Categories Selected: "  FontSize="Small" TextColor="White" FontAttributes="Bold" HorizontalOptions="End"  />
+            <Label Text="{Binding Awards.Count} "  FontSize="Small" TextColor="White" FontAttributes="Bold" HorizontalOptions="End"  />
+            </StackLayout>
+        </StackLayout>
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <ListView 
         ItemsSource="{Binding Awards}" 
         HasUnevenRows="true"
         IsGroupingEnabled="true"
         GroupDisplayBinding="{Binding Key}"
-        SeparatorColor="Transparent"
-        > 
+        GroupShortNameBinding="{Binding Key}"
+        
+        SeparatorColor="Transparent" Margin="0,10"
+        >
+        <ListView.GroupHeaderTemplate>
+            <DataTemplate>
+                <ViewCell>
+                            <StackLayout Margin="5,5">
+                        <StackLayout Orientation="Horizontal"
+                                BackgroundColor="Transparent"
+                                HorizontalOptions="FillAndExpand" Padding="10" >
+                            <Label Text="Category: "
+                            TextColor="Goldenrod"
+                            VerticalOptions="StartAndExpand" 
+                            FontAttributes="Bold" FontSize="Medium" />
+                            <Label Text="{Binding Key}"
+                            TextColor="Goldenrod"
+                            FontAttributes="Bold"
+                            VerticalOptions="StartAndExpand" FontSize="Medium" />
+                                   
+                        </StackLayout>
+                                <StackLayout Padding="10,0" HorizontalOptions="FillAndExpand" HeightRequest="2" BackgroundColor="DarkGoldenrod"/>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.GroupHeaderTemplate>
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
-                    <StackLayout Orientation="Vertical">
-                        <Label Text="{Binding Nominee}" />
-                        <Label Text="{Binding Category}" />
-                        <Label Text="{Binding Won}" />
-                    </StackLayout>
+                    <StackLayout BackgroundColor="Transparent" Margin="5,1">
+                       
+                        <StackLayout Orientation="Horizontal" Padding="10,1">
+                                    <Image Source="Movie_50px" Aspect="AspectFit" Margin="4"/>
+                                    <Label Text="{Binding Nominee}" HorizontalOptions="StartAndExpand" TextColor="White" FontSize="Medium" Margin="0,0,5,0" />
+                            <!--<Label Text="{Binding Category}" />-->
+                            <Label Text="{Binding Won}" HorizontalOptions="End" FontAttributes="Bold"
+                                   TextColor="White" FontSize="Medium" />
+                        </StackLayout>
+                        
+                    </StackLayout>    
                 </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
+    </StackLayout>
+    </StackLayout>
 </ContentPage>
