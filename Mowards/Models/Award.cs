@@ -34,13 +34,14 @@ namespace Mowards.Models
             return await client.Get<List<Award>>(url);
         }
 
+
         public string NameSort
         {
             get
             {
                 if (string.IsNullOrEmpty(Category) || Category.Length == 0)
                     return "?";
-                return NameSort.ToUpper();
+                return Category.ToUpper();
             }
         }
     }

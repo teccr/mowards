@@ -137,8 +137,10 @@ namespace Mowards.MowardsService
             return result;
         }
 
-        private async Task HandleError(HttpResponseMessage response)
+        private async Task<Exception> HandleError(HttpResponseMessage response)
         {
+            var responseJson = await response.Content.ReadAsStringAsync();
+
             JsonSerializerSettings settings = new JsonSerializerSettings()
             {
                 ContractResolver = new LowercaseContractResolver()
@@ -154,7 +156,6 @@ namespace Mowards.MowardsService
                 throw new SecurityException("Email already registered, request Reset password or use different email.");
             }
 
-            var responseJson = await response.Content.ReadAsStringAsync();
             WebAPIException logData = 
                 JsonConvert.DeserializeObject<WebAPIException>(responseJson, settings);
             throw new Exception(logData.Details);
