@@ -56,9 +56,9 @@ namespace Mowards.ViewModels
         /// Pipeline to handle exceptions in View Model
         /// </summary>
         /// <param name="exception">Exception.</param>
-        protected void HandleException(Exception exception)
+        protected async Task HandleException(Exception exception)
         {
-            App.Current.MainPage.DisplayAlert("Error", exception.Message, "OK");
+            await App.Current.MainPage.DisplayAlert("Error", exception.Message, "OK");
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Mowards.ViewModels
             }
             catch (Exception excep)
             {
-                HandleException(excep);
+                await HandleException(excep);
             }
             finally
             {
@@ -88,9 +88,9 @@ namespace Mowards.ViewModels
             }
         }
 
-        protected void CancelCurrentView()
+        protected async void CancelCurrentView()
         {
-            ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PopAsync();
+            await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PopAsync();
         }
     }
 }

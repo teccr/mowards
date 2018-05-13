@@ -56,18 +56,19 @@ namespace Mowards.ViewModels
 
         public async void SubmitAnswer(string question)
         {
-            Func<Task> submit = async () =>
+            Func<Task> submit = new Func<Task> (async () =>
             {
                 if( question != null )
                 {
                     var currentQuestion = 
-                        Trivias.Where( trivia => trivia.Id == question ).FirstOrDefault();
+                        Trivias.Where( trivia => trivia.Id == question ).First();
                     var userAnswer = currentQuestion.Options.Where( option => option.Id == SelectedAward ).FirstOrDefault();
                     currentQuestion.Question.UserAnswer = userAnswer;
                     var triviaResult = await TriviaAnswer.SubmitAnswer(currentQuestion.Question);
                     currentQuestion.Question = triviaResult;
+                    await App.Current.MainPage.DisplayAlert("Test", "Some test message", "Done");
                 }
-            };
+            });
             await ExecuteSafeOperation(submit);
         }
 

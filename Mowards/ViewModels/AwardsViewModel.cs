@@ -40,8 +40,6 @@ namespace Mowards.ViewModels
 
         protected override void InitCommands()
         {
-
-            
             GetAwardsByFiltersCommand = new Command(GetAwardsByFilters);
             ReduceYearCommand = new Command(ReduceYear);
             AddYearCommand = new Command(AddYear);
