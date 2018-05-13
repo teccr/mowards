@@ -144,6 +144,10 @@
     <Compile Include="Views\TriviaQuestionsPanel.xaml.cs">
       <DependentUpon>TriviaQuestionsPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\IsPropertyNull.cs" />
+    <Compile Include="Converters\IsPropertyNotNull.cs" />
+    <Compile Include="Converters\TriviaAnswerResultColorConverter.cs" />
+    <Compile Include="Converters\IntToBooleanConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Media, Version=3.1.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -261,6 +265,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Converters\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.5.0.121934\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.5.0.121934\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" />

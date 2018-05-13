@@ -3,6 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     x:Class="Mowards.Views.TriviaQuestionsPanel"
+    xmlns:local="clr-namespace:Mowards.Converters" 
     Title="Question"
     ItemsSource="{Binding Trivias}"
     x:Name="TriviaQuestionsWin"
@@ -10,35 +11,49 @@
     <CarouselPage.ItemTemplate>
         <DataTemplate>
             <ContentPage>
-                <ContentPage.Padding>
-                  <OnPlatform x:TypeArguments="Thickness">
-                    <On Platform="iOS, Android" Value="0,40,0,0" />
-                  </OnPlatform>
-                </ContentPage.Padding>
-                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                    <Label Text="{Binding Question.Level, StringFormat='Level {0}'}"
-                           HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
-                    <Label Text="{Binding Question.Award.Year, StringFormat='Year: {0}'}"
-                           HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
-                    <Label Text="{Binding Question.Award.Category, StringFormat='Winner for {0}'}" FontSize="Medium" HorizontalOptions="Center" />
-                    <ListView 
-                        HasUnevenRows="true"
-                        ItemsSource="{Binding Options}" 
-                        SelectedItem="{Binding BindingContext.SelectedAward, Source={x:Reference TriviaQuestionsWin}}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout>
-                                        <Label Text="{Binding Nominee}" HorizontalTextAlignment="Center" HorizontalOptions="Center" />
-                                        <Label Text="{Binding Additional_Info}" HorizontalTextAlignment="Center" HorizontalOptions="Center" />
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                    <Button Margin="25" IsEnabled="{Binding BindingContext.IsSubmitEnable, Source={x:Reference TriviaQuestionsWin}}" 
-                            Command="{Binding BindingContext.SubmitAnswerCommand, Source={x:Reference TriviaQuestionsWin}}" 
-                            CommandParameter="{Binding Id}" Text="Submit" />
+                <StackLayout Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <!-- Question and options -->
+                    <Frame HasShadow="true" 
+                           CornerRadius="20" 
+                           VerticalOptions="FillAndExpand" 
+                           HorizontalOptions="FillAndExpand">
+                        <StackLayout Padding="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                            <Label Text="{Binding Question.Level, StringFormat='Level {0}'}"
+                                   HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding Question.Award.Year, StringFormat='Year: {0}'}"
+                                   HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding Question.Award.Category, StringFormat='Winner for {0}'}" FontSize="Medium" HorizontalOptions="Center" />
+                            <ListView 
+                                HasUnevenRows="true"
+                                ItemsSource="{Binding Options}" >
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <Grid.GestureRecognizers>
+                                                    <TapGestureRecognizer 
+                                                        Command="{Binding Path=BindingContext.SelectAnswerCommand, Source={x:Reference TriviaQuestionsWin}}"
+                                                        CommandParameter="{Binding Id}"
+                                                    />
+                                                </Grid.GestureRecognizers>
+                                                <Label Grid.Row="0" Text="{Binding Nominee}" HorizontalTextAlignment="Center" HorizontalOptions="Center" />
+                                                <Label Grid.Row="1" Text="{Binding Additional_Info}" HorizontalTextAlignment="Center" HorizontalOptions="Center" />
+                                            </Grid>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            
+                            <Button Margin="25"  
+                                    Command="{Binding BindingContext.SubmitAnswerCommand, Source={x:Reference TriviaQuestionsWin}}" 
+                                    CommandParameter="{Binding Id}" Text="Submit" />
+                        </StackLayout>
+                    </Frame>
+
                 </StackLayout>
             </ContentPage>
         </DataTemplate>

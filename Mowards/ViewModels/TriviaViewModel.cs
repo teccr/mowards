@@ -30,11 +30,23 @@ namespace Mowards.ViewModels
         {
             LoadQuestionsCommand = new Command<int>(LoadQuestions);
             SubmitAnswerCommand = new Command<string>(SubmitAnswer);
+            SelectAnswerCommand = new Command<string>(SelectAnswer);
         }
 
         #endregion
 
         #region Commands
+
+        public ICommand SelectAnswerCommand
+        {
+            get;
+            set;
+        }
+
+        private void SelectAnswer(string Id)
+        {
+            SelectedAward = Id;
+        }
 
         public ICommand SubmitAnswerCommand
         {
@@ -46,9 +58,14 @@ namespace Mowards.ViewModels
         {
             Func<Task> submit = async () =>
             {
-                if(question != null)
+                if( question != null )
                 {
-                    await App.Current.MainPage.DisplayAlert("test", question, "Exit");
+                    var currentQuestion = 
+                        Trivias.Where( trivia => trivia.Id == question ).FirstOrDefault();
+                    var userAnswer = currentQuestion.Options.Where( option => option.Id == SelectedAward ).FirstOrDefault();
+                    currentQuestion.Question.UserAnswer = userAnswer;
+                    var triviaResult = await TriviaAnswer.SubmitAnswer(currentQuestion.Question);
+                    currentQuestion.Question = triviaResult;
                 }
             };
             await ExecuteSafeOperation(submit);
@@ -95,7 +112,7 @@ namespace Mowards.ViewModels
                     }
                 }
                 Trivias = result;
-                ((MasterDetailPage)App.Current.MainPage).Detail = new TriviaQuestionsPanel();
+                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new TriviaQuestionsPanel());
             };
             await ExecuteSafeOperation(questions);
         }
@@ -113,8 +130,8 @@ namespace Mowards.ViewModels
 
         #region Properties
 
-        private Award _selectedAward;
-        public Award SelectedAward
+        private string _selectedAward;
+        public string SelectedAward
         {
             get
             {
@@ -136,7 +153,7 @@ namespace Mowards.ViewModels
         {
             get
             {
-                return _isSubmitEnable;
+                return IsBusy ? false : _isSubmitEnable;
             }
             set
             {

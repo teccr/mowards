@@ -6,29 +6,17 @@ namespace Mowards.Models
 {
     public class TriviaProxy : MutableDataObject
     {
+        private TriviaAnswer _question;
         public TriviaAnswer Question
         {
-            get;
-            set;
-        }
-
-        public bool ShowOptions
-        {
             get
             {
-                if(Question == null || Question.UserAnswer == null)
-                {
-                    return false;
-                }
-                return true;
+                return _question;
             }
-        }
-
-        public bool ShowAnswer
-        {
-            get
+            set
             {
-                return !ShowOptions;
+                _question = value;
+                OnPropertyChanged("Question");
             }
         }
 
@@ -44,10 +32,18 @@ namespace Mowards.Models
             }
         }
 
+        private ObservableCollection<Award> _options;
         public ObservableCollection<Award> Options
         {
-            get;
-            set;
+            get
+            {
+                return _options;
+            }
+            set
+            {
+                _options = value;
+                OnPropertyChanged("Options");
+            }
         }
     }
 }
