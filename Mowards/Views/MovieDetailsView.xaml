@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mowards.Views.MovieDetailsView">
+             x:Class="Mowards.Views.MovieDetailsView"
+             Title="Movie Details">
     <ContentPage.ToolbarItems>
         <ToolbarItem Name="FavoriteMovie" 
                          Order="Primary" Icon="StarW_48px.png" 
@@ -10,19 +11,61 @@
         
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-        <StackLayout Orientation="Horizontal">
-            <StackLayout>
-                <Image Source="{Binding CurrentMovie.Picture}"/>
+        <StackLayout  HorizontalOptions="FillAndExpand">
+            <StackLayout VerticalOptions="Start" HorizontalOptions="FillAndExpand">
+                <Grid Padding="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label VerticalOptions="Start" TextColor="Black" FontAttributes="Bold" FontSize="Large" XAlign="Center"  Text="{Binding CurrentMovie.TMDBTitle}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Image Aspect="AspectFit"  HeightRequest="140" WidthRequest="180" Source="{Binding CurrentMovie.PosterURL}" Grid.Row="1" Grid.Column="0" Margin="5" />
+                    <ScrollView Grid.Row="1" Grid.Column="1">
+                        <StackLayout  Margin="5" >
+                            <Label FontSize="Medium" Text="Movie Overview:" FontAttributes="Bold" TextColor="Black" />
+                            <Label FontSize="Small" Text="{Binding CurrentMovie.Overview}" />
+                        </StackLayout>
+                    </ScrollView>
+                    <StackLayout  HorizontalOptions="FillAndExpand" Padding="5" Grid.Row="2" Grid.Column="0">
+                        <Button Text="Cast and Crew" TextColor="Black" FontAttributes="Bold"
+                        Command="{Binding GetMovieCreditsCommand}"
+                        BackgroundColor="Goldenrod" HorizontalOptions="FillAndExpand" />
+                        <!--<Button Text="Crew" TextColor="Black" FontAttributes="Bold" 
+                        BackgroundColor="Goldenrod" HorizontalOptions="FillAndExpand" />-->
+                    </StackLayout>
+                    <StackLayout HorizontalOptions="FillAndExpand" Padding="5" Grid.Row="2" Grid.Column="1">
+                        <Button Text="Reviews" TextColor="Black" FontAttributes="Bold" 
+                        BackgroundColor="Goldenrod" HorizontalOptions="FillAndExpand" />
+                    </StackLayout>
+                    <Label  Grid.Row="3" Grid.Column="0" Text="Cast and Crew:" FontSize="Medium" XAlign="Center" TextColor="DarkGoldenrod" FontAttributes="Bold"/>
+                    <ListView ItemsSource="{Binding CurrentMovie.Credits.Cast}" Grid.Row="4" Grid.Column="0" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ImageCell Text="{Binding Name}" TextColor="Black"
+                                   Detail="{Binding Character}"
+                                   ImageSource="{Binding Profile_path}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Label Grid.Row="3" Grid.Column="1" Text="Reviews:" FontSize="Medium"  XAlign="Center" TextColor="DarkGoldenrod" FontAttributes="Bold" />
+                    <ListView ItemsSource="{Binding CurrentMovie.Reviews}" Grid.Row="4" Grid.Column="1">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ImageCell Text="{Binding Username}"
+                                   Detail="{Binding Comment}"
+                                   ImageSource="{Binding Review.UsernamePicture}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
             </StackLayout>
-            <StackLayout>
-                <Image Source="{Binding CurrentMovie.Description}"/>
-            </StackLayout>
-        </StackLayout>
-        <StackLayout Orientation="Horizontal" BackgroundColor="Gainsboro" HorizontalOptions="FillAndExpand">
-                <Button Text="Cast and Crew" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" />
-                <Button Text="Reviews" BackgroundColor="Transparent" HorizontalOptions="FillAndExpand" />
-        </StackLayout>
         </StackLayout>
     </ContentPage.Content>
     

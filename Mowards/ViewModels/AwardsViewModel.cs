@@ -45,6 +45,20 @@ namespace Mowards.ViewModels
             GetAwardsByFiltersCommand = new Command(GetAwardsByFilters);
             ReduceYearCommand = new Command(ReduceYear);
             AddYearCommand = new Command(AddYear);
+            SeeMovieDetailsCommand=new Command<int>(SeeMovieDetails);
+            GetMovieCreditsCommand = new Command(GetMovieCredits);
+        }
+
+        private async void GetMovieCredits()
+        {
+            CurrentMovie.Credits = await Movie.SetMovieCredits(CurrentMovie.TMDBMovieID);
+            OnPropertyChanged("CurrentMovie");
+        }
+
+        private async void SeeMovieDetails(int TMDBMovieID)
+        {
+            CurrentMovie = await Movie.GetMovieByTMDBId(TMDBMovieID);
+            await((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new MovieDetailsView());
         }
 
         private void AddYear()
@@ -76,8 +90,17 @@ namespace Mowards.ViewModels
             get;
             set;
         }
-
-
+        public ICommand SeeMovieDetailsCommand
+        {
+            get;
+            set;
+        }
+        public ICommand GetMovieCreditsCommand
+        {
+            get;
+            set;
+        }
+        
         private async void GetAwardsByFilters()
         {
             string[] selectedCategories = (
@@ -95,6 +118,9 @@ namespace Mowards.ViewModels
                 oldAwards.Add(item);
             Awards = oldAwards;
             await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new FilteredAwardsView());
+
+            
+
         }
 
         // It was not possible to bind the Slider value changed to a command, 
@@ -139,7 +165,11 @@ namespace Mowards.ViewModels
                 OnPropertyChanged("Years");
             }
         }
-
+        private Movie _CurrentMovie { get; set; }
+        public Movie CurrentMovie {
+            get { return _CurrentMovie; }
+            set { _CurrentMovie = value; OnPropertyChanged("CurrentMovie"); }
+        }
         private int _SelectedYear = 2000;
         public int SelectedYear 
         {
