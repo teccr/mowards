@@ -13,6 +13,18 @@ namespace Mowards.Models
             set;
         }
 
+        public string Option
+        {
+            get;
+            set;
+        }
+
+        public int Year
+        {
+            get;
+            set;
+        }
+
         public int Votes
         {
             get;

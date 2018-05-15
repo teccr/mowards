@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using Microcharts;
 using Mowards.ViewModels;
 
 namespace Mowards.Models
@@ -33,8 +35,8 @@ namespace Mowards.Models
             }
         }
 
-        private PoolsResults _results;
-        public PoolsResults Results
+        private ObservableCollection<Entry> _results;
+        public ObservableCollection<Entry> Results
         {
             get
             {
@@ -44,6 +46,20 @@ namespace Mowards.Models
             {
                 _results = value;
                 OnPropertyChanged("Results");
+            }
+        }
+
+        private Chart _chart;
+        public Chart CurrentChart
+        {
+            get
+            {
+                return _chart;
+            }
+            set
+            {
+                _chart = value;
+                OnPropertyChanged("CurrentChart");
             }
         }
     }
