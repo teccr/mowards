@@ -1,7 +1,7 @@
 ﻿<Properties StartupConfiguration="{DEFC1D5E-A3E7-4777-8C30-5C5F1CE41332}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
   <MonoDevelop.Ide.Workbench ActiveDocument="Mowards/ViewModels/PollViewModel.cs">
     <Files>
-      <File FileName="Mowards/Views/AwardsPollsView.xaml" Line="59" Column="61" />
+      <File FileName="Mowards/Views/AwardsPollsView.xaml" Line="79" Column="15" />
       <File FileName="Mowards/Models/PollsProxy.cs" Line="53" Column="34" />
       <File FileName="Mowards/ViewModels/PollViewModel.cs" Line="76" Column="54" />
       <File FileName="Mowards/Models/PoolsResults.cs" Line="20" Column="10" />
