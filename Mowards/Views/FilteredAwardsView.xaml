@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="Mowards.Views.FilteredAwardsView"
              Title="Awards Information View"
-             x:Name="Awards Information View"
+             x:Name="FilteredAwardsView"
              BackgroundColor="Black">
     <StackLayout Padding="5">
         <StackLayout Margin="10,5">
@@ -47,19 +47,27 @@
         </ListView.GroupHeaderTemplate>
         <ListView.ItemTemplate>
             <DataTemplate>
-                <ViewCell>
-                    <StackLayout BackgroundColor="Transparent" Margin="5,1">
-                       
+                        <ViewCell>
+                            <!--<ImageCell ImageSource="{Binding AwardPosterPath}" Text="{Binding Nominee}" Detail="{Binding Won}">-->  
+                      <StackLayout BackgroundColor="Transparent" Margin="5,1">
                         <StackLayout Orientation="Horizontal" Padding="10,1">
-                                    <Image Source="Movie_50px" Aspect="AspectFit" Margin="4"/>
-                                    <Label Text="{Binding Nominee}" HorizontalOptions="StartAndExpand" TextColor="White" FontSize="Medium" Margin="0,0,5,0" />
-                            <!--<Label Text="{Binding Category}" />-->
-                            <Label Text="{Binding Won}" HorizontalOptions="End" FontAttributes="Bold"
-                                   TextColor="White" FontSize="Medium" />
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Path=BindingContext.SeeMovieDetailsCommand, Source={x:Reference FilteredAwardsView}}" CommandParameter="{Binding TMDBMovieID}" />
+                                </StackLayout.GestureRecognizers>
+                            <Image Source="{Binding AwardPosterPath}" Aspect="AspectFit" HeightRequest="80" WidthRequest="100" Margin="4"/>
+                                    <StackLayout HorizontalOptions="StartAndExpand">
+                                        <Label Text="{Binding Nominee}"  
+                                        TextColor="White" FontSize="Medium" Margin="0,0,5,0" XAlign="Start" YAlign="Center" />
+                                        <Label Text="{Binding Additional_Info}"
+                                        TextColor="White" FontSize="Small"  XAlign="Start" YAlign="Center" />
+                                      
+                                    </StackLayout>
+                                    <Label Text="{Binding Won}" HorizontalOptions="End" FontAttributes="Bold"
+                    TextColor="White" FontSize="Large" Margin="5"/>
                         </StackLayout>
-                        
-                    </StackLayout>    
-                </ViewCell>
+                    </StackLayout>
+                            </ViewCell>
+                                <!--</ImageCell>-->
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
