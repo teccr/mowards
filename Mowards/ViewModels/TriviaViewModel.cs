@@ -30,23 +30,11 @@ namespace Mowards.ViewModels
         {
             LoadQuestionsCommand = new Command<int>(LoadQuestions);
             SubmitAnswerCommand = new Command<string>(SubmitAnswer);
-            SelectAnswerCommand = new Command<string>(SelectAnswer);
         }
 
         #endregion
 
         #region Commands
-
-        public ICommand SelectAnswerCommand
-        {
-            get;
-            set;
-        }
-
-        private void SelectAnswer(string Id)
-        {
-            SelectedAward = Id;
-        }
 
         public ICommand SubmitAnswerCommand
         {
@@ -62,8 +50,7 @@ namespace Mowards.ViewModels
                 {
                     var currentQuestion = 
                         Trivias.Where( trivia => trivia.Id == question ).First();
-                    var userAnswer = currentQuestion.Options.Where( option => option.Id == SelectedAward ).FirstOrDefault();
-                    currentQuestion.Question.UserAnswer = userAnswer;
+                    currentQuestion.Question.UserAnswer = SelectedAward;
                     var triviaResult = await TriviaAnswer.SubmitAnswer(currentQuestion.Question);
                     currentQuestion.Question = triviaResult;
                     await App.Current.MainPage.DisplayAlert("Test", "Some test message", "Done");
@@ -131,8 +118,8 @@ namespace Mowards.ViewModels
 
         #region Properties
 
-        private string _selectedAward;
-        public string SelectedAward
+        private Award _selectedAward;
+        public Award SelectedAward
         {
             get
             {
