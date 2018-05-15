@@ -19,6 +19,12 @@ namespace Mowards.Models
         public string Category { get; set; }
         public string Nominee { get; set; }
         public string Additional_Info { get; set; }
+        public int TMDBMovieID { get; set; }
+        public string TMDBTitle { get; set; }
+        public int SearchableYear { get; set; }
+        public string Type { get; set; }
+        public string AwardPosterPath { get; set; }
+
         public int Won { get; set; }
 
         public static async Task<List<Award>> GetAwardsByFilters(

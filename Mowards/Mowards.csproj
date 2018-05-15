@@ -60,9 +60,14 @@
     </Compile>
     <Compile Include="Models\Favorite.cs" />
     <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\MovieCast.cs" />
+    <Compile Include="Models\MovieCredits.cs" />
+    <Compile Include="Models\MovieCrew.cs" />
     <Compile Include="MowardsPage.xaml.cs">
       <DependentUpon>MowardsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MowardsService\TMDBHttp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\AwardCategory.cs" />
     <Compile Include="Models\Award.cs" />
