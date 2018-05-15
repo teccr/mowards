@@ -9,6 +9,5 @@ namespace Mowards.Models
             set;
         }
         public string Option { get; set; }
-        public PoolDefinition Definition { get; set; }
     }
 }

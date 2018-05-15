@@ -1,12 +1,74 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:control="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView"
+             xmlns:views="clr-namespace:Mowards.Views"
+             xmlns:local="clr-namespace:Mowards.Converters" 
+             x:Name="PollsView"
              x:Class="Mowards.Views.AwardsPollsView">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:IsPropertyNull x:Key="isPropertyNull" />
+            <local:IsPropertyNotNull x:Key="isPropertyNotNull" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand"
+            >
+            <Label Text="Oscars - 2018" />
+            <Picker ItemsSource="{Binding Categories}" />
+            <ContentView  
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                >
+                <StackLayout>
+                    <control:CarouselView
+                        ItemsSource="{Binding Polls}"
+                        >
+                        <control:CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout>
+                                    <Label Text="{Binding Definition.Year}" />
+                                    <Label Text="{Binding Definition.Category}" />
+                                    <StackLayout 
+                                        IsVisible="{Binding Answer, Converter={StaticResource isPropertyNull}}">
+                                        <ListView 
+                                            HasUnevenRows="true"
+                                            ItemsSource="{Binding Definition.Options}"
+                                            SelectedItem="{Binding BindingContext.SelectedAnswer, Source={x:Reference PollsView}}"
+                                            >
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <ViewCell>
+                                                        <Label Grid.Row="0" Text="{Binding Option}" HorizontalTextAlignment="Center" HorizontalOptions="Center" />
+                                                    </ViewCell>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                        <Button Margin="25"
+                                            Command="{Binding BindingContext.SubmitAnswerCommand, Source={x:Reference PollsView}}" 
+                                            CommandParameter="{Binding Definition.Id}" Text="Submit" />
+                                    </StackLayout>
+                                    <StackLayout
+                                        IsVisible="{Binding Answer, Converter={StaticResource isPropertyNotNull}}">
+                                        <Label Text="Test" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </DataTemplate>
+                        </control:CarouselView.ItemTemplate>
+                    </control:CarouselView>
+                    <views:CarouselIndicators
+                        IndicatorHeight="16" 
+                        IndicatorWidth="16" 
+                        UnselectedIndicator="unselected_circle.png" 
+                        SelectedIndicator="selected_circle.png" 
+                        ItemsSource="{Binding Polls}"
+                        Position="{Binding Position}"
+                    />
+                </StackLayout>
+            </ContentView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
