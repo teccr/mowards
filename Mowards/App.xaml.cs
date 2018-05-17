@@ -1,7 +1,10 @@
 ﻿using Xamarin.Forms;
+using System.Linq;
 using System.Threading.Tasks;
 using Mowards.Services;
 using Mowards.ViewModels;
+using Realms;
+using Mowards.Models;
 
 namespace Mowards
 {
@@ -27,7 +30,30 @@ namespace Mowards
         {
             InitializeComponent();
 
-            MainPage = new Views.LoginView();
+            var realmInstance = Realm.GetInstance(Utils.REALM_DB_NAME);
+            var localUserData = realmInstance.All<LoginInfo>();
+            if (localUserData.Count() > 0)
+            {
+                var firstUser = localUserData.FirstOrDefault();
+                if (!string.IsNullOrEmpty(firstUser.Username))
+                {
+                    if (App.Current.Properties.ContainsKey(Utils.TOKEN_KEY))
+                    {
+                        App.Current.Properties[Utils.TOKEN_KEY] = firstUser.Token;
+                    }
+                    else
+                    {
+                        App.Current.Properties.Add(Utils.TOKEN_KEY, firstUser.Token);
+                    }
+                }
+                var userViewModel = ViewModelFactory.GetInstance<UserViewModel>();
+                userViewModel.CurrentUser = new MowardsUser() { Email = firstUser.Username } ;
+                MainPage = new Views.MasterDetailMaster();
+            }
+            else
+            {
+                MainPage = new Views.LoginView();
+            }
         }
 
         protected override void OnStart()

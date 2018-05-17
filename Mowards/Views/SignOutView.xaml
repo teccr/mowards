@@ -1,18 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mowards.Views.SignOutView">
     <ContentPage.Content>
         <StackLayout>
-            <Image VerticalOptions="Start" HorizontalOptions="Center" Source="LogoTopTitle.png" HeightRequest="200" WidthRequest="180" />
+            <Image 
+                VerticalOptions="Start" 
+                HorizontalOptions="Center" 
+                Source="LogoTopTitle.png" 
+                HeightRequest="200" 
+                WidthRequest="180" />
             <StackLayout Padding="10" Margin="5,20" >
                 <Label XAlign="Start" Text="You will sign out and the data will be removed from this device"
                 HorizontalOptions="StartAndExpand" />
                 <Label XAlign="Start" Text="Do you want to continue?"
                 HorizontalOptions="StartAndExpand" />
                 <StackLayout Orientation="Horizontal">
-                    <Button Text="Yes, Forget me" />
-                    <Button Text="Cancel" />
+                    <Button
+                        x:Name="SignOutBtn"
+                        Command="{Binding SignOutScreenCommand}"
+                        CommandParameter="signout"
+                        Text="Yes, Forget me" >
+                    </Button>
+                    <Button 
+                        x:Name="CancelBtn"
+                        Command="{Binding SignOutScreenCommand}"
+                        CommandParameter="cancel"
+                        Text="Cancel" />
                 </StackLayout>
             </StackLayout>
         </StackLayout>

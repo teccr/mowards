@@ -6,7 +6,7 @@
              x:Class="Mowards.Views.MasterDetailMaster">
     
     <MasterDetailPage.Master>
-        <pages:MasterDetailMenu x:Name="MasterDetailMenu" Title="MasterDetailMenu" />
+        <pages:MasterDetailMenu x:Name="MasterDetailMenu" Title="Mowards" />
         <!--El master aqui siempre debe llevar nombre x:Name=MenuPage por ejemplo-->
     </MasterDetailPage.Master>
     <MasterDetailPage.Detail>

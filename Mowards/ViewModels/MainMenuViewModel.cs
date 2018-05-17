@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Mowards.Models;
+using Mowards.MowardsService;
 using Mowards.Services;
 using Mowards.Views;
 using Xamarin.Forms;
@@ -21,20 +23,22 @@ namespace Mowards.ViewModels
 
         protected override void InitClass()
         {
-            UserEmail= ViewModelFactory.GetInstance<UserViewModel>().CurrentUser.Email;
+            var userViewModel = ViewModelFactory.GetInstance<UserViewModel>();
+            UserEmail= userViewModel.CurrentUser.Email;
             UpdateCurrentUserImage();
-
-
         }
-        public void UpdateCurrentUserImage() {
+
+        public async void UpdateCurrentUserImage() {
             try
             {
-                UserPicture = ViewModelFactory.GetInstance<UserViewModel>().ImageLocation;
+                var userViewModel = ViewModelFactory.GetInstance<UserViewModel>();
+                await userViewModel.SetUserFullInformation(UserEmail);
+                UserPicture = userViewModel.ImageLocation;
                 if (UserPicture== "" || UserPicture==null) {
                     string img = "";
                     img = "User_104px.png";
                     UserPicture = img;
-                    ViewModelFactory.GetInstance<UserViewModel>().ImageLocation = img;
+                    userViewModel.ImageLocation = img;
                 }
                 OnPropertyChanged("UserPicture");
 
@@ -47,12 +51,21 @@ namespace Mowards.ViewModels
                 ViewModelFactory.GetInstance<UserViewModel>().ImageLocation = img;
             }
         }
-        public void UpdateCurrentUserImage(string img)
+
+        public async void UpdateCurrentUserImage(string img)
         {
-                UserPicture = img;
-                OnPropertyChanged("UserPicture");
-                      
+            Func<Task> func = new Func<Task>(
+                async () =>
+                {
+                    await LoginInfo.SaveProfileImage(img, UserEmail);
+                    UserPicture = img;
+                    OnPropertyChanged("UserPicture");
+                }
+            );
+
+            await ExecuteSafeOperation(func);
         }
+
         protected override void InitCommands()
         {
             MenuItemClickedCommand = new Command<int>(MenuItemClicked);

@@ -17,6 +17,8 @@ namespace Mowards
         public const string MOVIES_URL = BASE_URL + "/tables/movies";
         public const string TOKEN_KEY = "AppToken";
         public const int TRIVIA_QUESTIONS_LIMIT = 5;
-        //public const string REALM_DB_NAME = "mowardsData";
+        public const string REALM_DB_NAME = "mowardsDataV0";
+        public const string FILE_CONTAINER_NAME = "mowardspics";
+        public const string UPDATE_PICTURE_URL = BASE_URL + "/api/UserPicture";
     }
 }

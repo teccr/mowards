@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Mowards.MowardsService;
 using Realms;
 
 namespace Mowards.Models
@@ -11,6 +13,7 @@ namespace Mowards.Models
             set;
         }
 
+        [Ignored]
         public string Password
         {
             get;
@@ -21,6 +24,13 @@ namespace Mowards.Models
         {
             get;
             set;
+        }
+
+        public static async Task<UserImageInfo> SaveProfileImage(string imageAzureUrl, string userName)
+        {
+            MowardsHttp client = new MowardsHttp();
+            return await client.Post<UserImageInfo>(Utils.UPDATE_PICTURE_URL, 
+                new UserImageInfo { Username = userName, AzureUrl = imageAzureUrl });
         }
     }
 }

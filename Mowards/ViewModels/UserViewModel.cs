@@ -28,7 +28,7 @@ namespace Mowards.ViewModels
 
         protected override void InitClass()
         {
-            ListOfCountries= ViewModelFactory.GetInstance<LoginViewModel>().SetListCountries();
+            ListOfCountries= LoginViewModel.SetListCountries();
         }
 
         protected override void InitCommands()
@@ -41,9 +41,6 @@ namespace Mowards.ViewModels
             SelectPictureCommand = new Command(SelectPicture);
             ConfirmPictureAndGoBackCommand = new Command(ConfirmPictureAndGoBack);
             CancelSelectImageCommand = new Command(CancelSelectImage);
-            
-       
-       
          }
      
         private void CancelSelectImage()
@@ -56,8 +53,8 @@ namespace Mowards.ViewModels
             if (ImageTakenPreview != null)
             {
 
-                CurrentUser.Picture = ImageLocation;
-                ViewModelFactory.GetInstance<MainMenuViewModel>().UpdateCurrentUserImage(ImageLocation);
+                CurrentUser.UserProfilePictureUrl = ImageLocation;
+                ViewModelFactory.GetInstance<MainMenuViewModel>().UpdateCurrentUserImage(_newProfilePictureUrl);
                 OnPropertyChanged("CurrentUser");
                 //UPLOAD IMAGE TIED TO THIS USER to the Azure blob storage HERE
                  
@@ -118,6 +115,7 @@ namespace Mowards.ViewModels
         }
 
         #endregion
+
         #region Instances
        
         private MowardsUser _CurrentUser = new MowardsUser();
@@ -182,22 +180,28 @@ namespace Mowards.ViewModels
                 OnPropertyChanged("ListOfCountries");
             }
         }
+
         public async Task<MowardsUser> SetUserFullInformation(string email) {
             return await GetUserFullInformationAsync(email);
-            
         }
+
         private async Task<MowardsUser> GetUserFullInformationAsync(string email)
         {
             MowardsHttp client = new MowardsHttp();
            
             string url = $"?username={email}";
             url = Utils.USER_URL + url;
-            CurrentUser =await client.Get<MowardsUser>(
+            CurrentUser = await client.Get<MowardsUser>(
                 url);
+            if(!string.IsNullOrWhiteSpace(CurrentUser.UserProfilePictureUrl))
+            {
+                ImageLocation = CurrentUser.UserProfilePictureUrl;
+            }
             //CurrentUser.Picture = "User_104px.png";
             return CurrentUser;
         }
         #endregion
+
         #region Reviews and Favorites
         private ObservableCollection<Review> _UserReviews { get; set; }
         public ObservableCollection<Review> UserReviews
@@ -224,8 +228,6 @@ namespace Mowards.ViewModels
         #region Camera Async Methods
         private async void TakeCameraPicture()
         {
-
-
             if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
             {
                 
@@ -254,20 +256,53 @@ namespace Mowards.ViewModels
             ImageTakenPreview.Source = ImageSource.FromStream(() =>
             {
                 var stream = file.GetStream();
-                file.Dispose();
+                //sfile.Dispose();
                 return stream;
             });
-            CurrentUser.Picture = ImageLocation;
-           
-            
+            CurrentUser.UserProfilePictureUrl = ImageLocation;
+            var imageStream = file.GetStream();
+            _newProfilePictureUrl = await AzureStorageService.LoadImage(imageStream, file.Path);
+            file.Dispose();
         }
+
         private async void SelectPicture()
         {
+            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+            {
 
+                await App.Current.MainPage.DisplayAlert("Error", "No Camera Available", "OK");
+                return;
+            }
+
+            var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+            {
+                CompressionQuality = 70,
+                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium,
+            });
+
+            if (file == null)
+                return;
+
+            //Application.Current.MainPage.DisplayAlert("File Location", file.Path, "OK");
+            ImageLocation = file.Path;
+            ImageTakenPreview = new Image();
+            ImageTakenPreview.Source = ImageSource.FromStream(() =>
+            {
+                var stream = file.GetStream();
+                //file.Dispose();
+                return stream;
+            });
+
+            var imageStream = file.GetStream();
+            _newProfilePictureUrl = await AzureStorageService.LoadImage(imageStream, file.Path);
+            file.Dispose();
         }
         #endregion
+
         #region Edit User View Properties
 
+
+        private string _newProfilePictureUrl;
 
         private string _EditUserNewPassword { get; set; }
         public string EditUserNewPassword
@@ -336,6 +371,7 @@ namespace Mowards.ViewModels
         }
 
         #endregion
+
         #region Edit User Helper Methods
         public void SetEditValuesCurrentUser()
         {
@@ -344,6 +380,7 @@ namespace Mowards.ViewModels
             EditUserNewFullName = CurrentUser.Fullname;
         }
         #endregion
+
         #region Commands
         public ICommand SaveEditUserCommand
         { get; set; }

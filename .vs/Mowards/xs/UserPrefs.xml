@@ -1,10 +1,9 @@
 ﻿<Properties StartupConfiguration="{DEFC1D5E-A3E7-4777-8C30-5C5F1CE41332}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Mowards/ViewModels/PollViewModel.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Mowards/Views/TriviaQuestionsPanel.xaml">
     <Files>
-      <File FileName="Mowards/Views/AwardsPollsView.xaml" Line="79" Column="15" />
-      <File FileName="Mowards/Models/PollsProxy.cs" Line="53" Column="34" />
-      <File FileName="Mowards/ViewModels/PollViewModel.cs" Line="76" Column="54" />
-      <File FileName="Mowards/Models/PoolsResults.cs" Line="20" Column="10" />
+      <File FileName="Mowards/App.xaml" Line="14" Column="1" />
+      <File FileName="Mowards/Views/CategoriesFilterView.xaml" Line="27" Column="27" />
+      <File FileName="Mowards/Views/TriviaQuestionsPanel.xaml" Line="75" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
@@ -12,6 +11,7 @@
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Mowards.Droid PreferredExecutionTarget="Android.Android_Accelerated_Nougat" />
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.Mowards.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.A45BD78C-3ACE-42B7-838F-B0E10711DC54">
     <MonoDevelop.MacDev.AppleDevelopmentTeam />
