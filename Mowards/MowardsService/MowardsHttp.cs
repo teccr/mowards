@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Mowards.Models;
 using Mowards.Services;
+using Mowards.Views;
 using Newtonsoft.Json;
 
 namespace Mowards.MowardsService
@@ -21,7 +22,7 @@ namespace Mowards.MowardsService
             httpClient.DefaultRequestHeaders.Add("ZUMO-API-VERSION", "2.0.0");
             if(!isAnnonymous)
             {
-                httpClient.DefaultRequestHeaders.Add("X-ZUMO-AUTH", App.Current.Properties["AppToken"].ToString());
+                httpClient.DefaultRequestHeaders.Add("X-ZUMO-AUTH", App.Current.Properties[Utils.TOKEN_KEY].ToString());
             }
         }
 
@@ -148,7 +149,11 @@ namespace Mowards.MowardsService
             if(response.StatusCode 
                == HttpStatusCode.Unauthorized)
             {
-                throw new SecurityException("User was not authorize to use the web API.");
+                if(App.Current.MainPage.GetType() != typeof(LoginView) )
+                {
+                    await App.Current.MainPage.DisplayAlert("Security Issue", "Invalid session, please login again.", "Ok");
+                    App.Current.MainPage = new LoginView();    
+                }
             }
             if (response.StatusCode
               == HttpStatusCode.Forbidden)

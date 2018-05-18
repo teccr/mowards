@@ -79,7 +79,11 @@ namespace Mowards.ViewModels
                         {
                             if (poll.Answer != null)
                             {
-                                poll.CurrentChart = new PieChart() { Entries = poll.Results, LabelTextSize=50 };
+                                poll.CurrentChart = new PieChart() 
+                                { 
+                                    Entries = poll.Results, 
+                                    LabelTextSize=50
+                                };
                             }
                         }
                     }

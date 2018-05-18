@@ -18,7 +18,6 @@ namespace Mowards.ViewModels
         {
             InitClass();
             InitCommands();
-            AutomaticLoginAttempt();
         }
 
         #region Initialization section
@@ -34,6 +33,7 @@ namespace Mowards.ViewModels
             RegisterNewUserViewCommand = new Command(RegisterNewUserView);
             RegisterNewUserCommand = new Command(RegisterNewUserAction);
             CancelRegisterUserCommand = new Command(CancelRegister);
+            SignOutScreenCommand = new Command<string>(SignOutScreen);
         }
 
         #endregion
@@ -65,6 +65,20 @@ namespace Mowards.ViewModels
             {
                 _password = value;
                 OnPropertyChanged("Password");
+            }
+        }
+
+        private bool _rememberMe;
+        public bool RememberMe
+        {
+            get
+            {
+                return _rememberMe;
+            }
+            set
+            {
+                _rememberMe = value;
+                OnPropertyChanged("RememberMe");
             }
         }
         #endregion
@@ -184,6 +198,12 @@ namespace Mowards.ViewModels
         #endregion
         #region Commands
 
+        public ICommand SignOutScreenCommand
+        {
+            get;
+            set;
+        }
+
         public ICommand LoginCommand
         {
             get;
@@ -203,6 +223,24 @@ namespace Mowards.ViewModels
         {
             get;
             set;
+        }
+
+        private async void SignOutScreen(string optionId)
+        {
+            if(optionId == "signout")
+            {
+                var realmInstance = Realm.GetInstance(Utils.REALM_DB_NAME);
+                using(var transaction = realmInstance.BeginWrite())
+                {
+                    realmInstance.RemoveAll<LoginInfo>();
+                    transaction.Commit();
+                }
+                App.Current.MainPage = new LoginView();
+            }
+            else
+            {
+                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PopAsync();
+            }
         }
 
         private async void Login()
@@ -287,23 +325,27 @@ namespace Mowards.ViewModels
             {
                 App.Current.Properties.Add(Utils.TOKEN_KEY, tokenInformation.Token);
             }
+            userCredentials.Token = tokenInformation.Token;
 
-            var realmInstance = Realm.GetInstance();
-            var localUserData = realmInstance.All<LoginInfo>().Where( 
-                user => user.Username == Username );
-            if (localUserData.Count() == 0)
+            if(RememberMe)
             {
-                realmInstance.Write(() => {
-                    realmInstance.Add( userCredentials );
-                });
+                var realmInstance = Realm.GetInstance(Utils.REALM_DB_NAME);
+                var localUserData = realmInstance.All<LoginInfo>().Where(
+                    user => user.Username == Username);
+                if (localUserData.Count() == 0)
+                {
+                    realmInstance.Write(() => {
+                        realmInstance.Add(userCredentials);
+                    });
+                }
+                else
+                {
+                    var userInstance = localUserData.FirstOrDefault();
+                    if (userInstance.Token != userCredentials.Token)
+                        realmInstance.Write(() => userInstance.Token = userCredentials.Token);
+                }
+                localUserData.Count();
             }
-            else
-            {
-                var userInstance = localUserData.FirstOrDefault();
-                if(userInstance.Password != userCredentials.Password)
-                    realmInstance.Write( () => userInstance.Password = userCredentials.Password );
-            }
-            localUserData.Count();
 
             //Next Line to be discussed as how to set current user information.
             UserViewModel uvm = ViewModelFactory.GetInstance<UserViewModel>();
@@ -323,29 +365,12 @@ namespace Mowards.ViewModels
             //App.Current.MainPage = new CategoriesFilterView();
         }
 
-        public async void AutomaticLoginAttempt()
-        {
-            var realmInstance = Realm.GetInstance();
-            var localUserData = realmInstance.All<LoginInfo>();
-            if(localUserData.Count() > 0)
-            {
-                var firstUser = localUserData.FirstOrDefault();
-                if (!string.IsNullOrEmpty(firstUser.Username) &&
-                   !string.IsNullOrEmpty(firstUser.Password))
-                {
-                    Username = firstUser.Username;
-                    Password = firstUser.Password;
-                    await ExecuteLogin();
-                }
-            }
-        }
-
         private void CancelRegister()
         {
             App.Current.MainPage = new LoginView();
         }
 
-        public ObservableCollection<string> SetListCountries()
+        public static ObservableCollection<string> SetListCountries()
         {
 
             ObservableCollection<string> lst = new ObservableCollection<string>() {

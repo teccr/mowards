@@ -17,7 +17,7 @@ namespace Mowards.Views
 		public RegisterNewUserView ()
 		{
 			InitializeComponent ();
-            BindingContext = ViewModelFactory.GetInstance<LoginViewModel>();
+            BindingContext = new LoginViewModel();
         }
 	}
 }

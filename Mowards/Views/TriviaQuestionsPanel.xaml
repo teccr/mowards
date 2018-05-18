@@ -1,74 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CarouselPage 
+<ContentPage 
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     x:Class="Mowards.Views.TriviaQuestionsPanel"
     xmlns:local="clr-namespace:Mowards.Converters" 
+    xmlns:control="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView"
     Title="Question"
-    ItemsSource="{Binding Trivias}"
     x:Name="TriviaQuestionsWin"
     >
-    <CarouselPage.Resources>
+    <ContentPage.Resources>
         <ResourceDictionary>
             <local:IsPropertyNull x:Key="isPropertyNull" />
             <local:IsPropertyNotNull x:Key="isPropertyNotNull" />
             <local:IntToBooleanConverter x:Key="didNomineeWon" />
             <local:TriviaAnswerResultColorConverter x:Key="colorForTrivia" />
+            <local:IsNotNullOrEmptyConverter x:Key="isNotNullOrEmpty" />
+            <local:TriviaAnswerResultColorConverter x:Key="triviaResultToColor" />
+            <local:IsResponseIncorrectConverter x:Key="isResponseIncorrect" />
         </ResourceDictionary>
-    </CarouselPage.Resources>
-    <CarouselPage.ItemTemplate>
-        <DataTemplate>
-            <ContentPage>
-                <StackLayout Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                    <!-- Question and options -->
-                    <Frame HasShadow="true" 
-                           CornerRadius="20" 
-                           VerticalOptions="FillAndExpand" 
-                           HorizontalOptions="FillAndExpand">
-                        <StackLayout Padding="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                            <Label Text="{Binding Question.Level, StringFormat='Level {0}'}"
-                                   HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
-                            <Label Text="{Binding Question.Award.Year, StringFormat='Year: {0}'}"
-                                   HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
-                            <Label Text="{Binding Question.Award.Category, StringFormat='Winner for {0}'}" FontSize="Medium" HorizontalOptions="Center" />
-                            <ListView 
-                                IsVisible="{Binding Question.UserAnswer, Converter={StaticResource isPropertyNull}}"
-                                HasUnevenRows="true"
-                                ItemsSource="{Binding Options}"
-                                SelectedItem="{Binding BindingContext.SelectedAward, Source={x:Reference TriviaQuestionsWin}}"
-                                >
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <ViewCell>
-                                            <Grid> 
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition />
-                                                    <RowDefinition />
-                                                </Grid.RowDefinitions>
-                                                <Label Grid.Row="0" Text="{Binding Nominee}" HorizontalTextAlignment="Center" HorizontalOptions="Center" />
-                                                <Label Grid.Row="1" Text="{Binding Additional_Info}" HorizontalTextAlignment="Center" HorizontalOptions="Center" />
-                                            </Grid>
-                                        </ViewCell>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-
-                            <Frame IsVisible="{Binding Question.UserAnswer, Converter={StaticResource isPropertyNotNull}}">
-                                <StackLayout>
-                                    <Label Text="{Binding Question.Award.Nominee}" />
-                                    <Label Text="{Binding Question.UserAnswer.Nominee}" />    
-                                </StackLayout>
-                            </Frame>
-                            
-                            <Button Margin="25"  
+    </ContentPage.Resources>
+    <Grid 
+        HorizontalOptions="FillAndExpand" 
+        VerticalOptions="FillAndExpand">
+        <control:CarouselView
+                        ItemsSource="{Binding Trivias}">
+            <control:CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <!-- Question and options -->
+                        <Frame HasShadow="true" 
+                               CornerRadius="20" 
+                               VerticalOptions="FillAndExpand" 
+                               HorizontalOptions="FillAndExpand">
+                            <StackLayout Padding="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                <Label Text="{Binding Question.Level, StringFormat='Level {0}'}" 
+                                       Style="{StaticResource lblTextTitle}" />
+                                <Label Text="{Binding Question.Award.Year, StringFormat='Year: {0}'}"
+                                       Style="{StaticResource lblTextTitle}" />
+                                <Label Text="{Binding Question.Award.Category, StringFormat='Which was the winner for {0}?'}" 
+                                       Style="{StaticResource lblTextQuestion}" />
+                                <ListView 
+                                    Margin="5"
                                     IsVisible="{Binding Question.UserAnswer, Converter={StaticResource isPropertyNull}}"
-                                    Command="{Binding BindingContext.SubmitAnswerCommand, Source={x:Reference TriviaQuestionsWin}}" 
-                                    CommandParameter="{Binding Id}" Text="Submit" />
-                        </StackLayout>
-                    </Frame>
+                                    HasUnevenRows="true"
+                                    ItemsSource="{Binding Options}"
+                                    SelectedItem="{Binding BindingContext.SelectedAward, Source={x:Reference TriviaQuestionsWin}}"
+                                    VerticalOptions="Center"
+                                    >
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <Frame Margin="3">
+                                                    <StackLayout>
+                                                        <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand">
+                                                            <Label Grid.Row="0" Grid.Column="0" 
+                                                                   Text="Nominee:" 
+                                                                   Style="{StaticResource lblEmphasis}" />
+                                                            <Label Grid.Row="0" Grid.Column="1" 
+                                                                   Text="{Binding Nominee}"
+                                                                   Style="{StaticResource lblOption}" />
+                                                        </StackLayout>
+                                                        <StackLayout 
+                                                            IsVisible="{Binding Additional_Info, Converter={StaticResource isNotNullOrEmpty}}" 
+                                                            Orientation="Vertical" 
+                                                            VerticalOptions="FillAndExpand" >
+                                                            <Label Grid.Row="1" Grid.Column="0" 
+                                                                   Text="Additional Info:"
+                                                                   Style="{StaticResource lblEmphasis}"
+                                                                   />
+                                                            <Label Grid.Row="1" 
+                                                                   Text="{Binding Additional_Info}" 
+                                                                   Style="{StaticResource lblOption}" />
+                                                        </StackLayout>
+                                                    </StackLayout>
+                                                </Frame>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
 
-                </StackLayout>
-            </ContentPage>
-        </DataTemplate>
-    </CarouselPage.ItemTemplate>
-</CarouselPage>
+                                <StackLayout 
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="FillAndExpand"
+                                    Padding="10"
+                                    IsVisible="{Binding Question.UserAnswer, Converter={StaticResource isPropertyNotNull}}">
+                                    <StackLayout>
+                                        <Label Text="Your Answer:" 
+                                               Style="{StaticResource lblEmphasis}" />
+                                        <Label Text="{Binding Question.UserAnswer.Nominee}" 
+                                               Style="{StaticResource lblOption}"
+                                               TextColor="{Binding Question, Converter={StaticResource triviaResultToColor}}"
+                                               />
+                                        <StackLayout
+                                            IsVisible="{Binding Question.UserAnswer.Additional_Info, Converter={StaticResource isNotNullOrEmpty}}" >
+                                            <Label Text="Additional Info:" 
+                                                   Style="{StaticResource lblEmphasis}" />
+                                            <Label Text="{Binding Question.UserAnswer.Additional_Info}" 
+                                                   Style="{StaticResource lblOption}" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                    <StackLayout IsVisible="{Binding Question, Converter={StaticResource isResponseIncorrect}}">
+                                        <Label Text="Correct answer:" 
+                                               Style="{StaticResource lblEmphasis}" />
+                                        <Label Text="{Binding Question.Award.Nominee}" 
+                                               Style="{StaticResource lblOption}"
+                                               TextColor="Green" />
+                                        <StackLayout
+                                            IsVisible="{Binding Question.Award.Additional_Info, Converter={StaticResource isNotNullOrEmpty}}" >
+                                            <Label Text="Additional Info:" 
+                                                   Style="{StaticResource lblEmphasis}" />
+                                            <Label Text="{Binding Question.Award.Additional_Info}" 
+                                                   Style="{StaticResource lblOption}" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                </StackLayout>
+                                
+                                <Button Margin="5"  
+                                        Style="{StaticResource btnSubmit}"
+                                        IsVisible="{Binding Question.UserAnswer, Converter={StaticResource isPropertyNull}}"
+                                        Command="{Binding BindingContext.SubmitAnswerCommand, Source={x:Reference TriviaQuestionsWin}}" 
+                                        CommandParameter="{Binding Id}" Text="Submit" />
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+                </DataTemplate>
+            </control:CarouselView.ItemTemplate>
+        </control:CarouselView>
+
+         <ContentView IsVisible="{Binding IsBusy}" HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand">
+            <ActivityIndicator IsVisible="true" IsRunning="{Binding IsBusy}" 
+                               Style="{StaticResource activityLoaderMowards}" />
+        </ContentView>
+    </Grid>
+</ContentPage>

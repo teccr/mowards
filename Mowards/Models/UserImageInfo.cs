@@ -1,21 +1,15 @@
 ﻿using System;
 namespace Mowards.Models
 {
-    public class TokenInformation
+    public class UserImageInfo
     {
-        public string Token
-        {
-            get;
-            set;
-        }
-
         public string Username
         {
             get;
             set;
         }
 
-        public string PictureUrl
+        public string AzureUrl
         {
             get;
             set;
