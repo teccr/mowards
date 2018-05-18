@@ -5,31 +5,29 @@ using Xamarin.Forms;
 
 namespace Mowards.Converters
 {
-    public class TriviaAnswerResultColorConverter : IValueConverter
+    public class IsResponseIncorrectConverter : IValueConverter
     {
-        private Color NoAction = Color.Black;
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
-                return NoAction;
+                return false;
 
             var triviaProxy = value as TriviaAnswer;
 
             if (triviaProxy == null)
-                return NoAction;
+                return false;
 
             if (triviaProxy.UserAnswer == null)
-                return NoAction;
+                return false;
 
-            if(triviaProxy.Award.Nominee 
-               == triviaProxy.UserAnswer.Nominee)
+            if (triviaProxy.Award.Nominee
+               != triviaProxy.UserAnswer.Nominee)
             {
-                return NoAction;
+                return true;
             }
             else
             {
-                return Color.Red;
+                return false;
             }
         }
 

@@ -17,63 +17,67 @@
         <StackLayout
             VerticalOptions="FillAndExpand"
             HorizontalOptions="FillAndExpand"
+            Padding="10"
             >
-            <Label Text="Oscars - 2018" />
-            <Picker ItemsSource="{Binding Categories}" />
-            <ContentView  
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="FillAndExpand"
+            <control:CarouselView
+                ItemsSource="{Binding Polls}"
                 >
-                <StackLayout>
-                    <control:CarouselView
-                        ItemsSource="{Binding Polls}"
-                        >
-                        <control:CarouselView.ItemTemplate>
-                            <DataTemplate>
-                                <StackLayout>
-                                    <Label Text="{Binding Definition.Year}" />
-                                    <Label Text="{Binding Definition.Category}" />
-                                    <StackLayout 
-                                        IsVisible="{Binding Answer, Converter={StaticResource isPropertyNull}}">
-                                        <ListView 
-                                            HasUnevenRows="true"
-                                            ItemsSource="{Binding Definition.Options}"
-                                            SelectedItem="{Binding BindingContext.SelectedAnswer, Source={x:Reference PollsView}}"
-                                            >
-                                            <ListView.ItemTemplate>
-                                                <DataTemplate>
-                                                    <ViewCell>
-                                                        <Label Grid.Row="0" Text="{Binding Option}" HorizontalTextAlignment="Center" HorizontalOptions="Center" />
-                                                    </ViewCell>
-                                                </DataTemplate>
-                                            </ListView.ItemTemplate>
-                                        </ListView>
-                                        <Button Margin="25"
-                                            Command="{Binding BindingContext.SubmitAnswerCommand, Source={x:Reference PollsView}}" 
-                                            CommandParameter="{Binding Definition.Id}" Text="Submit" />
-                                    </StackLayout>
-                                    <StackLayout
-                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                        IsVisible="{Binding Answer, Converter={StaticResource isPropertyNotNull}}">
-                                        <microcharts:ChartView 
-                                            HeightRequest="200"
-                                            WidthRequest="300"
-                                            Chart="{Binding CurrentChart}" />
-                                    </StackLayout>
-                                </StackLayout>
-                            </DataTemplate>
-                        </control:CarouselView.ItemTemplate>
-                    </control:CarouselView>
-                    <views:CarouselIndicators
-                        IndicatorHeight="16" 
-                        IndicatorWidth="16" 
-                        UnselectedIndicator="unselected_circle.png" 
-                        SelectedIndicator="selected_circle.png" 
-                        ItemsSource="{Binding Polls}"
-                        Position="{Binding Position}"
-                    />
-                </StackLayout>
-            </ContentView>
+                <control:CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"
+                            >
+                            <Label Text="{Binding Definition.Year}"
+                                   Style="{StaticResource lblTextTitle}" />
+                            <Label Text="{Binding Definition.Category, StringFormat='Category: {0}'}"
+                                   Style="{StaticResource lblTextTitle}" />
+                            <StackLayout 
+                                IsVisible="{Binding Answer, Converter={StaticResource isPropertyNull}}">
+                                <ListView 
+                                    Margin="10"
+                                    VerticalOptions="Center"
+                                    HasUnevenRows="true"
+                                    ItemsSource="{Binding Definition.Options}"
+                                    SelectedItem="{Binding BindingContext.SelectedAnswer, Source={x:Reference PollsView}}"
+                                    >
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <Frame HeightRequest="60" Padding="5" Margin="5">
+                                                    <Label Text="{Binding Option}" 
+                                                           HorizontalTextAlignment="Center" HorizontalOptions="Center"
+                                                           VerticalOptions="Center" VerticalTextAlignment="Center" />
+                                                </Frame>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                                <Button Margin="25"
+                                    Style="{StaticResource btnSubmit}"
+                                    Command="{Binding BindingContext.SubmitAnswerCommand, Source={x:Reference PollsView}}" 
+                                    CommandParameter="{Binding Definition.Id}" Text="Submit" />
+                            </StackLayout>
+                            <StackLayout
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                IsVisible="{Binding Answer, Converter={StaticResource isPropertyNotNull}}">
+                                <microcharts:ChartView 
+                                    HeightRequest="600"
+                                    WidthRequest="300"
+                                    Chart="{Binding CurrentChart}" />
+                            </StackLayout>
+                        </StackLayout>
+                    </DataTemplate>
+                </control:CarouselView.ItemTemplate>
+            </control:CarouselView>
+            <views:CarouselIndicators
+                IndicatorHeight="16" 
+                IndicatorWidth="16" 
+                UnselectedIndicator="unselected_circle.png" 
+                SelectedIndicator="selected_circle.png" 
+                ItemsSource="{Binding Polls}"
+                Position="{Binding Position}"
+            />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

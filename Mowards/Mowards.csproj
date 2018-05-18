@@ -160,6 +160,8 @@
     <Compile Include="Views\Behaviors\BindableBehavior.cs" />
     <Compile Include="MowardsService\AzureStorageService.cs" />
     <Compile Include="Models\UserImageInfo.cs" />
+    <Compile Include="Converters\IsNotNullOrEmptyConverter.cs" />
+    <Compile Include="Converters\IsResponseIncorrectConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Media, Version=3.1.3.0, Culture=neutral, processorArchitecture=MSIL">

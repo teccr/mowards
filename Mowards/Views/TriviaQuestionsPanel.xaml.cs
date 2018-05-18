@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace Mowards.Views
 {
-    public partial class TriviaQuestionsPanel : CarouselPage
+    public partial class TriviaQuestionsPanel : ContentPage
     {
         public TriviaQuestionsPanel()
         {

@@ -8,7 +8,14 @@ namespace Mowards.Models
             get;
             set;
         }
+
         public string Username
+        {
+            get;
+            set;
+        }
+
+        public string PictureUrl
         {
             get;
             set;

@@ -341,8 +341,8 @@ namespace Mowards.ViewModels
                 else
                 {
                     var userInstance = localUserData.FirstOrDefault();
-                    if (userInstance.Password != userCredentials.Password)
-                        realmInstance.Write(() => userInstance.Password = userCredentials.Password);
+                    if (userInstance.Token != userCredentials.Token)
+                        realmInstance.Write(() => userInstance.Token = userCredentials.Token);
                 }
                 localUserData.Count();
             }

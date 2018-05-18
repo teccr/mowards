@@ -5,29 +5,49 @@
              Title="Trivia Selection" 
              x:Name="TriviaSelection"
              >
-    <StackLayout>
-        <Label Text="Select your level" />
-        <ListView HasUnevenRows="true" 
-                  HorizontalOptions="FillAndExpand"
-                  ItemsSource="{Binding TriviaResults}"
-                  >
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Orientation="Vertical" 
-                                     VerticalOptions="FillAndExpand" 
-                                     Margin="5,0,5,5" 
-                                     Padding="10">
-                            <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Path=BindingContext.LoadQuestionsCommand, Source={x:Reference TriviaSelection}}" 
-                                                      CommandParameter="{Binding Level}"/>
-                            </StackLayout.GestureRecognizers>
-                            <Label Text="{Binding Level}" />
-                            <Label Text="{Binding CorrectAnswers}" />
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+    <Grid 
+        VerticalOptions="FillAndExpand"
+        HorizontalOptions="FillAndExpand">
+        <StackLayout>
+            <Label Text="Select your level" 
+                   HorizontalOptions="CenterAndExpand" 
+                   HorizontalTextAlignment="Center"
+                   Style="{StaticResource lblTextTitle}" />
+            <ListView HasUnevenRows="true" 
+                      HorizontalOptions="FillAndExpand"
+                      ItemsSource="{Binding TriviaResults}"
+                      >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame Margin="15" Padding="10" HeightRequest="100"
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalOptions="FillAndExpand">
+                                <StackLayout Orientation="Vertical" 
+                                             VerticalOptions="FillAndExpand" 
+                                             HorizontalOptions="FillAndExpand">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.LoadQuestionsCommand, Source={x:Reference TriviaSelection}}" 
+                                                              CommandParameter="{Binding Level}"/>
+                                    </StackLayout.GestureRecognizers>
+                                    <Label
+                                        Style="{StaticResource lblEmphasis}"
+                                        Text="{Binding Level, StringFormat='Level: {0}'}" />
+                                    <Label
+                                        Style="{StaticResource lblEmphasis}"
+                                        Text="{Binding CorrectAnswers, StringFormat='Correct answers: {0}'}" />
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+
+        <ContentView IsVisible="{Binding IsBusy}" HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand">
+            <ActivityIndicator IsVisible="true" IsRunning="{Binding IsBusy}" 
+                               Style="{StaticResource activityLoaderMowards}" />
+        </ContentView>
+    </Grid>
 </ContentPage>

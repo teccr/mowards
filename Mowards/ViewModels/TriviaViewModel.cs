@@ -53,7 +53,7 @@ namespace Mowards.ViewModels
                     currentQuestion.Question.UserAnswer = SelectedAward;
                     var triviaResult = await TriviaAnswer.SubmitAnswer(currentQuestion.Question);
                     currentQuestion.Question = triviaResult;
-                    await App.Current.MainPage.DisplayAlert("Test", "Some test message", "Done");
+                    LoadTriviaResults();
                 }
             });
             await ExecuteSafeOperation(submit);
@@ -109,7 +109,9 @@ namespace Mowards.ViewModels
         {
             Func<Task> triviaFunction = async () =>
             {
-                TriviaResults = await TriviaChallengeResults.GetTriviaChallengesResults();
+                var results = await TriviaChallengeResults.GetTriviaChallengesResults();
+                TriviaResults = new ObservableCollection<TriviaChallengeResults>(
+                    results.OrderBy( result => result.Level ));
             };
             await ExecuteSafeOperation(triviaFunction);
         }
