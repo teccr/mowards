@@ -64,10 +64,7 @@ namespace Mowards.ViewModels
                         foreach(PoolsResults poolResult in query)
                         {
                             var proxy = Polls.Where(p => p.Definition.Category == poolResult.Category).FirstOrDefault();
-                            if(proxy.Results == null)
-                            {
-                                proxy.Results = new ObservableCollection<Microcharts.Entry>();
-                            }
+                            proxy.Results = new ObservableCollection<Microcharts.Entry>();
                             var entry = new Microcharts.Entry(poolResult.Votes);
                             entry.Label = poolResult.Option;
                             var newColor = new SkiaSharp.SKColor((byte)rnd.Next(256), (byte)rnd.Next(256), (byte)rnd.Next(256));
