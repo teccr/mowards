@@ -20,5 +20,6 @@ namespace Mowards
         public const string REALM_DB_NAME = "mowardsDataV0";
         public const string FILE_CONTAINER_NAME = "mowardspics";
         public const string UPDATE_PICTURE_URL = BASE_URL + "/api/UserPicture";
+        public const string FAVORITES_URL = BASE_URL + "/api/Favorites";
     }
 }

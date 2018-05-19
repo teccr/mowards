@@ -168,6 +168,7 @@
     <BundleResource Include="Resources\Edit_24px.png" />
     <BundleResource Include="Resources\selected_circle.png" />
     <BundleResource Include="Resources\unselected_circle.png" />
+    <BundleResource Include="Resources\winner.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

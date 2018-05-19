@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Mowards.Views;
+using Xamarin.Forms.Internals;
+using Mowards.Services;
 
 namespace Mowards.ViewModels
 {
@@ -45,6 +47,7 @@ namespace Mowards.ViewModels
             AddYearCommand = new Command(AddYear);
             SeeMovieDetailsCommand=new Command<int>(SeeMovieDetails);
             GetMovieCreditsCommand = new Command(GetMovieCredits);
+            AddRemoveFavoriteToolbar = new Command(addRemoveFavoriteToolbar);
         }
 
         private async void GetMovieCredits()
@@ -53,10 +56,41 @@ namespace Mowards.ViewModels
             OnPropertyChanged("CurrentMovie");
         }
 
-        private async void SeeMovieDetails(int TMDBMovieID)
+        private async void addRemoveFavoriteToolbar()
+        {
+            Func<Task> addFavorite = new Func<Task>(
+                async () =>
+                {
+                    IsInFavorites = false;
+                    Favorite newFavorite = new Favorite();
+                    newFavorite.MovieId = CurrentMovie.TMDBMovieID.ToString();
+                    newFavorite.MovieName = CurrentMovie.TMDBTitle;
+                    newFavorite.Image = CurrentMovie.PosterURL;
+                    await Favorite.SaveFavorite(newFavorite);
+                    ViewModelFactory.GetInstance<FavoritesViewModel>().GetMyReviews();
+                }
+            );
+            await ExecuteSafeOperation(addFavorite);
+        }
+
+        public async void SeeMovieDetails(int TMDBMovieID)
         {
             CurrentMovie = await Movie.GetMovieByTMDBId(TMDBMovieID);
+            IsInFavorites = false;
             await((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new MovieDetailsView());
+            IsInFavorites = false;
+            try
+            {
+                var result = await Favorite.GetUserFavorites(TMDBMovieID.ToString());
+                if(result == null || result.Count() == 0)
+                {
+                    IsInFavorites = true;
+                }
+            }
+            catch
+            {
+                
+            }
         }
 
         private void AddYear()
@@ -69,9 +103,17 @@ namespace Mowards.ViewModels
             SelectedYear = SelectedYear - 1;
         }
 
+
+
         #endregion
 
         #region Commands
+
+        public ICommand AddRemoveFavoriteToolbar
+        {
+            get;
+            set;
+        }
 
         public ICommand GetAwardsByFiltersCommand
         {
@@ -101,9 +143,12 @@ namespace Mowards.ViewModels
         
         private async void GetAwardsByFilters()
         {
-            string[] selectedCategories = (
+            var rawSelectedCategories = (
                 _categories.Where(category => category.Selected).Select(
                     category => category.Category)).ToArray();
+            if (rawSelectedCategories.Count() == 0)
+                return;
+            string[] selectedCategories = rawSelectedCategories.ToArray();
             var unsortedAwards = await Award.GetAwardsByFilters(
                 SelectedYear, selectedCategories);
             var sortedAwards = from award in unsortedAwards
@@ -111,14 +156,12 @@ namespace Mowards.ViewModels
                                group award by award.Category into awardsGroup
                                select new AwardsGroup<string, Award>(
                                                 awardsGroup.Key, awardsGroup);
+            
             var oldAwards = new ObservableCollection<AwardsGroup<string, Award>>();
             foreach (var item in sortedAwards)
                 oldAwards.Add(item);
             Awards = oldAwards;
             await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PushAsync(new FilteredAwardsView());
-
-            
-
         }
 
         // It was not possible to bind the Slider value changed to a command, 
@@ -131,10 +174,45 @@ namespace Mowards.ViewModels
             };
             await ExecuteSafeOperation(operation);
         }
-       
+
         #endregion
 
         #region Data properties
+
+        private bool _isInFavorites = false;
+        public bool IsInFavorites
+        {
+            get
+            {
+                return _isInFavorites;
+            }
+            set
+            {
+                _isInFavorites = value;
+                OnPropertyChanged("IsInFavorites");
+            }
+        }
+
+        private bool _selectAllCategories = false;
+        public bool SelectAllCategories
+        {
+            get
+            {
+                return _selectAllCategories;
+            }
+            set
+            {
+                if(_selectAllCategories != value)
+                {
+                    foreach(var category in Categories)
+                    {
+                        category.Selected = value;
+                    }
+                }
+                _selectAllCategories = value;
+                OnPropertyChanged("SelectAllCategories");
+            }
+        }
 
         private ObservableCollection<AwardCategory> _categories;
         public ObservableCollection<AwardCategory> Categories

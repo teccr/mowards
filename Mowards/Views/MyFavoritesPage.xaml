@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mowards.Views.MyFavoritesPage"
@@ -6,40 +6,37 @@
              x:Name="MyFavoritesPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="My Favorites"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            <ListView ItemsSource="{Binding CurrentUser.UserFavorites}">
+            <ListView
+                HasUnevenRows="true"
+                ItemsSource="{Binding MyFavorites}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Orientation="Horizontal" Padding="10" VerticalOptions="FillAndExpand">
-                              
-                                <StackLayout Orientation="Horizontal">
-                                    <!--<StackLayout.GestureRecognizers>
+                            <Grid 
+                                HorizontalOptions="FillAndExpand" 
+                                VerticalOptions="FillAndExpand" 
+                                HeightRequest="110">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!--<StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding Path=BindingContext.SeeMovieDetails, 
                                                             Source={x:Reference MyFavoritesPage}}" CommandParameter="{Binding MovieId}" />
                                     </StackLayout.GestureRecognizers>-->
-                                    <Image Source="Bind Movie Image" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" HeightRequest="60" WidthRequest="60" >
-                                </Image>
-                                
-                                <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
-                                    <Label Text="{Binding MovieId}" Font="16" TextColor="Black"  />
-                                </StackLayout>
-                                <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
-                                    <Label Text="Bind Movie Name" Font="16" TextColor="Black" />
-                                </StackLayout>
-                                </StackLayout>
-                                <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="End">
-                                    <Image Source="Reduce_24px"  >
-                                        <Image.GestureRecognizers >
-                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.RemoveFavorite, 
-                                                            Source={x:Reference MyFavoritesPage}}" CommandParameter="{Binding MovieId}" />
-                                        </Image.GestureRecognizers>
-                                    </Image>
-                                </StackLayout>
+                                <Image Grid.Column="0" Source="{Binding Image}" Margin="5" VerticalOptions="FillAndExpand" HorizontalOptions="Start" HeightRequest="80" WidthRequest="80" />
 
-                            </StackLayout>
+                                <Label Grid.Column="1" Text="{Binding MovieName}" VerticalOptions="Center" VerticalTextAlignment="Center" Font="16" TextColor="Black" />
+
+                                <Image Grid.Column="2" Source="Reduce_24px" HorizontalOptions="End" Margin="5"  >
+                                    <Image.GestureRecognizers >
+                                        <TapGestureRecognizer Command="{Binding Path=BindingContext.RemoveFavoriteCommand, 
+                                                        Source={x:Reference MyFavoritesPage}}" CommandParameter="{Binding Id}" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

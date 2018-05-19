@@ -44,6 +44,24 @@ namespace Mowards.MowardsService
             return result;
         }
 
+        internal async Task<T> Delete<T>(string url) where T : class
+        {
+            SetHeaders(false);
+            JsonSerializerSettings settings = new JsonSerializerSettings()
+            {
+                ContractResolver = new LowercaseContractResolver()
+            };
+            HttpResponseMessage response = await httpClient.DeleteAsync(url);
+            //response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                await HandleError(response);
+            }
+            var rawJson = await response.Content.ReadAsStringAsync();
+            T result = JsonConvert.DeserializeObject<T>(rawJson, settings);
+            return result;
+        }
+
         internal async Task<T> PostDetails<T, K>(string url, K argumentsObject, 
                                         bool isAnnonymous = false) where T : class 
                                                                    where K : class

@@ -162,6 +162,8 @@
     <Compile Include="Models\UserImageInfo.cs" />
     <Compile Include="Converters\IsNotNullOrEmptyConverter.cs" />
     <Compile Include="Converters\IsResponseIncorrectConverter.cs" />
+    <Compile Include="Converters\IsNomineeAWinnerConverter.cs" />
+    <Compile Include="ViewModels\FavoritesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Media, Version=3.1.3.0, Culture=neutral, processorArchitecture=MSIL">
