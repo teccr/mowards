@@ -24,7 +24,7 @@ namespace Mowards.ViewModels
 
         protected override void InitClass()
         {
-
+            ListOfCountries = SetListCountries();
         }
 
         protected override void InitCommands()
@@ -251,13 +251,8 @@ namespace Mowards.ViewModels
             await ExecuteSafeOperation(executeLogin);
         }
 
-        private async void RegisterNewUserView()
+        private void RegisterNewUserView()
         {
-            if (ListOfCountries == null || ListOfCountries.Count==0) {
-
-                ListOfCountries= SetListCountries();
-            }
-
             //(App.Current.MainPage).Navigation.PushAsync(new RegisterNewUserView());
             App.Current.MainPage = new Mowards.Views.RegisterNewUserView();
         }
@@ -285,6 +280,7 @@ namespace Mowards.ViewModels
                         Password = NewUserPassword,
                         BirthDate = NewUserBirthDate,
                         Country = NewUserCountry,
+                        Fullname = NewUserName
                         //Picture = NewUserPicture
                     };
 
@@ -298,7 +294,7 @@ namespace Mowards.ViewModels
                             Password = NewUserPassword;
                             await ExecuteLogin();
                             };
-                        await ExecuteSafeOperation(executeLogin);
+                    await ExecuteSafeOperation(executeLogin);
                     }
                 };
                 await ExecuteSafeOperation(registerNewUser);

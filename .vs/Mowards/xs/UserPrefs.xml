@@ -1,12 +1,11 @@
-﻿<Properties StartupConfiguration="{DEFC1D5E-A3E7-4777-8C30-5C5F1CE41332}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
+﻿<Properties StartupConfiguration="{DE65FD19-E640-4214-BEB5-C223523D341D}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Mowards/Views/AwardsPollsView.xaml" Line="83" Column="15" />
-      <File FileName="Mowards/App.xaml" Line="51" Column="1" />
-      <File FileName="Mowards/ViewModels/PollViewModel.cs" Line="84" Column="61" />
+      <File FileName="Mowards/Views/TriviaQuestionsPanel.xaml" Line="53" Column="93" />
+      <File FileName="Mowards/Views/AcademyAwardsTriviaView.xaml" Line="23" Column="78" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

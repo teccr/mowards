@@ -29,7 +29,7 @@
                 <Label Text="Categories" HorizontalOptions="Center" FontSize="Large" FontAttributes="Bold" TextColor="Black"/>
                 <StackLayout HorizontalOptions="End" Orientation="Horizontal">
                     <Label Text="All Categories" FontSize="Small" FontAttributes="Bold" />
-                    <Switch IsToggled="False" HorizontalOptions="End" />
+                    <Switch IsToggled="{Binding SelectAllCategories}" HorizontalOptions="End"  />
                 </StackLayout>
                 <ListView ItemsSource="{Binding Categories}" HasUnevenRows="True">
                     <ListView.Header>

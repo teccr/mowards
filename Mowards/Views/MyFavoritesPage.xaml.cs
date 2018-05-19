@@ -17,7 +17,7 @@ namespace Mowards.Views
 		public MyFavoritesPage ()
 		{
 			InitializeComponent ();
-            BindingContext = ViewModelFactory.GetInstance<UserViewModel>();
+            BindingContext = ViewModelFactory.GetInstance<FavoritesViewModel>();
         }
 	}
 }
