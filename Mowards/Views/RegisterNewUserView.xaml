@@ -1,30 +1,44 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mowards.Views.RegisterNewUserView">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-            <Label Text="MoWards" />
-            <Label Text="New User Registration" />
-            <Image />
-            <Label Text="Select Profile Picture" />
-            <Label Text="Email*" />
-            <Entry Text="{Binding NewUserEmail}" Placeholder="Example: john@email.com"/>
-            <Label Text="Name*" />
-            <Entry Text="{Binding NewUserName}" Placeholder="Example: John Smith L."/>
-            <Label Text="Password*" />
-            <Entry Text="{Binding NewUserPassword}" 
-                   IsPassword="True" Placeholder="Password"/>
-            <Entry Text="{Binding NewUserPasswordConfirm}" 
-                   IsPassword="True" Placeholder="Confirm Password"/>
-            <Label Text="Birthday" />
-            <DatePicker Date="{Binding NewUserBirthday}" />
-            <Label Text="Country" />
-            <Picker SelectedItem="{Binding NewUserCountry}" ItemsSource="{Binding ListOfCountries}"/>
-            <StackLayout Orientation="Horizontal">
-                <Button Text="Register" Command="{Binding RegisterNewUserCommand}" />
-                <Button Text="Cancel"  Command="{Binding CancelRegisterUserCommand}" />
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
+                <StackLayout Padding="0" Margin="20,10" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
+                    <Image Source="LogoBottomTitle.png" HeightRequest="150" WidthRequest="100" />
+                    <StackLayout Padding="5" Margin="5,0">
+                        <Label Style="{StaticResource lblTextTitle}" Text="New User Registration" />
+                        <Label TextColor="Black"  Font="18" FontAttributes="Bold" Text="Email:" />
+                        <Entry Text="{Binding NewUserEmail}" Placeholder="Example: john@email.com"/>
+                        <Label TextColor="Black"  Font="18" FontAttributes="Bold" Text="Name:" />
+                        <Entry Text="{Binding NewUserName}" Placeholder="Example: John Smith L."/>
+                    </StackLayout>
+                    <StackLayout Padding="5" Margin="5,0">
+                        <Label TextColor="Black"  Font="18" FontAttributes="Bold" Text="Password" />
+                        <Entry Text="{Binding NewUserPassword}" 
+                               IsPassword="True" Placeholder="Password"/>
+                        <Entry Text="{Binding NewUserPasswordConfirm}" 
+                               IsPassword="True" Placeholder="Confirm Password"/>
+                    </StackLayout>
+                    <StackLayout Padding="5" Margin="5,0">
+                        <Label TextColor="Black"  Font="18" FontAttributes="Bold" Text="Birthday" />
+                        <DatePicker Date="{Binding NewUserBirthday}" />
+                        <Label TextColor="Black"  Font="18" FontAttributes="Bold" Text="Country" />
+                        <Picker Title="Select your country..." SelectedItem="{Binding NewUserCountry}" ItemsSource="{Binding ListOfCountries}"/>    
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical">
+                        <Button Text="Register" Style="{StaticResource btnSubmit}" Command="{Binding RegisterNewUserCommand}" />
+                        <Button Text="Cancel" Style="{StaticResource btnSubmit}"  Command="{Binding CancelRegisterUserCommand}" />
+                    </StackLayout>    
+                </StackLayout>
             </StackLayout>
-        </StackLayout>
+
+            <ContentView IsVisible="{Binding IsBusy}" HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand">
+                <ActivityIndicator IsVisible="true" IsRunning="{Binding IsBusy}" 
+                                   Style="{StaticResource activityLoaderMowards}" />
+            </ContentView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

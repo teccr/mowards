@@ -5,48 +5,56 @@
              Title="Edit Profile"
              x:Name="Edit Profile">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="FillAndExpand">
-            <StackLayout Padding="0" Margin="20,10" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                <StackLayout Orientation="Horizontal" >
-                    <Image BackgroundColor="DimGray" Source="{Binding ImageLocation}" HeightRequest="120" WidthRequest="120"  HorizontalOptions="Center" />
-                    <StackLayout  VerticalOptions="FillAndExpand" >
-                        <StackLayout VerticalOptions="FillAndExpand" Padding="5" >
-                            <Label TextColor="Black"  Font="18" FontAttributes="Bold" Text="Your Email (Username):" />
-                            <Label TextColor="Black"  Font="16" Text="{Binding CurrentUser.Email}" />
-                        </StackLayout>
-                        <StackLayout Margin="0,5,0,0" VerticalOptions="FillAndExpand" Padding="0">
-                            <Button  VerticalOptions="End" Text="Change Profile Picture" HorizontalOptions="Center" Command="{Binding TakeSelectPictureViewCommand}" />
-                        </StackLayout>                    
-                    </StackLayout>
-                </StackLayout>
-                <StackLayout Padding="5" Margin="5,0">
-                    <Label TextColor="Black" Font="18" FontAttributes="Bold" Text="Your Name:" />
-                    <Entry Text="{Binding EditUserNewFullName}" />
-                    <Label TextColor="Black" Font="18" FontAttributes="Bold" Text="Your Birthday" />
-                    <DatePicker Date="{Binding EditUserNewBirthday}" />
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout VerticalOptions="FillAndExpand">
+                <StackLayout Padding="0" Margin="20,10" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                     <StackLayout Orientation="Horizontal" >
-                        <Label TextColor="Black" Font="18" FontAttributes="Bold"  Text="Your Country:" YAlign="Center" />
-                        <Label TextColor="Black"  Font="16" FontAttributes="Bold" YAlign="Center" Text="{Binding CurrentUser.Country}" />
+                        <Image BackgroundColor="DimGray" Source="{Binding ImageLocation}" HeightRequest="120" WidthRequest="120"  HorizontalOptions="Center" />
+                        <StackLayout  VerticalOptions="FillAndExpand" >
+                            <StackLayout VerticalOptions="FillAndExpand" Padding="5" >
+                                <Label TextColor="Black"  Font="18" FontAttributes="Bold" Text="Your Email (Username):" />
+                                <Label TextColor="Black"  Font="16" Text="{Binding CurrentUser.Email}" />
+                            </StackLayout>
+                            <StackLayout Margin="0,5,0,0" VerticalOptions="FillAndExpand" Padding="0">
+                                <Button  VerticalOptions="End" Text="Change Profile Picture" HorizontalOptions="Center" Command="{Binding TakeSelectPictureViewCommand}" />
+                            </StackLayout>                    
+                        </StackLayout>
                     </StackLayout>
-                    <Picker  Title="Select other Country..."  SelectedItem="{Binding EditUserNewCountry}" ItemsSource="{Binding ListOfCountries}"/>
-                </StackLayout>
-                <StackLayout Margin="0,10" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="End">
-                    <Button FontAttributes="Bold" TextColor="Black" Text="Save Profile Changes" Command="{Binding SaveEditUserCommand}" />
-                    <Button FontAttributes="Bold" TextColor="Black" Text="Cancel"  Command="{Binding CancelEditUserCommand}" />
-                </StackLayout>
-                <StackLayout Padding="5" Margin="5,0">
-                    <Label TextColor="Black" Font="18"  FontAttributes="Bold" Text="Change Password?" />
-                    <Entry TextColor="Black" Text="{Binding EditUserNewPassword}" 
-                      IsPassword="True" Placeholder="Type New Password"/>
-                    <Entry TextColor="Black" Text="{Binding EditUserNewPasswordConfirm}" 
-                      IsPassword="True" Placeholder="Confirm New Password"/>
-                    <StackLayout Margin="0,10" HorizontalOptions="CenterAndExpand" VerticalOptions="End">
-                        <Button FontAttributes="Bold" TextColor="Black" Text="Reset Password" Command="{Binding ResetPasswordCommand}" />
+                    <StackLayout Padding="5" Margin="5,0">
+                        <Label TextColor="Black" Font="18" FontAttributes="Bold" Text="Your Name:" />
+                        <Entry Text="{Binding EditUserNewFullName}" />
+                        <Label TextColor="Black" Font="18" FontAttributes="Bold" Text="Your Birthday" />
+                        <DatePicker Date="{Binding EditUserNewBirthday}" />
+                        <StackLayout Orientation="Horizontal" >
+                            <Label TextColor="Black" Font="18" FontAttributes="Bold"  Text="Your Country:" YAlign="Center" />
+                            <Label TextColor="Black"  Font="16" FontAttributes="Bold" YAlign="Center" Text="{Binding CurrentUser.Country}" />
+                        </StackLayout>
+                        <Picker  Title="Select other Country..."  SelectedItem="{Binding EditUserNewCountry}" ItemsSource="{Binding ListOfCountries}"/>
+                    </StackLayout>
+                    <StackLayout Margin="0,10" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="End">
+                        <Button FontAttributes="Bold" TextColor="Black" Text="Save Profile Changes" Command="{Binding SaveEditUserCommand}" />
+                        <Button FontAttributes="Bold" TextColor="Black" Text="Cancel"  Command="{Binding CancelEditUserCommand}" />
+                    </StackLayout>
+                    <StackLayout Padding="5" Margin="5,0">
+                        <Label TextColor="Black" Font="18"  FontAttributes="Bold" Text="Change Password?" />
+                        <Entry TextColor="Black" Text="{Binding EditUserNewPassword}" 
+                          IsPassword="True" Placeholder="Type New Password"/>
+                        <Entry TextColor="Black" Text="{Binding EditUserNewPasswordConfirm}" 
+                          IsPassword="True" Placeholder="Confirm New Password"/>
+                        <StackLayout Margin="0,10" HorizontalOptions="CenterAndExpand" VerticalOptions="End">
+                            <Button FontAttributes="Bold" TextColor="Black" Text="Reset Password" Command="{Binding ResetPasswordCommand}" />
 
+                        </StackLayout>
+                          
                     </StackLayout>
-                      
                 </StackLayout>
             </StackLayout>
-        </StackLayout>
+
+            <ContentView IsVisible="{Binding IsBusy}" HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand">
+                <ActivityIndicator IsVisible="true" IsRunning="{Binding IsBusy}" 
+                                   Style="{StaticResource activityLoaderMowards}" />
+            </ContentView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

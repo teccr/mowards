@@ -59,11 +59,11 @@
                                     CommandParameter="{Binding Definition.Id}" Text="Submit" />
                             </StackLayout>
                             <StackLayout
-                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand"
                                 IsVisible="{Binding Answer, Converter={StaticResource isPropertyNotNull}}">
                                 <microcharts:ChartView 
-                                    HeightRequest="600"
-                                    WidthRequest="300"
+                                    HeightRequest="200"
+                                    WidthRequest="150"
                                     Chart="{Binding CurrentChart}" />
                             </StackLayout>
                         </StackLayout>

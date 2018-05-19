@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Microcharts;
+using Xamarin.Forms.Internals;
 
 namespace Mowards.ViewModels
 {
@@ -23,8 +24,8 @@ namespace Mowards.ViewModels
         {
             Polls = new ObservableCollection<PollsProxy>();
             GetAvailablePools();
-            GetPoolResults();
             GetUserAnswers();
+            GetPoolResults();
         }
 
         protected override void InitCommands()
@@ -61,10 +62,11 @@ namespace Mowards.ViewModels
                     var query = await PoolsResults.GetAvailablePools();
                     if(query.Count() > 0)
                     {
+                        Polls.ForEach( poll => poll.Results = new ObservableCollection<Microcharts.Entry>() );
+
                         foreach(PoolsResults poolResult in query)
                         {
                             var proxy = Polls.Where(p => p.Definition.Category == poolResult.Category).FirstOrDefault();
-                            proxy.Results = new ObservableCollection<Microcharts.Entry>();
                             var entry = new Microcharts.Entry(poolResult.Votes);
                             entry.Label = poolResult.Option;
                             var newColor = new SkiaSharp.SKColor((byte)rnd.Next(256), (byte)rnd.Next(256), (byte)rnd.Next(256));

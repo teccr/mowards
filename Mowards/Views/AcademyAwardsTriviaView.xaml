@@ -20,11 +20,11 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame Margin="15" Padding="10" HeightRequest="100"
+                            <Frame Margin="15" Padding="10" HeightRequest="110" 
                                    VerticalOptions="FillAndExpand" 
                                    HorizontalOptions="FillAndExpand">
                                 <StackLayout Orientation="Vertical" 
-                                             VerticalOptions="FillAndExpand" 
+                                             VerticalOptions="CenterAndExpand" 
                                              HorizontalOptions="FillAndExpand">
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding Path=BindingContext.LoadQuestionsCommand, Source={x:Reference TriviaSelection}}" 

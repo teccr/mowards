@@ -108,7 +108,7 @@ namespace Mowards.ViewModels
                                                                  new Models.MenuItem() {ID=4, Logo="BarChart_52px.png", Text="Awards Polls", Description="" },
                                                                  //new Models.MenuItem() {ID=5, Logo="Edit_48px.png", Text="My Reviews", Description="" },
                                                                  new Models.MenuItem() {ID=6, Logo="Rocket_48px.png", Text="Academy Awards Trivia", Description="" },
-                                                                 new Models.MenuItem() {ID=7, Logo="Unsplash_48px.png", Text="Take a Picture Holding an Oscar", Description="" },
+                                                                 //new Models.MenuItem() {ID=7, Logo="Unsplash_48px.png", Text="Take a Picture Holding an Oscar", Description="" },
                                                                  new Models.MenuItem() {ID=8, Logo="Account_50px.png", Text="Edit Profile", Description="" },
                                                                  new Models.MenuItem() {ID=9, Logo="SignOut_50px.png", Text="Sign Out", Description="" }
                                                                   };
