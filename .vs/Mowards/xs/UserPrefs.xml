@@ -1,5 +1,10 @@
-﻿<Properties StartupConfiguration="{DEFC1D5E-A3E7-4777-8C30-5C5F1CE41332}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
-  <MonoDevelop.Ide.Workbench />
+﻿<Properties StartupConfiguration="{DE65FD19-E640-4214-BEB5-C223523D341D}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Mowards/ViewModels/UserViewModel.cs">
+    <Files>
+      <File FileName="Mowards/ViewModels/UserViewModel.cs" Line="65" Column="37" />
+      <File FileName="Mowards/Views/EditProfileView.xaml" Line="11" Column="71" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

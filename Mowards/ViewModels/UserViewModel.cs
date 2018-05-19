@@ -45,25 +45,39 @@ namespace Mowards.ViewModels
      
         private void CancelSelectImage()
         {
+            if(_selectedPicture != null)
+            {
+                _selectedPicture.Dispose();
+                _selectedPicture = null;
+            }
             ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PopModalAsync();
         }
 
         private async void ConfirmPictureAndGoBack()
         {
-            if (ImageTakenPreview != null)
-            {
+            Func<Task> confirmPicture = new Func<Task>(
+                async() =>
+                {
+                    if (ImageTakenPreview != null)
+                    {
+                        var imageStream = _selectedPicture.GetStream();
+                        _newProfilePictureUrl = await AzureStorageService.LoadImage(imageStream, _selectedPicture.Path);
+                        ViewModelFactory.GetInstance<MainMenuViewModel>().UpdateCurrentUserImage(_newProfilePictureUrl);
+                        ImageLocation = _newProfilePictureUrl;
+                        CurrentUser.UserProfilePictureUrl = ImageLocation;
+                        _selectedPicture.Dispose();
+                        _selectedPicture = null;
+                        OnPropertyChanged("CurrentUser");
 
-                CurrentUser.UserProfilePictureUrl = ImageLocation;
-                ViewModelFactory.GetInstance<MainMenuViewModel>().UpdateCurrentUserImage(_newProfilePictureUrl);
-                OnPropertyChanged("CurrentUser");
-                //UPLOAD IMAGE TIED TO THIS USER to the Azure blob storage HERE
-                 
-                await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PopModalAsync();
-            }
-            else {
-                await App.Current.MainPage.DisplayAlert("Alert", "Please take or select an image first", "OK");
-            }
-           
+                        await ((MasterDetailPage)App.Current.MainPage).Detail.Navigation.PopModalAsync();
+                    }
+                    else
+                    {
+                        await App.Current.MainPage.DisplayAlert("Alert", "Please take or select an image first", "OK");
+                    }
+                });
+
+            await ExecuteSafeOperation(confirmPicture);
         }
 
         private async void ShowTakeSelectPictureView(object obj)
@@ -73,45 +87,59 @@ namespace Mowards.ViewModels
 
         private async void ResetPassword(object obj)
         {
-            MowardsHttp client = new MowardsHttp();
+            Func<Task> resetPassword = new Func<Task>(
+                async() =>
+                {
+                    MowardsHttp client = new MowardsHttp();
 
-            string result = "";
-           
-            string url = $"?password={EditUserNewPassword}";
-            url = Utils.USER_URL + url;
-            if (EditUserNewPassword == "")
-            {
-                result = "Password cant be blank";
-            }
-            else { 
-                if (EditUserNewPassword == EditUserNewPasswordConfirm) {
-                    result = await client.Put<string>(
-                   url);
-                    EditUserNewPassword = "";
-                    EditUserNewPasswordConfirm = "";
-                }
-                else{
-                    result = "Password and Password Confirmation does not match";
-                }
-            }
-            await App.Current.MainPage.DisplayAlert("Result", result, "OK");
-            
+                    string result = "";
 
+                    string url = $"?password={EditUserNewPassword}";
+                    url = Utils.USER_URL + url;
+                    if (EditUserNewPassword == "")
+                    {
+                        result = "Password cant be blank";
+                    }
+                    else
+                    {
+                        if (EditUserNewPassword == EditUserNewPasswordConfirm)
+                        {
+                            result = await client.Put<string>(
+                           url);
+                            EditUserNewPassword = "";
+                            EditUserNewPasswordConfirm = "";
+                        }
+                        else
+                        {
+                            result = "Password and Password Confirmation does not match";
+                        }
+                    }
+                    await App.Current.MainPage.DisplayAlert("Result", result, "OK");
+                }
+            );
+
+            await ExecuteSafeOperation(resetPassword);
         }
 
         private async void SaveEditUser()
         {
-            MowardsHttp client = new MowardsHttp();
+            Func<Task> saveEditUser = new Func<Task>(
+                async() =>
+                {
+                    MowardsHttp client = new MowardsHttp();
 
-          
-            string url = Utils.USER_URL;
-            MowardsUser usr = new MowardsUser() { Email = CurrentUser.Email, Fullname=EditUserNewFullName  , BirthDate=EditUserNewBirthday, Country=EditUserNewCountry };
+                    string url = Utils.USER_URL;
+                    MowardsUser usr = new MowardsUser() { Email = CurrentUser.Email, Fullname = EditUserNewFullName, BirthDate = EditUserNewBirthday, Country = EditUserNewCountry };
 
-            CurrentUser = await client.Put<MowardsUser>(
-                url, usr);
-            //CurrentUser.Picture = "User_104px.png";
-            await App.Current.MainPage.DisplayAlert("Result", CurrentUser.Email+ " has been edited!", "OK");
-            SetEditValuesCurrentUser();
+                    CurrentUser = await client.Put<MowardsUser>(
+                        url, usr);
+                    //CurrentUser.Picture = "User_104px.png";
+                    await App.Current.MainPage.DisplayAlert("Result", CurrentUser.Email + " has been edited!", "OK");
+                    SetEditValuesCurrentUser();
+                }
+            );
+
+            await ExecuteSafeOperation(saveEditUser);
         }
 
         #endregion
@@ -225,77 +253,91 @@ namespace Mowards.ViewModels
             set { _UserFavorites = value; OnPropertyChanged("UserFavorites"); }
         }
         #endregion
+
+
         #region Camera Async Methods
+        private MediaFile _selectedPicture;
+
         private async void TakeCameraPicture()
         {
-            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
-            {
-                
-                await App.Current.MainPage.DisplayAlert("Error","No Camera Available", "OK");
-                return;
-            }
+            Func<Task> takeCameraPicture = new Func<Task>(
+                async() =>
+                {
+                    if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+                    {
 
-            var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
-            {
-                Directory = "Test",
-                SaveToAlbum = true,
-                CompressionQuality = 75,
-                CustomPhotoSize = 80,
-                PhotoSize = PhotoSize.MaxWidthHeight,
-                MaxWidthHeight = 2000,
-                DefaultCamera = CameraDevice.Front
+                        await App.Current.MainPage.DisplayAlert("Error", "No Camera Available", "OK");
+                        return;
+                    }
 
-            });
+                    var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+                    {
+                        Directory = "Test",
+                        SaveToAlbum = true,
+                        CompressionQuality = 75,
+                        CustomPhotoSize = 80,
+                        PhotoSize = PhotoSize.MaxWidthHeight,
+                        MaxWidthHeight = 2000,
+                        DefaultCamera = CameraDevice.Front
 
-            if (file == null)
-                return;
+                    });
 
-            //Application.Current.MainPage.DisplayAlert("File Location", file.Path, "OK");
-            ImageLocation = file.Path;
-            ImageTakenPreview = new Image();
-            ImageTakenPreview.Source = ImageSource.FromStream(() =>
-            {
-                var stream = file.GetStream();
-                //sfile.Dispose();
-                return stream;
-            });
-            CurrentUser.UserProfilePictureUrl = ImageLocation;
-            var imageStream = file.GetStream();
-            _newProfilePictureUrl = await AzureStorageService.LoadImage(imageStream, file.Path);
-            file.Dispose();
+                    if (file == null)
+                        return;
+
+                    //Application.Current.MainPage.DisplayAlert("File Location", file.Path, "OK");
+                    //ImageLocation = file.Path;
+                    ImageTakenPreview = new Image();
+                    ImageTakenPreview.Source = ImageSource.FromStream(() =>
+                    {
+                        var stream = file.GetStream();
+                        //sfile.Dispose();
+                        return stream;
+                    });
+                    CurrentUser.UserProfilePictureUrl = ImageLocation;
+                    _selectedPicture = file;
+                }
+            );
+
+            await ExecuteSafeOperation(takeCameraPicture);
         }
 
         private async void SelectPicture()
         {
-            if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
-            {
+            Func<Task> selectPicture = new Func<Task>(
+                async() =>
+                {
+                    if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+                    {
 
-                await App.Current.MainPage.DisplayAlert("Error", "No Camera Available", "OK");
-                return;
-            }
+                        await App.Current.MainPage.DisplayAlert("Error", "No Camera Available", "OK");
+                        return;
+                    }
 
-            var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
-            {
-                CompressionQuality = 70,
-                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium,
-            });
+                    var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+                    {
+                        CompressionQuality = 70,
+                        PhotoSize = Plugin.Media.Abstractions.PhotoSize.Medium,
+                    });
 
-            if (file == null)
-                return;
+                    if (file == null)
+                        return;
 
-            //Application.Current.MainPage.DisplayAlert("File Location", file.Path, "OK");
-            ImageLocation = file.Path;
-            ImageTakenPreview = new Image();
-            ImageTakenPreview.Source = ImageSource.FromStream(() =>
-            {
-                var stream = file.GetStream();
-                //file.Dispose();
-                return stream;
-            });
+                    //Application.Current.MainPage.DisplayAlert("File Location", file.Path, "OK");
+                    //ImageLocation = file.Path;
+                    ImageTakenPreview = new Image();
+                    ImageTakenPreview.Source = ImageSource.FromStream(() =>
+                    {
+                        var stream = file.GetStream();
+                        //file.Dispose();
+                        return stream;
+                    });
 
-            var imageStream = file.GetStream();
-            _newProfilePictureUrl = await AzureStorageService.LoadImage(imageStream, file.Path);
-            file.Dispose();
+                    _selectedPicture = file;
+                }
+            );
+
+            await ExecuteSafeOperation(selectPicture);
         }
         #endregion
 
